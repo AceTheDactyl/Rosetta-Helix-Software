@@ -158,14 +158,16 @@ def test_compose_with_inverse():
 
 
 def test_compose_transposition_self():
-    """Transpositions composed with themselves."""
-    # In S3, tau_i o tau_i = e only for transpositions
-    # But composition in our algebra: tau1 o tau1 = ?
-    # tau1 = (1,0,2), so (1,0,2) o (1,0,2) = (0,1,2) = e
-    # So div o div should be grp
-    assert compose("÷", "÷") == "()"
-    assert compose("+", "+") == "÷"  # tau2 o tau2 in S3
-    assert compose("−", "−") == "()"  # tau3 o tau3 = e
+    """Transpositions composed with themselves.
+
+    In S₃, all transpositions are self-inverse: τᵢ ∘ τᵢ = e (identity).
+    - ÷ (τ₁) ∘ ÷ (τ₁) = () (e)
+    - + (τ₂) ∘ + (τ₂) = () (e)
+    - − (τ₃) ∘ − (τ₃) = () (e)
+    """
+    assert compose("÷", "÷") == "()"  # τ₁ ∘ τ₁ = e
+    assert compose("+", "+") == "()"  # τ₂ ∘ τ₂ = e
+    assert compose("−", "−") == "()"  # τ₃ ∘ τ₃ = e
 
 
 def test_composition_table_complete():
