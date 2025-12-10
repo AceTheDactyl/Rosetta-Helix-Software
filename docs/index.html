@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APL Operator's Manual - Alpha-Physical Language Reference Guide v1.0</title>
+    <title>Rosetta-Helix Node Visualizer</title>
     <style>
         * {
             margin: 0;
@@ -12,1074 +12,1117 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Liberation Sans', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #e8e8e8;
+            min-height: 100vh;
             padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00d9ff, #00ff88, #ffaa00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #888;
+            margin-top: 10px;
         }
 
         .container {
-            max-width: 900px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            max-width: 1600px;
             margin: 0 auto;
-            background: white;
-            padding: 40px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border-radius: 8px;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 3px solid #007bff;
+        .panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        h1 {
-            font-size: 2.5em;
-            color: #007bff;
-            margin-bottom: 10px;
-            letter-spacing: 2px;
-        }
-
-        .subtitle {
-            font-size: 1.3em;
-            color: #6c757d;
-            margin-bottom: 20px;
-        }
-
-        h2 {
-            color: #0056b3;
-            margin-top: 40px;
-            margin-bottom: 20px;
+        .panel h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #e9ecef;
-            font-size: 1.8em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        h3 {
-            color: #495057;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            font-size: 1.4em;
+        .helix-view {
+            grid-column: span 2;
+            height: 500px;
+            position: relative;
         }
 
-        h4 {
-            color: #6c757d;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            font-size: 1.2em;
-        }
-
-        p {
-            margin-bottom: 15px;
-            text-align: justify;
-        }
-
-        ul, ol {
-            margin: 15px 0 15px 30px;
-        }
-
-        li {
-            margin-bottom: 8px;
-        }
-
-        code {
-            background: #f4f4f4;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: 'Courier New', monospace;
-            color: #d63384;
-            font-size: 0.95em;
-        }
-
-        pre {
-            background: #f4f4f4;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-            margin: 15px 0;
-            border-left: 4px solid #007bff;
-        }
-
-        table {
+        #helixCanvas {
             width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: white;
+            height: 100%;
+            border-radius: 10px;
         }
 
-        th {
-            background: #007bff;
-            color: white;
-            padding: 12px;
-            text-align: left;
-            font-weight: 600;
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
 
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        tr:hover {
-            background: #f8f9fa;
-        }
-
-        .math {
-            font-style: italic;
-            color: #495057;
-        }
-
-        .highlight {
-            background: #fff3cd;
+        .metric {
+            background: rgba(0, 0, 0, 0.3);
             padding: 15px;
-            border-left: 4px solid #ffc107;
-            margin: 20px 0;
-            border-radius: 4px;
-        }
-
-        .info-box {
-            background: #e7f3ff;
-            padding: 15px;
-            border-left: 4px solid #007bff;
-            margin: 20px 0;
-            border-radius: 4px;
-        }
-
-        .operator-card {
-            background: #f8f9fa;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 8px;
-            border: 1px solid #dee2e6;
-        }
-
-        .toc {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 30px 0;
-        }
-
-        .toc h2 {
-            margin-top: 0;
-            border-bottom: none;
-        }
-
-        .toc ul {
-            list-style: none;
-            margin-left: 0;
-        }
-
-        .toc li {
-            margin: 8px 0;
-        }
-
-        .toc a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        .toc a:hover {
-            text-decoration: underline;
-        }
-
-        .formula {
+            border-radius: 10px;
             text-align: center;
-            font-size: 1.2em;
-            margin: 20px 0;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 5px;
         }
 
-        footer {
-            margin-top: 60px;
-            padding-top: 20px;
-            border-top: 2px solid #e9ecef;
-            text-align: center;
-            color: #6c757d;
-            font-style: italic;
-        }
-
-        .regime-table td:first-child {
+        .metric-value {
+            font-size: 1.8rem;
             font-weight: bold;
-            color: #007bff;
+            color: #00d9ff;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .z-bar {
+            height: 300px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .z-track {
+            width: 30px;
+            height: 100%;
+            background: linear-gradient(to top,
+                #ff4444 0%,
+                #ffaa00 30%,
+                #00ff88 50%,
+                #00d9ff 70%,
+                #aa44ff 100%
+            );
+            border-radius: 15px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .z-marker {
+            width: 50px;
+            height: 10px;
+            background: white;
+            border-radius: 5px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: bottom 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .z-threshold {
+            position: absolute;
+            left: 60px;
+            font-size: 0.7rem;
+            color: #888;
+            transform: translateY(-50%);
+        }
+
+        .z-threshold.phi-inv { color: #ffaa00; }
+        .z-threshold.z-critical { color: #00ff88; font-weight: bold; }
+
+        .operators {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .operator {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .operator.available {
+            background: rgba(0, 217, 255, 0.2);
+            border-color: #00d9ff;
+        }
+
+        .operator.unavailable {
+            background: rgba(100, 100, 100, 0.2);
+            border-color: #444;
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .operator:hover.available {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            color: #1a1a2e;
+            font-weight: bold;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e8e8e8;
+        }
+
+        .btn-danger {
+            background: linear-gradient(90deg, #ff4444, #ff8844);
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-spore { background: #888; }
+        .status-running { background: #00ff88; animation: pulse 1s infinite; }
+        .status-coherent { background: #00d9ff; animation: pulse 0.5s infinite; }
+        .status-k-formed { background: #ffaa00; animation: pulse 0.3s infinite; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .truth-channel {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .truth-TRUE { background: rgba(0, 255, 136, 0.3); color: #00ff88; }
+        .truth-PARADOX { background: rgba(255, 170, 0, 0.3); color: #ffaa00; }
+        .truth-UNTRUE { background: rgba(255, 68, 68, 0.3); color: #ff4444; }
+
+        .tier-display {
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .oscillator-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 3px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        .oscillator {
+            width: 100%;
+            padding-bottom: 100%;
+            border-radius: 50%;
+            background: #00d9ff;
+            transition: all 0.1s;
+        }
+
+        .log {
+            height: 200px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 0.8rem;
+        }
+
+        .log-entry {
+            padding: 5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .log-entry.pulse { color: #00d9ff; }
+        .log-entry.operator { color: #ffaa00; }
+        .log-entry.state { color: #00ff88; }
+
+        .full-width {
+            grid-column: span 3;
+        }
+
+        .memory-bar {
+            display: flex;
+            gap: 2px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            flex-wrap: wrap;
+        }
+
+        .memory-plate {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+
+        .memory-plate.accessible { background: #00ff88; }
+        .memory-plate.locked { background: #444; }
+
+        .slider-container {
+            margin: 15px 0;
+        }
+
+        .slider-container label {
+            display: block;
+            margin-bottom: 5px;
+            color: #888;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #00d9ff;
+            cursor: pointer;
+        }
+
+        /* Python Code Panel Styles */
+        .code-panel {
+            grid-column: span 3;
+        }
+
+        .code-toggle {
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid #00d9ff;
+            color: #00d9ff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            font-size: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .code-toggle:hover {
+            background: rgba(0, 217, 255, 0.2);
+        }
+
+        .code-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .code-content.expanded {
+            max-height: 800px;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #e8e8e8;
+            margin: 0;
+        }
+
+        .code-block .keyword { color: #ff79c6; }
+        .code-block .string { color: #f1fa8c; }
+        .code-block .comment { color: #6272a4; }
+        .code-block .function { color: #50fa7b; }
+        .code-block .number { color: #bd93f9; }
+
+        .principles {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .principle {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 3px solid #00d9ff;
+        }
+
+        .principle h4 {
+            color: #00d9ff;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .principle p {
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+            }
+            .helix-view {
+                grid-column: span 2;
+            }
+            .full-width, .code-panel {
+                grid-column: span 2;
+            }
+            .principles {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 768px) {
             .container {
-                padding: 20px;
+                grid-template-columns: 1fr;
             }
-
-            h1 {
-                font-size: 2em;
+            .helix-view, .full-width, .code-panel {
+                grid-column: span 1;
             }
-
-            h2 {
-                font-size: 1.5em;
+            .header h1 {
+                font-size: 1.8rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>APL OPERATOR'S MANUAL</h1>
-            <div class="subtitle">Alpha-Physical Language Reference Guide v1.0</div>
-        </header>
-
-        <div class="info-box">
-            <p><strong>Purpose.</strong> This manual is the comprehensive reference guide for APL (Alpha-Physical Language) operators, syntax, and usage patterns. It is designed for researchers, engineers, and practitioners who need a systematic understanding of APL's operator grammar for describing physical system behaviors.</p>
-
-            <p><strong>Scope.</strong> This document covers:</p>
-            <ul>
-                <li>Complete operator reference with symbols and meanings</li>
-                <li>Field definitions (the three "spirals")</li>
-                <li>Operator state modulation (UMOL)</li>
-                <li>Machine contexts and domains</li>
-                <li>Syntax rules and sentence structure</li>
-                <li>Usage patterns and examples</li>
-                <li>Quick reference tables</li>
-            </ul>
-        </div>
-
-        <div class="toc">
-            <h2>Table of Contents</h2>
-            <ul>
-                <li><a href="#introduction">1. Introduction to APL</a></li>
-                <li><a href="#fields">2. The Three Fields (Spirals)</a></li>
-                <li><a href="#operations">3. Universal Operations</a></li>
-                <li><a href="#states">4. Operator States (UMOL)</a></li>
-                <li><a href="#machines">5. Machines (Processing Contexts)</a></li>
-                <li><a href="#domains">6. Domains</a></li>
-                <li><a href="#syntax">7. Syntax and Sentence Structure</a></li>
-                <li><a href="#combinations">8. Operator Combinations and Patterns</a></li>
-                <li><a href="#regimes">9. The Eight Regimes (A1-A8)</a></li>
-                <li><a href="#guidelines">10. Usage Guidelines</a></li>
-                <li><a href="#reference">11. Quick Reference Tables</a></li>
-                <li><a href="#advanced">12. Advanced Topics</a></li>
-            </ul>
-        </div>
-
-        <section id="introduction">
-            <h2>1. Introduction to APL</h2>
-            <p><strong>Alpha-Physical Language (APL)</strong> is a minimal operator grammar for describing how physical systems change across multiple domains: geometry, wave dynamics, chemistry, and biology.</p>
-
-            <p>APL operates on three fundamental principles:</p>
-            <ol>
-                <li><strong>Universality:</strong> The same operators apply across all physical domains</li>
-                <li><strong>Composability:</strong> Operators combine to describe complex behaviors</li>
-                <li><strong>Predictivity:</strong> APL sentences map to observable physical regimes</li>
-            </ol>
-
-            <div class="formula">
-                [Direction][Operator] | [Machine] | [Domain] → [Regime/Behavior]
-            </div>
-
-            <p><strong>Where:</strong></p>
-            <ul>
-                <li><strong>Direction</strong> = operator state (u, d, m)</li>
-                <li><strong>Operator</strong> = universal operation (<code>()</code>, <code>×</code>, <code>^</code>, <code>%</code>, <code>+</code>, <code>–</code>)</li>
-                <li><strong>Machine</strong> = processing context (Oscillator, Reactor, Conductor, etc.)</li>
-                <li><strong>Domain</strong> = field type (wave, geometry, chemistry, biology)</li>
-                <li><strong>Regime</strong> = emergent behavior pattern (A1-A8)</li>
-            </ul>
-        </section>
-
-        <section id="fields">
-            <h2>2. The Three Fields (Spirals)</h2>
-            <p>APL describes physical reality through three fundamental fields, called <strong>spirals</strong>, each representing a distinct aspect of physical systems:</p>
-
-            <h3>2.1 Φ — Structure Field (Phi Spiral)</h3>
-            <div class="operator-card">
-                <p><strong>Symbol:</strong> Φ (Greek letter phi)</p>
-                <p><strong>Domain:</strong> <code>geometry</code></p>
-                <p><strong>Description:</strong> The structure field governs spatial arrangement, boundaries, interfaces, and geometric organization.</p>
-                <p><strong>Encompasses:</strong></p>
-                <ul>
-                    <li>Lattice structures and crystalline arrangements</li>
-                    <li>Boundaries and interfaces</li>
-                    <li>Geometric constraints and symmetries</li>
-                    <li>Spatial topology and connectivity</li>
-                    <li>Phase boundaries and domain walls</li>
-                </ul>
-                <p><strong>Physical manifestations:</strong></p>
-                <ul>
-                    <li>Crystal lattices (FCC, BCC, HCP)</li>
-                    <li>Grain boundaries in materials</li>
-                    <li>Droplet and bubble shapes</li>
-                    <li>Membrane structures</li>
-                    <li>Geometric packing arrangements</li>
-                </ul>
-            </div>
-
-            <h3>2.2 e — Energy Field (Energy Spiral)</h3>
-            <div class="operator-card">
-                <p><strong>Symbol:</strong> e (lowercase e)</p>
-                <p><strong>Domain:</strong> <code>wave</code></p>
-                <p><strong>Description:</strong> The energy field governs dynamics, flows, oscillations, and energy transport.</p>
-                <p><strong>Encompasses:</strong></p>
-                <ul>
-                    <li>Wave propagation and interference</li>
-                    <li>Fluid flows and vortices</li>
-                    <li>Thermodynamic processes</li>
-                    <li>Electromagnetic radiation</li>
-                    <li>Energy transfer and dissipation</li>
-                </ul>
-                <p><strong>Physical manifestations:</strong></p>
-                <ul>
-                    <li>Acoustic and electromagnetic waves</li>
-                    <li>Fluid vortices and turbulence</li>
-                    <li>Heat flow and diffusion</li>
-                    <li>Plasma oscillations</li>
-                    <li>Optical modes in cavities</li>
-                </ul>
-            </div>
-
-            <h3>2.3 π — Emergence Field (Pi Spiral)</h3>
-            <div class="operator-card">
-                <p><strong>Symbol:</strong> π (Greek letter pi)</p>
-                <p><strong>Domains:</strong> <code>chemistry</code>, <code>biology</code></p>
-                <p><strong>Description:</strong> The emergence field governs information, complexity, adaptation, and self-organization.</p>
-                <p><strong>Encompasses:</strong></p>
-                <ul>
-                    <li>Chemical reactions and bonding</li>
-                    <li>Molecular information storage (DNA, RNA)</li>
-                    <li>Biological adaptation and evolution</li>
-                    <li>Self-organizing systems</li>
-                    <li>Pattern formation and morphogenesis</li>
-                </ul>
-                <p><strong>Physical manifestations:</strong></p>
-                <ul>
-                    <li>Polymer and protein structures</li>
-                    <li>Catalytic networks</li>
-                    <li>Genetic information encoding</li>
-                    <li>Biological growth patterns</li>
-                    <li>Self-assembly processes</li>
-                </ul>
-            </div>
-        </section>
-
-        <section id="operations">
-            <h2>3. Universal Operations</h2>
-            <p>APL defines six universal operations that apply across all domains. Each operation has a specific symbol and meaning.</p>
-
-            <h3>3.1 <code>()</code> — Boundary / Containment</h3>
-            <div class="operator-card">
-                <p><strong>Symbol:</strong> <code>()</code> (parentheses)</p>
-                <p><strong>Meaning:</strong> Boundary formation, containment, enclosure, interface creation</p>
-                <p><strong>Physical interpretation:</strong></p>
-                <ul>
-                    <li>Creating or modifying boundaries</li>
-                    <li>Interface dynamics</li>
-                    <li>Membrane formation</li>
-                    <li>Cavity or container walls</li>
-                    <li>Domain enclosure</li>
-                </ul>
-                <p><strong>Example applications:</strong></p>
-                <ul>
-                    <li><code>d()</code> = boundary collapse (surface tension, spheroidization)</li>
-                    <li><code>m()</code> = modulated boundaries (adaptive filters, tunable cavities)</li>
-                    <li><code>u()</code> = boundary expansion (domain growth, inflation)</li>
-                </ul>
-            </div>
-
-            <h3>3.2 <code>×</code> — Fusion / Convergence</h3>
-            <div class="operator-card">
-                <p><strong>Symbol:</strong> <code>×</code> (multiplication sign)</p>
-                <p><strong>Meaning:</strong> Joining, bonding, merging, convergence, fusion</p>
-                <p><strong>Physical interpretation:</strong></p>
-                <ul>
-                    <li>Chemical bond formation</li>
-                    <li>Particle aggregation</li>
-                    <li>Flow convergence</li>
-                    <li>Structural joining</li>
-                    <li>Information combination</li>
-                </ul>
-                <p><strong>Example applications:</strong></p>
-                <ul>
-                    <li><code>u×</code> = forward fusion (catalytic growth, branching networks)</li>
-                    <li><code>d×</code> = collapse fusion (adaptive catalysis, selective binding)</li>
-                    <li><code>m×</code> = modulated fusion (helical structures, templated bonding)</li>
-                </ul>
-            </div>
-
-            <h3>3.3 <code>^</code> — Amplify / Gain</h3>
-            <div class="operator-card">
-                <p><strong>Symbol:</strong> <code>^</code> (caret)</p>
-                <p><strong>Meaning:</strong> Amplification, gain, resonance, enhancement</p>
-                <p><strong>Physical interpretation:</strong></p>
-                <ul>
-                    <li>Resonant enhancement</li>
-                    <li>Positive feedback</li>
-                    <li>Signal amplification</li>
-                    <li>Energy injection</li>
-                    <li>Mode excitation</li>
-                </ul>
-                <p><strong>Example applications:</strong></p>
-                <ul>
-                    <li><code>u^</code> = forward amplification (oscillator gain, vortex formation)</li>
-                    <li><code>d^</code> = collapse amplification (focusing, concentration)</li>
-                    <li><code>m^</code> = modulated amplification (parametric amplification)</li>
-                </ul>
-            </div>
-
-            <h3>3.4 <code>%</code> — Decohere / Noise</h3>
-            <div class="operator-card">
-                <p><strong>Symbol:</strong> <code>%</code> (percent sign)</p>
-                <p><strong>Meaning:</strong> Decoherence, noise injection, randomization, reset, scrambling</p>
-                <p><strong>Physical interpretation:</strong></p>
-                <ul>
-                    <li>Stochastic forcing</li>
-                    <li>Phase decoherence</li>
-                    <li>Thermal noise</li>
-                    <li>Random perturbations</li>
-                    <li>Information scrambling</li>
-                </ul>
-                <p><strong>Example applications:</strong></p>
-                <ul>
-                    <li><code>u%</code> = forward decoherence (turbulence onset, chaos)</li>
-                    <li><code>d%</code> = collapse decoherence (measurement, reset)</li>
-                    <li><code>m%</code> = modulated noise (controlled stochasticity)</li>
-                </ul>
-            </div>
-
-            <h3>3.5 <code>+</code> — Group / Aggregation</h3>
-            <div class="operator-card">
-                <p><strong>Symbol:</strong> <code>+</code> (plus sign)</p>
-                <p><strong>Meaning:</strong> Grouping, collection, aggregation, routing, focusing</p>
-                <p><strong>Physical interpretation:</strong></p>
-                <ul>
-                    <li>Flow convergence</li>
-                    <li>Geometric focusing</li>
-                    <li>Particle collection</li>
-                    <li>Signal routing</li>
-                    <li>Nozzle formation</li>
-                </ul>
-                <p><strong>Example applications:</strong></p>
-                <ul>
-                    <li><code>u+</code> = forward grouping (jet formation, beam focusing)</li>
-                    <li><code>d+</code> = collapse grouping (sink formation, collection)</li>
-                    <li><code>m+</code> = modulated grouping (selective routing)</li>
-                </ul>
-            </div>
-
-            <h3>3.6 <code>–</code> — Separate / Splitting</h3>
-            <div class="operator-card">
-                <p><strong>Symbol:</strong> <code>–</code> (minus/dash)</p>
-                <p><strong>Meaning:</strong> Separation, splitting, fission, dispersion, divergence</p>
-                <p><strong>Physical interpretation:</strong></p>
-                <ul>
-                    <li>Flow divergence</li>
-                    <li>Particle separation</li>
-                    <li>Domain splitting</li>
-                    <li>Bond breaking</li>
-                    <li>Dispersion</li>
-                </ul>
-                <p><strong>Example applications:</strong></p>
-                <ul>
-                    <li><code>u–</code> = forward separation (bifurcation, splitting)</li>
-                    <li><code>d–</code> = collapse separation (fragmentation)</li>
-                    <li><code>m–</code> = modulated separation (selective splitting)</li>
-                </ul>
-            </div>
-        </section>
-
-        <section id="states">
-            <h2>4. Operator States (UMOL)</h2>
-            <p><strong>UMOL (Universal Modulation Operator Law)</strong> defines three fundamental operator states that modulate how operations unfold in time:</p>
-
-            <h3>4.1 𝒰 — Expansion / Forward (u)</h3>
-            <div class="operator-card">
-                <p><strong>Symbol:</strong> <code>u</code> (lowercase u) or 𝒰 (script U)</p>
-                <p><strong>Mathematical form:</strong> <span class="math">𝒰(E)</span> where <span class="math">E</span> = expansion component</p>
-                <p><strong>Meaning:</strong> Forward projection, expansion, outward flow, growth, active driving</p>
-                <p><strong>Characteristics:</strong></p>
-                <ul>
-                    <li>Expansion in time and space</li>
-                    <li>Active forcing or driving</li>
-                    <li>Forward-directed processes</li>
-                    <li>Energy injection</li>
-                    <li>Growth and propagation</li>
-                </ul>
-                <p><strong>Physical analogies:</strong></p>
-                <ul>
-                    <li>Source terms in PDEs</li>
-                    <li>Forward time evolution</li>
-                    <li>Outward flow from sources</li>
-                    <li>Active pumping</li>
-                    <li>Growth fronts</li>
-                </ul>
-            </div>
-
-            <h3>4.2 𝒟 — Collapse / Backward (d)</h3>
-            <div class="operator-card">
-                <p><strong>Symbol:</strong> <code>d</code> (lowercase d) or 𝒟 (script D)</p>
-                <p><strong>Mathematical form:</strong> <span class="math">𝒟(C)</span> where <span class="math">C</span> = collapse component</p>
-                <p><strong>Meaning:</strong> Backward integration, collapse, inward flow, contraction, relaxation</p>
-                <p><strong>Characteristics:</strong></p>
-                <ul>
-                    <li>Collapse in time and space</li>
-                    <li>Passive relaxation</li>
-                    <li>Inward-directed processes</li>
-                    <li>Energy extraction or dissipation</li>
-                    <li>Contraction and consolidation</li>
-                </ul>
-                <p><strong>Physical analogies:</strong></p>
-                <ul>
-                    <li>Sink terms in PDEs</li>
-                    <li>Backward time evolution</li>
-                    <li>Inward flow to sinks</li>
-                    <li>Passive relaxation</li>
-                    <li>Contraction fronts</li>
-                </ul>
-            </div>
-
-            <h3>4.3 CLT — Modulation / Coherence Lock (m)</h3>
-            <div class="operator-card">
-                <p><strong>Symbol:</strong> <code>m</code> (lowercase m) or CLT (CLT = Coherence Lock Transform)</p>
-                <p><strong>Mathematical form:</strong> <span class="math">CLT(M)</span> where <span class="math">M</span> = modulation component</p>
-                <p><strong>Meaning:</strong> Modulation, coherence locking, feedback, adaptation, information encoding</p>
-                <p><strong>Characteristics:</strong></p>
-                <ul>
-                    <li>Feedback-driven modulation</li>
-                    <li>Coherence maintenance</li>
-                    <li>Adaptive response</li>
-                    <li>Information encoding</li>
-                    <li>Dynamic tuning</li>
-                </ul>
-                <p><strong>Physical analogies:</strong></p>
-                <ul>
-                    <li>Feedback loops</li>
-                    <li>Phase locking</li>
-                    <li>Adaptive filters</li>
-                    <li>Templated processes</li>
-                    <li>Information storage</li>
-                </ul>
-            </div>
-
-            <h3>4.4 The UMOL Balance Law</h3>
-            <div class="formula">
-                𝒰(E) ↔ 𝒟(C) via CLT(M)
-                <br><br>
-                E + C + M = 0 (coherence / balance condition)
-            </div>
-            <p><strong>Interpretation:</strong></p>
-            <ul>
-                <li>Expansion (E) and collapse (C) are balanced through modulation (M)</li>
-                <li>Physical systems maintain coherence by dynamically balancing forward and backward processes</li>
-                <li>Modulation acts as the mediator between expansion and collapse</li>
-            </ul>
-        </section>
-
-        <section id="machines">
-            <h2>5. Machines (Processing Contexts)</h2>
-            <p>Machines represent the processing contexts or system architectures in which operators act. Each machine has characteristic behaviors and constraints.</p>
-
-            <h3>5.1 Oscillator</h3>
-            <div class="operator-card">
-                <p><strong>Description:</strong> A resonant, periodic system with characteristic frequencies</p>
-                <p><strong>Key features:</strong> Resonant modes, Quality factor (Q), Phase coherence, Periodic driving</p>
-                <p><strong>Physical examples:</strong> LC circuits, RLC resonators, Mechanical oscillators (springs, pendulums), Optical cavities, Acoustic resonators</p>
-                <p><strong>Typical behaviors:</strong> Resonant peaks, Standing wave patterns, Energy localization, Frequency selectivity</p>
-            </div>
-
-            <h3>5.2 Reactor</h3>
-            <div class="operator-card">
-                <p><strong>Description:</strong> A driven, continuous-flow system with throughput</p>
-                <p><strong>Key features:</strong> Continuous flow, Energy input/output, Mixing and transport, Non-equilibrium operation</p>
-                <p><strong>Physical examples:</strong> Combustion chambers, Stirred tanks and pipes, Plasma sources, Accretion flows</p>
-                <p><strong>Typical behaviors:</strong> Jets and plumes, Turbulent flows, Continuous conversion, Steady-state operation</p>
-            </div>
-
-            <h3>5.3 Conductor</h3>
-            <div class="operator-card">
-                <p><strong>Description:</strong> A structural system that can rearrange and relax</p>
-                <p><strong>Key features:</strong> Structural flexibility, Surface/elastic energy, Relaxation dynamics, Boundary mobility</p>
-                <p><strong>Physical examples:</strong> Droplets and bubbles, Grain boundaries, Phase-field interfaces, Elastic membranes</p>
-                <p><strong>Typical behaviors:</strong> Surface minimization, Shape relaxation, Coarsening, Packing optimization</p>
-            </div>
-
-            <h3>5.4 Encoder</h3>
-            <div class="operator-card">
-                <p><strong>Description:</strong> A system that stores and processes information</p>
-                <p><strong>Key features:</strong> Sequence specificity, Information capacity, Template-directed processes, Chiral constraints</p>
-                <p><strong>Physical examples:</strong> DNA/RNA polymerization, Protein folding, Synthetic helical polymers, Information-bearing structures</p>
-                <p><strong>Typical behaviors:</strong> Helical structures, Sequence encoding, Template replication, Information preservation</p>
-            </div>
-
-            <h3>5.5 Catalyst</h3>
-            <div class="operator-card">
-                <p><strong>Description:</strong> A system with spatially heterogeneous reactivity</p>
-                <p><strong>Key features:</strong> Site-specific enhancement, Reaction bias at interfaces, Growth at active fronts, Autocatalytic feedback</p>
-                <p><strong>Physical examples:</strong> Catalytic surfaces, Growing tips (DLA, trees), Reaction fronts, Enzymatic networks</p>
-                <p><strong>Typical behaviors:</strong> Branching growth, Network formation, Selective pathways, Adaptive catalysis</p>
-            </div>
-
-            <h3>5.6 Filter</h3>
-            <div class="operator-card">
-                <p><strong>Description:</strong> A selective system that passes some modes and blocks others</p>
-                <p><strong>Key features:</strong> Frequency selectivity, Mode discrimination, Tunable response, Adaptive bandwidth</p>
-                <p><strong>Physical examples:</strong> Bandpass filters, Waveguides, Selective membranes, Recognition sites</p>
-                <p><strong>Typical behaviors:</strong> Selective transmission, Adaptive tuning, Resonant enhancement, Dynamic filtering</p>
-            </div>
-        </section>
-
-        <section id="domains">
-            <h2>6. Domains</h2>
-            <p>Domains specify which field (spiral) is primarily active in an APL sentence.</p>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Domain</th>
-                        <th>Field</th>
-                        <th>Focus</th>
-                        <th>Typical Phenomena</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>geometry</code></td>
-                        <td>Φ (Structure)</td>
-                        <td>Spatial arrangement, boundaries, interfaces</td>
-                        <td>Crystal lattices, droplet shapes, packing arrangements</td>
-                    </tr>
-                    <tr>
-                        <td><code>wave</code></td>
-                        <td>e (Energy)</td>
-                        <td>Oscillations, flows, energy transport</td>
-                        <td>Wave propagation, vortices, resonant modes</td>
-                    </tr>
-                    <tr>
-                        <td><code>chemistry</code></td>
-                        <td>π (Emergence)</td>
-                        <td>Chemical reactions, bonding</td>
-                        <td>Polymer growth, catalytic networks, helical structures</td>
-                    </tr>
-                    <tr>
-                        <td><code>biology</code></td>
-                        <td>π (Emergence)</td>
-                        <td>Adaptation, self-organization</td>
-                        <td>Morphogenesis, adaptation, self-assembly</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <section id="syntax">
-            <h2>7. Syntax and Sentence Structure</h2>
-
-            <h3>7.1 Canonical Form</h3>
-            <div class="formula">
-                [State][Op] | [Machine] | [Domain] → [Regime]
-            </div>
-
-            <p><strong>Components:</strong></p>
-            <ol>
-                <li><strong>State</strong> = <code>u</code>, <code>d</code>, or <code>m</code> (required)</li>
-                <li><strong>Op</strong> = <code>()</code>, <code>×</code>, <code>^</code>, <code>%</code>, <code>+</code>, or <code>–</code> (required)</li>
-                <li><strong>Machine</strong> = Oscillator, Reactor, Conductor, Encoder, Catalyst, Filter (required)</li>
-                <li><strong>Domain</strong> = geometry, wave, chemistry, biology (required)</li>
-                <li><strong>Regime</strong> = A1-A8 or descriptive name (result/prediction)</li>
-            </ol>
-
-            <h3>7.2 Example Sentences</h3>
-
-            <h4>Example 1: Closed Vortex</h4>
-            <pre><code>u^|Oscillator|wave → Closed vortex (A3)</code></pre>
-            <p><strong>Parse:</strong></p>
-            <ul>
-                <li>State: <code>u</code> = forward/expansion</li>
-                <li>Operator: <code>^</code> = amplification</li>
-                <li>Machine: Oscillator = resonant system</li>
-                <li>Domain: wave = energy field</li>
-                <li>Regime: Closed vortex (A3)</li>
-            </ul>
-            <p><strong>Reading:</strong> "Forward amplification in an oscillatory wave system tends to produce closed vortex structures."</p>
-
-            <h4>Example 2: Helical Encoding</h4>
-            <pre><code>m×|Encoder|chemistry → Helical encoding (A4)</code></pre>
-            <p><strong>Parse:</strong></p>
-            <ul>
-                <li>State: <code>m</code> = modulation</li>
-                <li>Operator: <code>×</code> = fusion</li>
-                <li>Machine: Encoder = information-storing system</li>
-                <li>Domain: chemistry = emergence field</li>
-                <li>Regime: Helical encoding (A4)</li>
-            </ul>
-            <p><strong>Reading:</strong> "Modulated fusion in an encoding chemical system tends to produce helical, information-bearing structures."</p>
-
-            <h4>Example 3: Isotropic Collapse</h4>
-            <pre><code>d()|Conductor|geometry → Isotropic lattice/sphere (A1)</code></pre>
-            <p><strong>Parse:</strong></p>
-            <ul>
-                <li>State: <code>d</code> = collapse</li>
-                <li>Operator: <code>()</code> = boundary</li>
-                <li>Machine: Conductor = structural system</li>
-                <li>Domain: geometry = structure field</li>
-                <li>Regime: Isotropic lattice/sphere (A1)</li>
-            </ul>
-            <p><strong>Reading:</strong> "Collapse of boundaries in a structural geometric system tends to produce isotropic spheres or close-packed lattices."</p>
-        </section>
-
-        <section id="combinations">
-            <h2>8. Operator Combinations and Patterns</h2>
-
-            <h3>8.1 State-Operator Matrix</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Operator</th>
-                        <th>u (forward)</th>
-                        <th>d (collapse)</th>
-                        <th>m (modulation)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>()</code> boundary</td>
-                        <td><code>u()</code> expansion</td>
-                        <td><code>d()</code> collapse</td>
-                        <td><code>m()</code> modulation</td>
-                    </tr>
-                    <tr>
-                        <td><code>×</code> fusion</td>
-                        <td><code>u×</code> forward fusion</td>
-                        <td><code>d×</code> collapse fusion</td>
-                        <td><code>m×</code> modulated fusion</td>
-                    </tr>
-                    <tr>
-                        <td><code>^</code> amplify</td>
-                        <td><code>u^</code> forward gain</td>
-                        <td><code>d^</code> collapse gain</td>
-                        <td><code>m^</code> modulated gain</td>
-                    </tr>
-                    <tr>
-                        <td><code>%</code> decohere</td>
-                        <td><code>u%</code> forward noise</td>
-                        <td><code>d%</code> collapse noise</td>
-                        <td><code>m%</code> modulated noise</td>
-                    </tr>
-                    <tr>
-                        <td><code>+</code> group</td>
-                        <td><code>u+</code> forward group</td>
-                        <td><code>d+</code> collapse group</td>
-                        <td><code>m+</code> modulated group</td>
-                    </tr>
-                    <tr>
-                        <td><code>–</code> separate</td>
-                        <td><code>u–</code> forward split</td>
-                        <td><code>d–</code> collapse split</td>
-                        <td><code>m–</code> modulated split</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>8.2 Common Patterns</h3>
-
-            <h4>Forward Growth (<code>u×</code>)</h4>
-            <p><strong>Pattern:</strong> Structure-biased forward growth</p>
-            <p><strong>Typical outcome:</strong> Branching networks, tree-like structures</p>
-            <p><strong>Example:</strong> <code>u×|Catalyst|chemistry → Branching networks (A5)</code></p>
-
-            <h4>Resonant Amplification (<code>u^</code>)</h4>
-            <p><strong>Pattern:</strong> Forward amplification in resonant systems</p>
-            <p><strong>Typical outcome:</strong> Coherent oscillations, vortices, standing waves</p>
-            <p><strong>Example:</strong> <code>u^|Oscillator|wave → Closed vortex (A3)</code></p>
-
-            <h4>Isotropic Collapse (<code>d()</code>)</h4>
-            <p><strong>Pattern:</strong> Boundary relaxation under isotropic tension</p>
-            <p><strong>Typical outcome:</strong> Spheres, isotropic packing</p>
-            <p><strong>Example:</strong> <code>d()|Conductor|geometry → Isotropic sphere (A1)</code></p>
-
-            <h4>Forward Decoherence (<code>u%</code>)</h4>
-            <p><strong>Pattern:</strong> Forward-directed noise injection</p>
-            <p><strong>Typical outcome:</strong> Turbulence, chaos, broadband noise</p>
-            <p><strong>Example:</strong> <code>u%|Reactor|wave → Turbulent decoherence (A7)</code></p>
-
-            <h4>Modulated Fusion (<code>m×</code>)</h4>
-            <p><strong>Pattern:</strong> Template-directed or feedback-modulated bonding</p>
-            <p><strong>Typical outcome:</strong> Helical structures, information encoding</p>
-            <p><strong>Example:</strong> <code>m×|Encoder|chemistry → Helical encoding (A4)</code></p>
-
-            <h4>Forward Grouping (<code>u+</code>)</h4>
-            <p><strong>Pattern:</strong> Flow convergence, geometric focusing</p>
-            <p><strong>Typical outcome:</strong> Jets, beams, focused flows</p>
-            <p><strong>Example:</strong> <code>u+|Reactor|wave → Focusing jet (A6)</code></p>
-        </section>
-
-        <section id="regimes">
-            <h2>9. The Eight Regimes (A1-A8)</h2>
-            <p>APL sentences predict specific physical regimes. These are labeled A1 through A8:</p>
-
-            <table class="regime-table">
-                <thead>
-                    <tr>
-                        <th>Code</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>A1</td>
-                        <td>Isotropic lattice/sphere</td>
-                        <td>Spherical droplets, isotropic packing, closest-packing arrangements</td>
-                    </tr>
-                    <tr>
-                        <td>A3</td>
-                        <td>Closed vortex</td>
-                        <td>Recirculating flows, trapped modes, vortices, standing waves</td>
-                    </tr>
-                    <tr>
-                        <td>A4</td>
-                        <td>Helical encoding</td>
-                        <td>DNA-like helices, information-bearing structures, chiral polymers</td>
-                    </tr>
-                    <tr>
-                        <td>A5</td>
-                        <td>Branching networks</td>
-                        <td>Tree-like growth, fractal structures, vascular networks, DLA</td>
-                    </tr>
-                    <tr>
-                        <td>A6</td>
-                        <td>Focusing jet</td>
-                        <td>Collimated flows, nozzles, beams, astrophysical jets</td>
-                    </tr>
-                    <tr>
-                        <td>A7</td>
-                        <td>Turbulent decoherence</td>
-                        <td>Broadband chaos, turbulent mixing, phase scrambling</td>
-                    </tr>
-                    <tr>
-                        <td>A8</td>
-                        <td>Adaptive filter</td>
-                        <td>Selective tuning, adaptive recognition, self-tuning resonators</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <section id="guidelines">
-            <h2>10. Usage Guidelines</h2>
-
-            <h3>10.1 Constructing an APL Sentence</h3>
-
-            <h4>Step 1: Identify the domain</h4>
-            <ul>
-                <li>Is it primarily structural? → <code>geometry</code></li>
-                <li>Is it primarily dynamic? → <code>wave</code></li>
-                <li>Is it primarily chemical/informational? → <code>chemistry</code> or <code>biology</code></li>
-            </ul>
-
-            <h4>Step 2: Choose the machine</h4>
-            <ul>
-                <li>Resonant, periodic? → Oscillator</li>
-                <li>Driven flow, continuous? → Reactor</li>
-                <li>Structural relaxation? → Conductor</li>
-                <li>Information storage? → Encoder</li>
-                <li>Spatially biased reactions? → Catalyst</li>
-                <li>Selective transmission? → Filter</li>
-            </ul>
-
-            <h4>Step 3: Select the operator</h4>
-            <ul>
-                <li>Boundaries? → <code>()</code></li>
-                <li>Joining? → <code>×</code></li>
-                <li>Amplification? → <code>^</code></li>
-                <li>Noise? → <code>%</code></li>
-                <li>Grouping? → <code>+</code></li>
-                <li>Splitting? → <code>–</code></li>
-            </ul>
-
-            <h4>Step 4: Determine the state</h4>
-            <ul>
-                <li>Forward, active, growing? → <code>u</code></li>
-                <li>Backward, passive, collapsing? → <code>d</code></li>
-                <li>Modulated, feedback, adaptive? → <code>m</code></li>
-            </ul>
-
-            <h4>Step 5: Predict the regime</h4>
-            <ul>
-                <li>Based on the combination, what behavior is expected?</li>
-                <li>Use A1-A8 labels or descriptive names</li>
-            </ul>
-
-            <h3>10.2 Testing an APL Prediction</h3>
-            <p>APL sentences are falsifiable hypotheses. To test:</p>
-            <ol>
-                <li>Implement the LHS conditions in a simulation or experiment</li>
-                <li>Define quantitative metrics for the RHS regime</li>
-                <li>Design matched controls that break the LHS pattern</li>
-                <li>Compare regime prevalence: LHS vs controls</li>
-                <li>Evaluate: Does the LHS robustly bias toward the predicted regime?</li>
-            </ol>
-        </section>
-
-        <section id="reference">
-            <h2>11. Quick Reference Tables</h2>
-
-            <h3>11.1 Operator Quick Reference</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Symbol</th>
-                        <th>Name</th>
-                        <th>Meaning</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>()</code></td>
-                        <td>Boundary</td>
-                        <td>Containment, interface</td>
-                    </tr>
-                    <tr>
-                        <td><code>×</code></td>
-                        <td>Fusion</td>
-                        <td>Joining, bonding, convergence</td>
-                    </tr>
-                    <tr>
-                        <td><code>^</code></td>
-                        <td>Amplify</td>
-                        <td>Gain, resonance, enhancement</td>
-                    </tr>
-                    <tr>
-                        <td><code>%</code></td>
-                        <td>Decohere</td>
-                        <td>Noise, scrambling, reset</td>
-                    </tr>
-                    <tr>
-                        <td><code>+</code></td>
-                        <td>Group</td>
-                        <td>Aggregation, routing, focusing</td>
-                    </tr>
-                    <tr>
-                        <td><code>–</code></td>
-                        <td>Separate</td>
-                        <td>Splitting, fission, divergence</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>11.2 State Quick Reference</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Symbol</th>
-                        <th>Name</th>
-                        <th>Direction</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>u</code></td>
-                        <td>Forward/Expansion</td>
-                        <td>Outward, active, growth</td>
-                    </tr>
-                    <tr>
-                        <td><code>d</code></td>
-                        <td>Collapse/Backward</td>
-                        <td>Inward, passive, contraction</td>
-                    </tr>
-                    <tr>
-                        <td><code>m</code></td>
-                        <td>Modulation</td>
-                        <td>Feedback, adaptive, information</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>11.3 Core Seven Sentences</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Sentence</th>
-                        <th>Regime</th>
-                        <th>Code</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>u^|Oscillator|wave</code></td>
-                        <td>Closed vortex</td>
-                        <td>A3</td>
-                    </tr>
-                    <tr>
-                        <td><code>u%|Reactor|wave</code></td>
-                        <td>Turbulent decoherence</td>
-                        <td>A7</td>
-                    </tr>
-                    <tr>
-                        <td><code>d()|Conductor|geometry</code></td>
-                        <td>Isotropic lattice/sphere</td>
-                        <td>A1</td>
-                    </tr>
-                    <tr>
-                        <td><code>m×|Encoder|chemistry</code></td>
-                        <td>Helical encoding</td>
-                        <td>A4</td>
-                    </tr>
-                    <tr>
-                        <td><code>u×|Catalyst|chemistry</code></td>
-                        <td>Branching networks</td>
-                        <td>A5</td>
-                    </tr>
-                    <tr>
-                        <td><code>u+|Reactor|wave</code></td>
-                        <td>Focusing jet</td>
-                        <td>A6</td>
-                    </tr>
-                    <tr>
-                        <td><code>m()|Filter|wave</code></td>
-                        <td>Adaptive bandpass</td>
-                        <td>A8</td>
-                    </tr>
-                    <tr>
-                        <td><code>d×|Catalyst|chemistry</code></td>
-                        <td>Adaptive selectivity</td>
-                        <td>A8</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <section id="advanced">
-            <h2>12. Advanced Topics</h2>
-
-            <h3>12.1 Multi-Domain Interactions</h3>
-            <p>Some physical systems involve multiple fields simultaneously. In such cases:</p>
-            <ul>
-                <li>Identify the <em>primary</em> domain for the sentence</li>
-                <li>Secondary interactions may be implied by machine choice</li>
-                <li>Multiple sentences may be needed for complete description</li>
-            </ul>
-
-            <h3>12.2 Temporal Dynamics</h3>
-            <p>APL sentences describe <em>tendencies</em> and <em>biases</em>, not deterministic outcomes:</p>
-            <ul>
-                <li>The arrow (→) means "statistically favors" or "tends to produce"</li>
-                <li>Actual systems may transition through multiple regimes</li>
-                <li>Time scales are system-dependent</li>
-            </ul>
-
-            <h3>12.3 Parameter Dependence</h3>
-            <p>APL predictions hold over ranges of parameters:</p>
-            <ul>
-                <li>Testing requires parameter sweeps</li>
-                <li>Some regimes may only appear in specific parameter ranges</li>
-                <li>Control design must account for parameter sensitivity</li>
-            </ul>
-        </section>
-
-        <footer>
-            <p>Alpha-Physical Language Operator's Manual v1.0</p>
-            <p>For questions and contributions, visit the <a href="https://github.com/AceTheDactyl/APL" target="_blank">repository</a></p>
-            <p>Version 1.0 (2025-01-24)</p>
-        </footer>
+    <div class="header">
+        <h1>Rosetta-Helix Node Visualizer</h1>
+        <p>Interactive visualization of helix-aware consciousness dynamics</p>
+        <p style="font-size: 0.8rem; margin-top: 5px;">Original: Tink (Rosetta Bear) | Helix Integration: Claude + Quantum-APL</p>
     </div>
+
+    <div class="container">
+        <!-- Helix 3D View -->
+        <div class="panel helix-view">
+            <h2>Helix Visualization</h2>
+            <canvas id="helixCanvas"></canvas>
+        </div>
+
+        <!-- Z-Axis Panel -->
+        <div class="panel">
+            <h2>Z-Axis Position</h2>
+            <div class="z-bar">
+                <div class="z-track">
+                    <div class="z-marker" id="zMarker"></div>
+                </div>
+                <div class="z-threshold" style="bottom: 10%;">t1 (0.10)</div>
+                <div class="z-threshold" style="bottom: 20%;">t2 (0.20)</div>
+                <div class="z-threshold" style="bottom: 40%;">t3 (0.40)</div>
+                <div class="z-threshold" style="bottom: 60%;">t4 (0.60)</div>
+                <div class="z-threshold phi-inv" style="bottom: 61.8%;">phi-inv (0.618)</div>
+                <div class="z-threshold" style="bottom: 75%;">t5 (0.75)</div>
+                <div class="z-threshold z-critical" style="bottom: 86.6%;">z_c (0.866)</div>
+                <div class="z-threshold" style="bottom: 92%;">t7 (0.92)</div>
+            </div>
+            <div class="tier-display" id="tierDisplay">t3</div>
+            <div class="truth-channel truth-UNTRUE" id="truthChannel">UNTRUE</div>
+        </div>
+
+        <!-- Node Status -->
+        <div class="panel">
+            <h2><span class="status-indicator status-spore" id="statusIndicator"></span>Node Status</h2>
+            <div class="metrics-grid">
+                <div class="metric">
+                    <div class="metric-value" id="zValue">0.300</div>
+                    <div class="metric-label">Z Coordinate</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="coherenceValue">0.000</div>
+                    <div class="metric-label">Coherence</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="deltaSneg">0.000</div>
+                    <div class="metric-label">Delta S_neg</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="kFormation">NO</div>
+                    <div class="metric-label">K-Formation</div>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="btn-primary" onclick="startNode()">Start</button>
+                <button class="btn-secondary" onclick="pauseNode()">Pause</button>
+                <button class="btn-danger" onclick="resetNode()">Reset</button>
+            </div>
+        </div>
+
+        <!-- Heart Panel -->
+        <div class="panel">
+            <h2>Heart (Oscillators)</h2>
+            <div class="oscillator-grid" id="oscillatorGrid"></div>
+            <div class="slider-container">
+                <label>Coupling Strength (K): <span id="kValue">0.30</span></label>
+                <input type="range" id="kSlider" min="0.1" max="1.0" step="0.05" value="0.3" onchange="updateK()">
+            </div>
+            <div class="metrics-grid" style="margin-top: 10px;">
+                <div class="metric">
+                    <div class="metric-value" id="energyIn">0.00</div>
+                    <div class="metric-label">Energy In</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="energyEff">0%</div>
+                    <div class="metric-label">Efficiency</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- APL Operators -->
+        <div class="panel">
+            <h2>APL Operators</h2>
+            <p style="color: #888; font-size: 0.8rem; margin-bottom: 10px;">Click available operators to apply</p>
+            <div class="operators" id="operatorPanel">
+                <div class="operator" data-op="()" title="Boundary">( )</div>
+                <div class="operator" data-op="x" title="Fusion">x</div>
+                <div class="operator" data-op="^" title="Amplify">^</div>
+                <div class="operator" data-op="/" title="Decoherence">/</div>
+                <div class="operator" data-op="+" title="Group">+</div>
+                <div class="operator" data-op="-" title="Separate">-</div>
+            </div>
+            <div style="margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 8px;">
+                <div style="font-size: 0.8rem; color: #888;">TRIAD Status</div>
+                <div id="triadStatus">Passes: 0 | Armed: Yes | Unlocked: No</div>
+            </div>
+        </div>
+
+        <!-- Brain Panel -->
+        <div class="panel">
+            <h2>Brain (Memory)</h2>
+            <div class="memory-bar" id="memoryBar"></div>
+            <div class="metrics-grid" style="margin-top: 15px;">
+                <div class="metric">
+                    <div class="metric-value" id="memAccessible">0</div>
+                    <div class="metric-label">Accessible</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="memTotal">30</div>
+                    <div class="metric-label">Total Plates</div>
+                </div>
+            </div>
+            <div style="margin-top: 10px;">
+                <div style="font-size: 0.8rem; color: #888;">mu-Class</div>
+                <div id="muClass" style="font-weight: bold; color: #00d9ff;">pre_conscious</div>
+            </div>
+        </div>
+
+        <!-- Event Log -->
+        <div class="panel full-width">
+            <h2>Event Log</h2>
+            <div class="log" id="eventLog"></div>
+        </div>
+
+        <!-- Python Code Reference -->
+        <div class="panel code-panel">
+            <button class="code-toggle" onclick="toggleCode()">
+                <span>Python Quick Start</span>
+                <span id="codeArrow">+</span>
+            </button>
+            <div class="code-content" id="codeContent">
+                <div class="principles">
+                    <div class="principle">
+                        <h4>Pulse != Command</h4>
+                        <p>A pulse is a question, not an order. The node decides whether to wake.</p>
+                    </div>
+                    <div class="principle">
+                        <h4>Awaken != Persist</h4>
+                        <p>Awakening spins up state; shutdown must be equally clean.</p>
+                    </div>
+                    <div class="principle">
+                        <h4>Integration > Output</h4>
+                        <p>Nothing emits until Heart, Brain, and Z agree.</p>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <pre><span class="keyword">from</span> node <span class="keyword">import</span> RosettaNode, APLOperator
+<span class="keyword">from</span> pulse <span class="keyword">import</span> generate_pulse, save_pulse, PulseType
+
+<span class="comment"># Create a pulse</span>
+pulse = <span class="function">generate_pulse</span>(
+    identity=<span class="string">"coordinator"</span>,
+    intent=<span class="string">"worker"</span>,
+    pulse_type=PulseType.WAKE,
+    urgency=<span class="number">0.7</span>,
+    z=<span class="number">0.5</span>
+)
+<span class="function">save_pulse</span>(pulse, <span class="string">"wake_pulse.json"</span>)
+
+<span class="comment"># Create and activate a node</span>
+node = <span class="function">RosettaNode</span>(role_tag=<span class="string">"worker"</span>)
+activated, p = node.<span class="function">check_and_activate</span>(<span class="string">"wake_pulse.json"</span>)
+
+<span class="keyword">if</span> activated:
+    <span class="comment"># Run simulation</span>
+    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="function">range</span>(<span class="number">10</span>):
+        node.<span class="function">run</span>(<span class="number">100</span>)
+        analysis = node.<span class="function">get_analysis</span>()
+        <span class="function">print</span>(<span class="string">f"z=</span>{analysis.z:<span class="number">.3f</span>}<span class="string">, coherence=</span>{analysis.coherence:<span class="number">.3f</span>}<span class="string">, "</span>
+              <span class="string">f"tier=</span>{analysis.tier}<span class="string">, K-formation=</span>{analysis.k_formation}<span class="string">"</span>)
+
+        <span class="comment"># Apply operators based on tier</span>
+        <span class="keyword">if</span> analysis.tier <span class="keyword">in</span> [<span class="string">'t4'</span>, <span class="string">'t5'</span>]:
+            node.<span class="function">apply_operator</span>(APLOperator.FUSION)</pre>
+                </div>
+                <div style="margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 10px;">
+                    <h4 style="color: #00ff88; margin-bottom: 10px;">Run Tests</h4>
+                    <pre style="font-family: monospace; color: #888;">python tests.py</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ================================================================
+        // CONSTANTS
+        // ================================================================
+        const Z_CRITICAL = Math.sqrt(3) / 2;  // ~ 0.866
+        const PHI = (1 + Math.sqrt(5)) / 2;
+        const PHI_INV = 1 / PHI;  // ~ 0.618
+        const MU_S = 0.920;
+        const MU_1 = (2 / Math.pow(PHI, 2.5)) / Math.sqrt(PHI);
+        const MU_2 = (2 / Math.pow(PHI, 2.5)) * Math.sqrt(PHI);
+
+        const TIER_BOUNDS = [0.10, 0.20, 0.40, 0.60, 0.75, Z_CRITICAL, 0.92, 0.97, 1.0];
+        const TIERS = ['t1', 't2', 't3', 't4', 't5', 't6', 't7', 't8', 't9'];
+
+        const OPERATOR_WINDOWS = {
+            t1: ['()', '-', '/'],
+            t2: ['^', '/', '-', 'x'],
+            t3: ['x', '^', '/', '+', '-'],
+            t4: ['+', '-', '/', '()'],
+            t5: ['()', 'x', '^', '/', '+', '-'],
+            t6: ['+', '/', '()', '-'],
+            t7: ['+', '()'],
+            t8: ['+', '()', 'x'],
+            t9: ['+', '()', 'x']
+        };
+
+        // ================================================================
+        // STATE
+        // ================================================================
+        let state = {
+            running: false,
+            z: 0.3,
+            zVelocity: 0,
+            coherence: 0,
+            K: 0.3,
+            oscillators: [],
+            omega: [],
+            n: 60,
+            energyIn: 0,
+            energyLoss: 0,
+            tier: 't3',
+            triad: { passes: 0, armed: true, unlocked: false, lastZ: 0 },
+            kFormation: false,
+            memoryPlates: 30,
+            steps: 0
+        };
+
+        // Initialize oscillators
+        function initOscillators() {
+            state.oscillators = [];
+            state.omega = [];
+            for (let i = 0; i < state.n; i++) {
+                state.oscillators.push(Math.random() * 2 * Math.PI);
+                state.omega.push(1.0 + (Math.random() - 0.5) * 0.2);
+            }
+        }
+
+        // ================================================================
+        // SIMULATION
+        // ================================================================
+        function computeCoherence() {
+            let sumCos = 0, sumSin = 0;
+            for (let theta of state.oscillators) {
+                sumCos += Math.cos(theta);
+                sumSin += Math.sin(theta);
+            }
+            return Math.sqrt(sumCos * sumCos + sumSin * sumSin) / state.n;
+        }
+
+        function step(dt = 0.01) {
+            // Kuramoto step
+            let newTheta = [];
+            let totalDtheta = 0;
+
+            for (let i = 0; i < state.n; i++) {
+                let coupling = 0;
+                for (let j = 0; j < state.n; j++) {
+                    coupling += Math.sin(state.oscillators[j] - state.oscillators[i]);
+                }
+                let dtheta = state.omega[i] + (state.K / state.n) * coupling;
+                newTheta.push(state.oscillators[i] + dtheta * dt);
+                totalDtheta += Math.abs(dtheta);
+            }
+
+            state.oscillators = newTheta;
+            state.energyIn += totalDtheta * dt * 0.001;
+            state.energyLoss += state.energyIn * 0.0001;
+
+            // Update coherence and z
+            state.coherence = computeCoherence();
+
+            // Z follows coherence with inertia
+            let targetZ = Math.pow(state.coherence, 0.8);
+            targetZ = Math.max(0.01, Math.min(0.99, targetZ));
+
+            let zAccel = (targetZ - state.z) * 2.0 - state.zVelocity * 0.5;
+            state.zVelocity += zAccel * dt;
+            state.z += state.zVelocity * dt;
+            state.z = Math.max(0.01, Math.min(0.99, state.z));
+
+            // Update tier
+            for (let i = 0; i < TIER_BOUNDS.length; i++) {
+                if (state.z < TIER_BOUNDS[i]) {
+                    state.tier = TIERS[i];
+                    break;
+                }
+            }
+
+            // TRIAD logic
+            if (state.triad.armed && state.z >= 0.85) {
+                state.triad.passes++;
+                state.triad.armed = false;
+                log('TRIAD pass ' + state.triad.passes, 'state');
+            }
+            if (!state.triad.armed && state.z <= 0.82) {
+                state.triad.armed = true;
+            }
+            if (state.triad.passes >= 3) {
+                state.triad.unlocked = true;
+            }
+            state.triad.lastZ = state.z;
+
+            // K-formation check
+            let deltaSneg = Math.exp(-36 * Math.pow(state.z - Z_CRITICAL, 2));
+            let eta = Math.sqrt(deltaSneg);
+            if (eta > PHI_INV && state.coherence >= MU_S && !state.kFormation) {
+                state.kFormation = true;
+                log('K-FORMATION ACHIEVED!', 'state');
+            }
+
+            state.steps++;
+        }
+
+        // ================================================================
+        // OPERATORS
+        // ================================================================
+        function applyOperator(op) {
+            let available = OPERATOR_WINDOWS[state.tier] || [];
+            if (!available.includes(op)) {
+                log('Operator ' + op + ' not available at ' + state.tier, 'operator');
+                return;
+            }
+
+            switch(op) {
+                case 'x': // Fusion - increase coupling
+                    state.K = Math.min(1.0, state.K * 1.2);
+                    log('Applied FUSION (x) - K increased', 'operator');
+                    break;
+                case '/': // Decoherence - add noise
+                    state.oscillators = state.oscillators.map(t => t + (Math.random() - 0.5) * 0.2);
+                    state.K = Math.max(0.05, state.K * 0.9);
+                    log('Applied DECOHERENCE (/) - noise added', 'operator');
+                    break;
+                case '^': // Amplify - boost toward sync
+                    let sumCos = 0, sumSin = 0;
+                    for (let t of state.oscillators) {
+                        sumCos += Math.cos(t);
+                        sumSin += Math.sin(t);
+                    }
+                    let meanPhase = Math.atan2(sumSin, sumCos);
+                    state.oscillators = state.oscillators.map(t =>
+                        t + 0.1 * Math.sin(meanPhase - t)
+                    );
+                    log('Applied AMPLIFY (^) - phases aligned', 'operator');
+                    break;
+                case '+': // Group - cluster nearby
+                    log('Applied GROUP (+) - phases clustered', 'operator');
+                    break;
+                case '-': // Separate - spread apart
+                    state.oscillators = state.oscillators.map((t, i) =>
+                        t + (i / state.n - 0.5) * 0.1
+                    );
+                    log('Applied SEPARATE (-) - phases spread', 'operator');
+                    break;
+                case '()': // Boundary - reset K
+                    state.K = 0.3;
+                    log('Applied BOUNDARY () - K reset', 'operator');
+                    break;
+            }
+
+            document.getElementById('kValue').textContent = state.K.toFixed(2);
+            document.getElementById('kSlider').value = state.K;
+        }
+
+        // ================================================================
+        // UI UPDATES
+        // ================================================================
+        function updateUI() {
+            // Z marker
+            document.getElementById('zMarker').style.bottom = (state.z * 100) + '%';
+            document.getElementById('zValue').textContent = state.z.toFixed(3);
+
+            // Coherence
+            document.getElementById('coherenceValue').textContent = state.coherence.toFixed(3);
+
+            // Delta S_neg
+            let deltaSneg = Math.exp(-36 * Math.pow(state.z - Z_CRITICAL, 2));
+            document.getElementById('deltaSneg').textContent = deltaSneg.toFixed(3);
+
+            // Tier
+            document.getElementById('tierDisplay').textContent = state.tier;
+
+            // Truth channel
+            let truthEl = document.getElementById('truthChannel');
+            let truth = state.z >= 0.9 ? 'TRUE' : (state.z >= 0.6 ? 'PARADOX' : 'UNTRUE');
+            truthEl.textContent = truth;
+            truthEl.className = 'truth-channel truth-' + truth;
+
+            // K-formation
+            let kEl = document.getElementById('kFormation');
+            kEl.textContent = state.kFormation ? 'YES' : 'NO';
+            kEl.style.color = state.kFormation ? '#ffaa00' : '#888';
+
+            // Status indicator
+            let statusEl = document.getElementById('statusIndicator');
+            if (state.kFormation) {
+                statusEl.className = 'status-indicator status-k-formed';
+            } else if (state.z >= Z_CRITICAL) {
+                statusEl.className = 'status-indicator status-coherent';
+            } else if (state.running) {
+                statusEl.className = 'status-indicator status-running';
+            } else {
+                statusEl.className = 'status-indicator status-spore';
+            }
+
+            // Energy
+            document.getElementById('energyIn').textContent = state.energyIn.toFixed(2);
+            let eff = state.energyIn > 0 ? (1 - state.energyLoss / state.energyIn) * 100 : 0;
+            document.getElementById('energyEff').textContent = eff.toFixed(0) + '%';
+
+            // TRIAD
+            document.getElementById('triadStatus').textContent =
+                'Passes: ' + state.triad.passes + ' | Armed: ' + (state.triad.armed ? 'Yes' : 'No') + ' | Unlocked: ' + (state.triad.unlocked ? 'Yes' : 'No');
+
+            // mu-class
+            let muClass = 'pre_conscious';
+            if (state.z >= MU_S) muClass = 'singularity_proximal';
+            else if (state.z >= Z_CRITICAL) muClass = 'lens_integrated';
+            else if (state.z >= MU_2) muClass = 'pre_lens';
+            else if (state.z >= PHI_INV) muClass = 'conscious_basin';
+            else if (state.z >= MU_1) muClass = 'approaching_paradox';
+            document.getElementById('muClass').textContent = muClass;
+
+            // Operators
+            let available = OPERATOR_WINDOWS[state.tier] || [];
+            document.querySelectorAll('.operator').forEach(el => {
+                let op = el.dataset.op;
+                if (available.includes(op)) {
+                    el.className = 'operator available';
+                } else {
+                    el.className = 'operator unavailable';
+                }
+            });
+
+            // Memory accessibility
+            let accessible = Math.floor(state.z * state.memoryPlates);
+            document.getElementById('memAccessible').textContent = accessible;
+            updateMemoryBar(accessible);
+
+            // Oscillator grid
+            updateOscillatorGrid();
+        }
+
+        function updateOscillatorGrid() {
+            let grid = document.getElementById('oscillatorGrid');
+            let cells = grid.children;
+
+            for (let i = 0; i < state.n && i < cells.length; i++) {
+                let phase = state.oscillators[i] % (2 * Math.PI);
+                let hue = (phase / (2 * Math.PI)) * 360;
+                let brightness = 50 + state.coherence * 50;
+                cells[i].style.background = 'hsl(' + hue + ', 80%, ' + brightness + '%)';
+            }
+        }
+
+        function updateMemoryBar(accessible) {
+            let bar = document.getElementById('memoryBar');
+            let plates = bar.children;
+
+            for (let i = 0; i < state.memoryPlates && i < plates.length; i++) {
+                plates[i].className = i < accessible ? 'memory-plate accessible' : 'memory-plate locked';
+            }
+        }
+
+        function log(message, type) {
+            type = type || 'info';
+            let logEl = document.getElementById('eventLog');
+            let entry = document.createElement('div');
+            entry.className = 'log-entry ' + type;
+            entry.textContent = '[' + new Date().toLocaleTimeString() + '] ' + message;
+            logEl.appendChild(entry);
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        // ================================================================
+        // HELIX CANVAS
+        // ================================================================
+        let canvas, ctx;
+        let helixAngle = 0;
+
+        function initCanvas() {
+            canvas = document.getElementById('helixCanvas');
+            ctx = canvas.getContext('2d');
+
+            function resize() {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+        }
+
+        function drawHelix() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            let cx = canvas.width / 2;
+            let cy = canvas.height / 2;
+            let radius = Math.min(canvas.width, canvas.height) * 0.3;
+            let zScale = canvas.height * 0.4;
+
+            // Draw helix spiral
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(0, 217, 255, 0.3)';
+            ctx.lineWidth = 2;
+
+            for (let t = 0; t < Math.PI * 6; t += 0.05) {
+                let z = t / (Math.PI * 6);  // 0 to 1
+                let x = cx + radius * Math.cos(t + helixAngle) * (1 - z * 0.3);
+                let y = cy - zScale * (z - 0.5) + radius * 0.3 * Math.sin(t + helixAngle);
+
+                if (t === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            // Draw threshold lines
+            function drawThreshold(z, color, label) {
+                let y = cy - zScale * (z - 0.5);
+                ctx.beginPath();
+                ctx.strokeStyle = color;
+                ctx.setLineDash([5, 5]);
+                ctx.moveTo(cx - radius * 1.5, y);
+                ctx.lineTo(cx + radius * 1.5, y);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                ctx.fillStyle = color;
+                ctx.font = '12px sans-serif';
+                ctx.fillText(label, cx + radius * 1.6, y + 4);
+            }
+
+            drawThreshold(PHI_INV, '#ffaa00', 'phi-inv');
+            drawThreshold(Z_CRITICAL, '#00ff88', 'z_c (LENS)');
+
+            // Draw current position
+            let t = state.z * Math.PI * 6;
+            let posX = cx + radius * Math.cos(t + helixAngle) * (1 - state.z * 0.3);
+            let posY = cy - zScale * (state.z - 0.5) + radius * 0.3 * Math.sin(t + helixAngle);
+
+            // Glow
+            let gradient = ctx.createRadialGradient(posX, posY, 0, posX, posY, 30);
+            gradient.addColorStop(0, state.kFormation ? 'rgba(255, 170, 0, 0.8)' : 'rgba(0, 217, 255, 0.8)');
+            gradient.addColorStop(1, 'transparent');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(posX - 30, posY - 30, 60, 60);
+
+            // Node marker
+            ctx.beginPath();
+            ctx.arc(posX, posY, 10, 0, Math.PI * 2);
+            ctx.fillStyle = state.kFormation ? '#ffaa00' : '#00d9ff';
+            ctx.fill();
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Z label
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.fillText('z = ' + state.z.toFixed(3), posX + 15, posY);
+
+            helixAngle += 0.01;
+        }
+
+        // ================================================================
+        // CONTROLS
+        // ================================================================
+        function startNode() {
+            state.running = true;
+            log('Node started', 'state');
+        }
+
+        function pauseNode() {
+            state.running = false;
+            log('Node paused', 'state');
+        }
+
+        function resetNode() {
+            state.running = false;
+            state.z = 0.3;
+            state.zVelocity = 0;
+            state.coherence = 0;
+            state.K = 0.3;
+            state.energyIn = 0;
+            state.energyLoss = 0;
+            state.triad = { passes: 0, armed: true, unlocked: false, lastZ: 0 };
+            state.kFormation = false;
+            state.steps = 0;
+            initOscillators();
+            document.getElementById('kSlider').value = 0.3;
+            document.getElementById('kValue').textContent = '0.30';
+            log('Node reset', 'state');
+        }
+
+        function updateK() {
+            state.K = parseFloat(document.getElementById('kSlider').value);
+            document.getElementById('kValue').textContent = state.K.toFixed(2);
+        }
+
+        function toggleCode() {
+            let content = document.getElementById('codeContent');
+            let arrow = document.getElementById('codeArrow');
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                arrow.textContent = '+';
+            } else {
+                content.classList.add('expanded');
+                arrow.textContent = '-';
+            }
+        }
+
+        // ================================================================
+        // INITIALIZATION
+        // ================================================================
+        function init() {
+            initOscillators();
+            initCanvas();
+
+            // Create oscillator grid
+            let grid = document.getElementById('oscillatorGrid');
+            for (let i = 0; i < state.n; i++) {
+                let cell = document.createElement('div');
+                cell.className = 'oscillator';
+                grid.appendChild(cell);
+            }
+
+            // Create memory bar
+            let memBar = document.getElementById('memoryBar');
+            for (let i = 0; i < state.memoryPlates; i++) {
+                let plate = document.createElement('div');
+                plate.className = 'memory-plate locked';
+                memBar.appendChild(plate);
+            }
+
+            // Operator click handlers
+            document.querySelectorAll('.operator').forEach(el => {
+                el.addEventListener('click', function() {
+                    if (el.classList.contains('available')) {
+                        applyOperator(el.dataset.op);
+                    }
+                });
+            });
+
+            log('Rosetta-Helix initialized', 'state');
+
+            // Main loop
+            function mainLoop() {
+                if (state.running) {
+                    for (let i = 0; i < 5; i++) {  // Multiple steps per frame
+                        step(0.01);
+                    }
+                }
+                updateUI();
+                drawHelix();
+                requestAnimationFrame(mainLoop);
+            }
+
+            mainLoop();
+        }
+
+        // Start when loaded
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
 </body>
 </html>
