@@ -20,10 +20,14 @@ Comprehensive tests for:
 
 import math
 import sys
+from pathlib import Path
 from typing import List, Dict
 
+# Add src to path for imports
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+
 # Import modules under test
-from s3_operator_symmetry import (
+from quantum_apl_python.s3_operator_symmetry import (
     S3_ELEMENTS, OPERATOR_S3_MAP, S3_OPERATOR_MAP, BASE_OPERATORS,
     apply_s3, compose_s3, inverse_s3, parity_s3, sign_s3,
     rotation_index_from_z, truth_channel_from_z,
@@ -32,7 +36,7 @@ from s3_operator_symmetry import (
     verify_group_axioms,
 )
 
-from delta_s_neg_extended import (
+from quantum_apl_python.delta_s_neg_extended import (
     Z_CRITICAL, PHI_INV,
     compute_delta_s_neg, compute_delta_s_neg_derivative, compute_delta_s_neg_signed,
     compute_eta, compute_hex_prism_geometry, compute_gate_modulation,
@@ -45,24 +49,27 @@ from delta_s_neg_extended import (
 # TEST UTILITIES
 # ============================================================================
 
+import pytest
+
+
 class TestResults:
     """Track test results."""
     def __init__(self):
         self.passed = 0
         self.failed = 0
         self.errors: List[str] = []
-    
+
     def ok(self, message: str):
         self.passed += 1
         print(f"  ✓ {message}")
-    
+
     def fail(self, message: str, detail: str = ""):
         self.failed += 1
         self.errors.append(f"{message}: {detail}")
         print(f"  ✗ {message}")
         if detail:
             print(f"    → {detail}")
-    
+
     def summary(self):
         print(f"\n{'='*60}")
         print(f"RESULTS: {self.passed} passed, {self.failed} failed")
@@ -72,6 +79,12 @@ class TestResults:
                 print(f"  - {e}")
         print('='*60)
         return self.failed == 0
+
+
+@pytest.fixture
+def results():
+    """Pytest fixture providing TestResults instance."""
+    return TestResults()
 
 
 def assert_close(a: float, b: float, tol: float = 1e-10) -> bool:
