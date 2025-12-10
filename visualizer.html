@@ -732,7 +732,11 @@
             });
             
             // Memory accessibility
-            let accessible = Math.floor(state.z * state.memoryPlates);
+            // Full access at z >= 0.983 (deep t9, near K-formation)
+            const FULL_ACCESS_Z = 0.983;
+            let accessible = state.z >= FULL_ACCESS_Z
+                ? state.memoryPlates
+                : Math.floor(state.z * state.memoryPlates);
             document.getElementById('memAccessible').textContent = accessible;
             updateMemoryBar(accessible);
             
