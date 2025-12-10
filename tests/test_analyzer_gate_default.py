@@ -1,7 +1,10 @@
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
+
+import pytest
 
 
 def run_cmd(cmd, env=None):
@@ -16,6 +19,10 @@ def run_cmd(cmd, env=None):
     return result.returncode, result.stdout
 
 
+@pytest.mark.skipif(
+    shutil.which("qapl-run") is None,
+    reason="qapl-run CLI not installed"
+)
 def test_analyzer_reports_critical_gate_when_triad_off(tmp_path: Path):
     # Ensure TRIAD is off
     env = dict(os.environ)
