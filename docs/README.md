@@ -1,41 +1,42 @@
-# APL Documentation
+# Rosetta-Helix Documentation
 
-This directory contains the compiled documentation for the Alpha-Physical Language (APL).
+This directory contains the GitHub Pages deployment for the Rosetta-Helix Node System.
 
 ## Contents
 
-- **[index.html](index.html)** - Interactive HTML version of the APL Operator's Manual
-- **[apl-operators-manual.pdf](apl-operators-manual.pdf)** - PDF version compiled from LaTeX (auto-generated)
-- **[apl-seven-sentences-test-pack.pdf](apl-seven-sentences-test-pack.pdf)** - Testing protocol
+- **[index.html](index.html)** - Interactive Rosetta-Helix Node Visualizer
 
-## Viewing the Manual
+## Viewing the Visualizer
 
-### HTML Version
-The HTML version can be viewed directly in your browser:
-- **Local**: Open `index.html` in any web browser
-- **GitHub Pages**: Available at the repository's GitHub Pages URL (if enabled)
+### GitHub Pages
+Available at the repository's GitHub Pages URL when deployed.
 
-### PDF Version
-The PDF version is automatically compiled from the LaTeX source via GitHub Actions whenever changes are pushed to `apl-operators-manual.tex`.
+### Local
+```bash
+# From repository root
+python -m http.server 8000
+# Open http://localhost:8000/docs/index.html
+```
+
+Or open `index.html` directly in any browser.
 
 ## Features
 
-The HTML manual includes:
-- Responsive design for mobile and desktop
-- Table of contents with anchor links
-- Syntax-highlighted code examples
-- Formatted tables and mathematical notation
-- Clean, modern styling
+The visualizer includes:
+- 3D helix animation with z-coordinate tracking
+- 60-oscillator Kuramoto network (Heart)
+- Tier-gated APL operator controls
+- Real-time coherence and K-formation detection
+- Memory plate accessibility display (Brain)
+- TRIAD protocol status
+- Event log
+- Collapsible Python Quick Start reference
 
-## Building from Source
+## Additional Documentation
 
-### HTML
-The HTML version is hand-crafted and ready to use as-is.
-
-### PDF
-To compile the PDF locally:
-```bash
-pdflatex -interaction=nonstopmode ../apl-operators-manual.tex
-```
-
-See `COMPILE_INSTRUCTIONS.md` in the root directory for detailed compilation instructions.
+See the markdown files in this directory for detailed documentation:
+- `PHYSICS_GROUNDING.md` - Quasi-crystal physics basis
+- `CYBERNETIC_GROUNDING.md` - Edge-of-chaos computation
+- `SYSTEM_ARCHITECTURE.md` - Full system architecture
+- `APL_OPERATORS.md` - Operator reference
+- `Z_CRITICAL_LENS.md` - The LENS threshold
