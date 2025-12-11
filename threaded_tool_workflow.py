@@ -321,9 +321,11 @@ class ToolFactory:
         active_thresholds: List[str]
     ) -> List[Tool]:
         """
-        Produce multiple tools from a single collapse event.
+        Produce tools from a single collapse event.
 
-        Work is distributed among active thresholds proportionally.
+        Strategy: Concentrate work on fewer tools rather than spreading thin.
+        Higher thresholds get priority (MU_3 > KAPPA_S > Z_CRITICAL etc).
+        This produces fewer but more capable tools.
         """
         if not active_thresholds or work_extracted <= 0:
             return []
@@ -342,19 +344,36 @@ class ToolFactory:
             'Q_KAPPA': Q_KAPPA
         }
 
-        total_weight = sum(
-            threshold_values.get(t, 0.5)
-            for t in active_thresholds
+        # Sort thresholds by value (highest first) - prioritize advanced tools
+        sorted_thresholds = sorted(
+            active_thresholds,
+            key=lambda t: threshold_values.get(t, 0.5),
+            reverse=True
         )
 
         tools = []
-        for threshold in active_thresholds:
-            weight = threshold_values.get(threshold, 0.5)
-            work_share = work_extracted * (weight / total_weight)
+        remaining_work = work_extracted
 
-            tool = self.produce_tool(threshold, work_share)
+        # Concentrate work on top thresholds until min requirements met
+        for threshold in sorted_thresholds:
+            if remaining_work <= 0:
+                break
+
+            val = threshold_values.get(threshold, 0.5)
+            min_work = val * PHI_INV
+
+            # Give this threshold enough work to produce (if we have it)
+            # or all remaining work if less
+            work_for_tool = max(min_work * 1.1, remaining_work * 0.4)
+            work_for_tool = min(work_for_tool, remaining_work)
+
+            tool = self.produce_tool(threshold, work_for_tool)
             if tool:
                 tools.append(tool)
+                remaining_work -= work_for_tool
+            else:
+                # Not enough work for this threshold, try next
+                continue
 
         return tools
 
@@ -510,38 +529,68 @@ class ThreadedToolWorkflow:
 
     def pump_thread(self, thread: WorkflowThread, steps: int = 1) -> float:
         """
-        Pump a thread using PHI_INV dynamics.
+        Pump a thread using the full QuasiCrystalDynamicsEngine.
 
-        Uses simple pump (not full dynamics engine) to avoid
-        premature collapse inside the dynamics engine.
+        Physics preserved:
+        - Quasi-crystal packing (exceeds HCP limit)
+        - Bidirectional wave collapse (TSVF)
+        - Phase lock release-relock (Kuramoto)
+        - Weak values (PHI liminal contribution)
+        - Accelerated barrier tunneling
 
         Returns the new z value.
         """
         thread.state = ThreadState.PUMPING
 
-        # Simple PHI_INV pump with barrier tunneling
-        # (Don't use dynamics engine here - it has internal collapse logic)
-        for _ in range(steps):
-            if thread.z_current < Z_CRITICAL:
-                # Fast pump to critical
-                dz = (Z_CRITICAL - thread.z_current) * 0.2
-            elif thread.z_current < KAPPA_S:
-                # Slower through middle zone
-                dz = (KAPPA_S - thread.z_current) * 0.15
-            elif thread.z_current < MU_3:
-                # Push toward ultra-integration
-                dz = (MU_3 - thread.z_current) * 0.2
-            else:
-                # Final push to unity
-                dz = (1.0 - thread.z_current) * 0.3
+        if DYNAMICS_AVAILABLE and self.dynamics:
+            # Sync dynamics engine with thread state
+            self.dynamics.z_current = thread.z_current
 
-            thread.z_current = min(0.9999, thread.z_current + dz)
+            for _ in range(steps):
+                old_z = self.dynamics.z_current
+                old_collapse_count = self.dynamics.liminal_phi.collapse_count
+
+                # Use full physics evolution
+                self.dynamics.evolve_step()
+
+                # Check if dynamics engine triggered a collapse
+                if self.dynamics.liminal_phi.collapse_count > old_collapse_count:
+                    # Collapse happened inside engine - sync and return
+                    thread.z_current = self.dynamics.z_current
+                    thread.update_thresholds()
+                    return thread.z_current
+
+                # If stuck below MU_3, use release-relock to escape local minimum
+                # This is the Kuramoto phase lock release mechanism
+                if (abs(self.dynamics.z_current - old_z) < 0.0001 and
+                    self.dynamics.z_current > Z_CRITICAL and
+                    self.dynamics.z_current < MU_3):
+                    self.dynamics.release_and_boost_cycle()
+
+            thread.z_current = self.dynamics.z_current
+        else:
+            # Fallback: Simple pump (loses physics but still functional)
+            for _ in range(steps):
+                if thread.z_current < Z_CRITICAL:
+                    dz = (Z_CRITICAL - thread.z_current) * 0.2
+                elif thread.z_current < KAPPA_S:
+                    dz = (KAPPA_S - thread.z_current) * 0.15
+                elif thread.z_current < MU_3:
+                    dz = (MU_3 - thread.z_current) * 0.2
+                else:
+                    dz = (1.0 - thread.z_current) * 0.3
+                thread.z_current = min(0.9999, thread.z_current + dz)
 
         thread.update_thresholds()
 
-        # Check for superposition entry
+        # Check for superposition entry (PHI becomes liminal)
         if thread.z_current >= KAPPA_S:
             thread.state = ThreadState.SUPERPOSITION
+            # Sync superposition state with dynamics engine
+            if DYNAMICS_AVAILABLE and self.dynamics:
+                if not self.dynamics.liminal_phi.in_superposition:
+                    phase = self.dynamics.phase_lock.phases[0] if self.dynamics.phase_lock.phases else 0.0
+                    self.dynamics.liminal_phi.enter_superposition(thread.z_current, phase)
 
         return thread.z_current
 
@@ -609,14 +658,28 @@ class ThreadedToolWorkflow:
         """
         Run a single pump → collapse → produce cycle.
 
+        Uses dynamics engine's internal collapse detection rather than
+        trying to catch z >= 0.9999 (which resets immediately).
+
         Returns cycle results.
         """
         cycle_start = time.time()
         max_z_seen = thread.z_current
+        thresholds_at_peak = []
 
-        # Pump until approaching unity
+        # Track dynamics engine collapse count
+        initial_collapse_count = 0
+        initial_work = 0.0
+        if DYNAMICS_AVAILABLE and self.dynamics:
+            initial_collapse_count = self.dynamics.liminal_phi.collapse_count
+            initial_work = self.dynamics.total_work_extracted
+
+        # Pump until dynamics engine triggers a collapse
         steps = 0
-        while not self.check_collapse(thread) and steps < 200:
+        collapse_detected = False
+        while steps < 200 and not collapse_detected:
+            old_z = thread.z_current
+
             self.pump_thread(thread, steps=1)
             steps += 1
 
@@ -624,16 +687,22 @@ class ThreadedToolWorkflow:
             if thread.z_current > max_z_seen:
                 max_z_seen = thread.z_current
                 thread.update_thresholds()
+                thresholds_at_peak = thread.active_thresholds.copy()
 
-        # Final threshold update at peak
-        thread.update_thresholds()
-
-        # Save active thresholds BEFORE collapse (they reset after)
-        thresholds_at_peak = thread.active_thresholds.copy()
+            # Check if dynamics engine collapsed
+            if DYNAMICS_AVAILABLE and self.dynamics:
+                if self.dynamics.liminal_phi.collapse_count > initial_collapse_count:
+                    collapse_detected = True
+                    break
+            else:
+                # Fallback: simple z >= 0.9999 check
+                if thread.z_current >= 0.9999:
+                    collapse_detected = True
+                    break
 
         # If no thresholds captured, manually add based on max_z
+        # (happens when collapse occurs before we can capture)
         if not thresholds_at_peak and max_z_seen > Q_KAPPA:
-            # Manually determine thresholds from max_z
             threshold_map = [
                 ('Q_KAPPA', Q_KAPPA),
                 ('MU_1', MU_1),
@@ -649,11 +718,27 @@ class ThreadedToolWorkflow:
                 if max_z_seen >= val:
                     thresholds_at_peak.append(name)
 
-        # Collapse and extract work
-        if self.check_collapse(thread):
-            work = self.collapse_thread(thread)
+        # Extract work from collapse
+        work = 0.0
+        tools = []
 
-            # Produce tools using peak thresholds (not post-collapse)
+        if collapse_detected:
+            if DYNAMICS_AVAILABLE and self.dynamics:
+                # Get work from dynamics engine's collapse
+                work = self.dynamics.total_work_extracted - initial_work
+
+                # Also update thread tracking
+                thread.collapse_count += 1
+                thread.work_accumulated += work
+                thread.last_collapse_at = time.time()
+            else:
+                # Fallback collapse
+                work = self.collapse_thread(thread)
+
+            self.stats['cycles_completed'] += 1
+            self.stats['total_work_extracted'] += work
+
+            # Produce tools using peak thresholds
             tools = self.factory.produce_tools_from_collapse(
                 work_extracted=work,
                 active_thresholds=thresholds_at_peak
@@ -667,9 +752,6 @@ class ThreadedToolWorkflow:
 
             self.total_tools_produced += len(tools)
             thread.state = ThreadState.IDLE
-        else:
-            work = 0.0
-            tools = []
 
         cycle_time = time.time() - cycle_start
 
@@ -683,11 +765,13 @@ class ThreadedToolWorkflow:
         return {
             'thread_id': thread.thread_id,
             'steps': steps,
+            'max_z': max_z_seen,
             'work_extracted': work,
             'tools_produced': [t.to_dict() for t in tools],
             'thresholds_at_peak': thresholds_at_peak,
             'cycle_time': cycle_time,
-            'z_final': thread.z_current
+            'z_final': thread.z_current,
+            'collapse_detected': collapse_detected
         }
 
     def run_workflow(
@@ -728,7 +812,10 @@ class ThreadedToolWorkflow:
                 all_results.append(result)
 
                 print(f"  Steps: {result['steps']}")
+                print(f"  Max z reached: {result.get('max_z', 0):.4f}")
+                print(f"  Collapse detected: {result.get('collapse_detected', False)}")
                 print(f"  Work extracted: {result['work_extracted']:.4f}")
+                print(f"  Thresholds at peak: {result.get('thresholds_at_peak', [])}")
                 print(f"  Tools produced: {len(result['tools_produced'])}")
 
                 for tool in result['tools_produced']:

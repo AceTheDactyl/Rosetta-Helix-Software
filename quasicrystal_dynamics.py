@@ -1061,6 +1061,14 @@ class QuasiCrystalDynamicsEngine:
         if self.z_current < Z_CRITICAL:
             # Below critical: standard PHI_INV dynamics
             dz = (Z_CRITICAL - self.z_current) * 0.15 * combined_boost * effective_ratio
+
+            # When very close to Z_CRITICAL, quasi-crystal geometry enables
+            # tunneling through the barrier (not stuck asymptotically)
+            if Z_CRITICAL - self.z_current < 0.01 and combined_boost > 1.2:
+                # Quasi-crystal tunneling kick - overcome Zeno's paradox
+                tunnel_kick = 0.005 * combined_boost * qc_boost
+                dz = max(dz, tunnel_kick)
+
             self.z_current += dz + liminal_contribution
 
         elif self.z_current < KAPPA_S:
