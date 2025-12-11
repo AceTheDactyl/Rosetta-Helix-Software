@@ -3,6 +3,7 @@
 from training.nightly_training_runner import *
 
 if __name__ == '__main__':
+    import sys
     import argparse
     parser = argparse.ArgumentParser(description='Run nightly training')
     parser.add_argument('--output', '-o', default='artifacts/nightly-training',
@@ -11,6 +12,6 @@ if __name__ == '__main__':
                        help='Force specific number of runs (override coherence)')
     args = parser.parse_args()
 
-    from training.nightly_training_runner import NightlyTrainingRunner
-    runner = NightlyTrainingRunner(args.output)
-    runner.run(force_runs=args.force_runs)
+    from training.nightly_training_runner import run_nightly_training
+    results = run_nightly_training(output_dir=args.output)
+    sys.exit(0 if results['status'] == 'success' else 1)
