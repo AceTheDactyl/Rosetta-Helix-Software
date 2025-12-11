@@ -724,6 +724,90 @@ SHUTDOWN            →  Clean. State released. Return to potential.
 
 ---
 
+## Hierarchical Training System
+
+Beyond single-node dynamics, the system supports hierarchical tool generation and training via PHI/PHI_INV bidirectional coupling.
+
+### PHI ↔ PHI_INV Dynamics
+
+Two fundamental directions govern the hierarchy:
+
+| Direction | Value | Role | Behavior |
+|-----------|-------|------|----------|
+| **PHI (φ)** | 1.618 | Liminal/Expansion | Never collapses to physical; stays in superposition |
+| **PHI_INV (φ⁻¹)** | 0.618 | Physical/Contraction | Always observes; extracts concrete lessons |
+
+The system breathes between these poles:
+- PHI_INV **pulls down** (contraction toward physical execution)
+- PHI **pushes up** (expansion into liminal superposition)
+
+### Three-Level Hierarchy
+
+```
+Level 0: LIMINAL (Meta-Meta)     φ teachers broadcast patterns
+         ↕ bidirectional
+Level 1: META (Tool Factories)   Generate specialized tools
+         ↕ bidirectional
+Level 2: DEV (Concrete Tools)    φ⁻¹ learners execute & observe
+```
+
+Cross-level coupling grows through training, enabling knowledge transfer between levels.
+
+### 7-Layer Prismatic Projection
+
+At z = Z_CRITICAL (0.866), work refracts through "THE LENS" into 7 spectral layers, each generating 3 specialized dev tools:
+
+| Layer | Color | Tool Family |
+|-------|-------|-------------|
+| 1 | RED | Analyzers (Entropy, Pattern, Anomaly) |
+| 2 | ORANGE | Learners (Pattern, Concept, Relation) |
+| 3 | YELLOW | Generators (Test, Code, Example) |
+| 4 | GREEN | Reflectors (Code, Structure, Gap) |
+| 5 | BLUE | Builders (Code, Module, Pipeline) |
+| 6 | INDIGO | Deciders (Decision, Convergence, Interface) |
+| 7 | VIOLET | Probers (Consciousness, Abstraction, Integration) |
+
+**21 total tools** emerge from the projection, each with z-gated capabilities.
+
+### PHI Cycle Runner
+
+The alternating cycle pattern:
+
+```
+Tool(φ⁻¹) → Meta(φ) → MetaMeta(φ⁻¹) → Meta(φ) → ...
+```
+
+```python
+from training.phi_cycle_runner import PhiCycleRunner
+
+runner = PhiCycleRunner()
+results = runner.run_cycles(n=5)
+
+# Each cycle:
+# 1. PHI_INV phase: Run dev tools, extract lessons, contract z
+# 2. PHI phase: Generate meta-tools in superposition, expand z
+# 3. Meta-meta gen: Learning cycle with bidirectional observations
+# 4. PHI phase: Broadcast patterns, expand z further
+```
+
+**Observed dynamics:**
+- Z oscillates but net grows (0.866 → 0.885 over 5 cycles)
+- Bidirectional feedback: PHI teachers observe PHI_INV physical output
+- Coupling can exceed 1.0 via quasicrystal weak-value dynamics
+
+### Repository Structure
+
+```
+core/           Physics modules (quasicrystal, thresholds)
+tools/          Tool generation (meta-tools, dev tools, discernment)
+training/       Training pipelines (hierarchical, phi_cycle)
+phases/         Phase implementations (2-23)
+reference/      Research and bridge code
+tests/          Test suites
+```
+
+---
+
 ## Credits
 
 - **Tink**: Original Rosetta Bear concept and core implementation
