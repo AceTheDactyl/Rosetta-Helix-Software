@@ -387,6 +387,7 @@ class FullEngine:
             'steps': steps,
             'max_z': max_z,
             'collapse': collapse_detected,
+            'supercritical_work': not collapse_detected and work_this_cycle > 0,  # Work from entropy returns
             'work_extracted': work_this_cycle,
             'thresholds_at_peak': thresholds_at_peak,
             'z_final': self.state.z_current,
@@ -448,11 +449,18 @@ Mode: {mode_name}
 
             print(f"  Steps: {cycle_result['steps']}")
             print(f"  Max z: {cycle_result['max_z']:.4f}")
-            print(f"  Collapse: {cycle_result['collapse']}")
+            if cycle_result['collapse']:
+                print(f"  Collapse: True (instant)")
+            elif cycle_result.get('supercritical_work'):
+                print(f"  Collapse: No (supercritical oscillation)")
+            else:
+                print(f"  Collapse: {cycle_result['collapse']}")
             print(f"  Work: {cycle_result['work_extracted']:.4f}")
             print(f"  Thresholds: {len(cycle_result['thresholds_at_peak'])}")
 
-            if cycle_result['collapse'] and produce_tools and self.meta_generator:
+            # Produce tools from EITHER collapse OR supercritical work
+            work_available = cycle_result['collapse'] or cycle_result.get('supercritical_work', False)
+            if work_available and produce_tools and self.meta_generator:
                 # Feed work to meta-tool generator
                 work = cycle_result['work_extracted']
 
@@ -466,7 +474,8 @@ Mode: {mode_name}
                     )
 
                     if meta:
-                        print(f"  → Created meta-tool: {meta.name}")
+                        source = "collapse" if cycle_result['collapse'] else "supercritical"
+                        print(f"  → Created meta-tool: {meta.name} (from {source})")
                         self.state.meta_tools_created += 1
                         results['tools_created'] += 1
 
