@@ -96,8 +96,10 @@ try:
         LiminalPhiState,
         BidirectionalCollapseEngine,
         PhaseLockReleaseEngine,
+        PhaseLockState,
     )
     DYNAMICS_AVAILABLE = True
+    PHASE_LOCK_AVAILABLE = True
 except ImportError:
     try:
         from quasicrystal_dynamics import (
@@ -105,8 +107,10 @@ except ImportError:
             LiminalPhiState,
         )
         DYNAMICS_AVAILABLE = True
+        PHASE_LOCK_AVAILABLE = False
     except ImportError:
         DYNAMICS_AVAILABLE = False
+        PHASE_LOCK_AVAILABLE = False
 
 # Threshold modules
 try:
@@ -280,6 +284,15 @@ class HelixState:
     # Coherence
     coherence: CoherenceMetrics = field(default_factory=CoherenceMetrics)
 
+    # Coherence Release Dynamics (phase lock following release)
+    coherence_stored: float = 0.0          # Accumulated coherence (builds up)
+    coherence_release_threshold: float = 0.85  # Trigger release above this
+    phase_locked: bool = False              # Currently in phase-locked state
+    phase_lock_frequency: float = 0.0       # Oscillation frequency during lock
+    coherence_releases: int = 0             # Total release events
+    superlock_level: float = 0.0            # Highest achieved coherence
+    oscillation_phase: float = 0.0          # Current phase in oscillatory cycle
+
 
 # =============================================================================
 # UNIFIED HELIX ENGINE
@@ -328,6 +341,12 @@ class UnifiedHelixEngine:
             self.neg_entropy = NegEntropyEngine()
         else:
             self.neg_entropy = None
+
+        # Phase Lock Release Engine for coherence release dynamics
+        if PHASE_LOCK_AVAILABLE:
+            self.phase_lock_engine = PhaseLockReleaseEngine(n_oscillators=60)
+        else:
+            self.phase_lock_engine = None
 
     def _init_training(self):
         """Initialize training loop components"""
@@ -497,6 +516,81 @@ class UnifiedHelixEngine:
         self.update_apl_state()
         result['apl_tier'] = self.state.apl_tier
         result['apl_operators'] = self.state.apl_operators
+
+        # =====================================================================
+        # PHASE 4: Coherence Release Dynamics with Phase Lock
+        # =====================================================================
+        # Physics DOES release coherence - followed by phase lock
+        # while remaining oscillatory
+        result['coherence_release'] = False
+        result['phase_locked'] = self.state.phase_locked
+        result['oscillation_phase'] = self.state.oscillation_phase
+
+        if self.phase_lock_engine:
+            # Step the phase lock engine (maintains oscillatory dynamics)
+            self.phase_lock_engine.step(dt=0.1)
+
+            # Get current coherence from Kuramoto order parameter
+            current_coherence = self.phase_lock_engine.get_coherence()
+            self.state.coherence_stored = current_coherence
+
+            # Oscillation always continues (phase advances regardless of lock state)
+            # This ensures oscillatory behavior persists
+            self.state.oscillation_phase += PHI_INV * phi_weight * 0.1
+            self.state.oscillation_phase %= (2 * math.pi)
+
+            # COHERENCE RELEASE: When coherence exceeds threshold
+            if current_coherence > self.state.coherence_release_threshold and not self.state.phase_locked:
+                # Release coherence (scatter phases, entropy increases temporarily)
+                self.phase_lock_engine.release_coherence(scatter_strength=2.0)
+
+                # Extract work from the release (like entropy loan return but for coherence)
+                release_work = (current_coherence - self.state.coherence_release_threshold) * PHI * phi_inv_weight
+                self.state.total_work_extracted += release_work
+                result['work_extracted'] += release_work
+
+                self.state.coherence_releases += 1
+                result['coherence_release'] = True
+
+                # Immediately begin relock (phase lock FOLLOWS release)
+                new_coherence = self.phase_lock_engine.relock(boost_coupling=1.5)
+
+                # Track superlock achievement
+                if new_coherence > self.state.superlock_level:
+                    self.state.superlock_level = new_coherence
+                    self.state.phase_locked = True
+                    # Phase lock frequency derived from coherence level
+                    self.state.phase_lock_frequency = new_coherence * PHI
+
+                result['phase_locked'] = self.state.phase_locked
+
+            # Check if we should exit phase lock (when oscillation carries us past)
+            # This maintains oscillatory character - phase lock is not frozen
+            elif self.state.phase_locked:
+                # Phase lock is stable but oscillation continues
+                # Exit phase lock when coherence drops (natural oscillation)
+                if current_coherence < self.state.coherence_release_threshold * PHI_INV:
+                    self.state.phase_locked = False
+
+        else:
+            # Fallback coherence dynamics without full phase lock engine
+            # Still oscillatory: coherence breathes with z
+            coherence_approx = min(1.0, self.state.z_current / MU_3)
+            self.state.coherence_stored += coherence_approx * 0.01 * phi_weight
+            self.state.oscillation_phase += PHI_INV * 0.1
+            self.state.oscillation_phase %= (2 * math.pi)
+
+            # Release when stored coherence exceeds threshold
+            if self.state.coherence_stored > self.state.coherence_release_threshold:
+                excess = self.state.coherence_stored - self.state.coherence_release_threshold
+                release_work = excess * PHI * phi_inv_weight
+                self.state.total_work_extracted += release_work
+                result['work_extracted'] += release_work
+                self.state.coherence_stored = Z_CRITICAL  # Snap back
+                self.state.coherence_releases += 1
+                result['coherence_release'] = True
+
+        result['oscillation_phase'] = self.state.oscillation_phase
 
         # Track peak and history
         if self.state.z_current > self.state.z_peak:
@@ -668,6 +762,13 @@ Supercritical Dynamics:
   Breaches (z > 1.0):     {self.state.supercritical_breaches}
   Entropy loan returns:   {self.state.entropy_loan_returns}
 
+Coherence Release Dynamics:
+  Coherence releases:     {self.state.coherence_releases}
+  Superlock level:        {self.state.superlock_level:.4f}
+  Phase locked:           {'YES' if self.state.phase_locked else 'NO'}
+  Lock frequency:         {self.state.phase_lock_frequency:.4f}
+  Oscillation phase:      {self.state.oscillation_phase:.4f} rad
+
 Tool Production:
   Meta-tools created:     {self.state.meta_tools_created}
   Child tools created:    {self.state.child_tools_created}
@@ -699,6 +800,9 @@ Elapsed time:             {elapsed:.2f}s
         print(f"  NegEntropyEngine:       ALWAYS ACTIVE")
         print(f"  PHI liminal only:       YES (never physical)")
         print(f"  Entropy debt settled:   {'LOAN RETURN' if self.state.supercritical_mode else 'INSTANT COLLAPSE'}")
+        print(f"  Coherence release:      YES (physics releases coherence)")
+        print(f"  Phase lock:             FOLLOWS RELEASE")
+        print(f"  Oscillation:            PERSISTS (never frozen)")
         print(f"  Unity invariant:        PRESERVED")
 
         return {
