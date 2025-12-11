@@ -1,0 +1,457 @@
+{
+  "generated": "2025-12-11T08:52:13.287590",
+  "z_level": 0.8660254037844386,
+  "total_tools": 21,
+  "layers": {
+    "RED": {
+      "color": "#FF4444",
+      "affinity": "Analyzers",
+      "tool_count": 3,
+      "tools": [
+        "EntropyAnalyzer_L1",
+        "PatternDetector_L1",
+        "AnomalyFinder_L1"
+      ]
+    },
+    "ORANGE": {
+      "color": "#FF8844",
+      "affinity": "Learners",
+      "tool_count": 3,
+      "tools": [
+        "PatternLearner_L2",
+        "ConceptExtractor_L2",
+        "RelationLearner_L2"
+      ]
+    },
+    "YELLOW": {
+      "color": "#FFAA00",
+      "affinity": "Generators",
+      "tool_count": 3,
+      "tools": [
+        "TestGenerator_L3",
+        "CodeSynthesizer_L3",
+        "ExampleProducer_L3"
+      ]
+    },
+    "GREEN": {
+      "color": "#00FF88",
+      "affinity": "Reflectors",
+      "tool_count": 3,
+      "tools": [
+        "CodeReflector_L4",
+        "StructureMapper_L4",
+        "GapAnalyzer_L4"
+      ]
+    },
+    "BLUE": {
+      "color": "#00D9FF",
+      "affinity": "Builders",
+      "tool_count": 3,
+      "tools": [
+        "CodeBuilder_L5",
+        "ModuleAssembler_L5",
+        "PipelineConstructor_L5"
+      ]
+    },
+    "INDIGO": {
+      "color": "#4444FF",
+      "affinity": "Deciders",
+      "tool_count": 3,
+      "tools": [
+        "DecisionEngineDevTool_L6",
+        "ConvergenceChecker_L6",
+        "InterfaceDesigner_L6"
+      ]
+    },
+    "VIOLET": {
+      "color": "#AA44FF",
+      "affinity": "Probers",
+      "tool_count": 3,
+      "tools": [
+        "ConsciousnessProbe_L7",
+        "AbstractionBuilder_L7",
+        "IntegrationWeaver_L7"
+      ]
+    }
+  },
+  "tools": [
+    {
+      "id": "5a0a218d77cb",
+      "name": "EntropyAnalyzer_L1",
+      "type": "EntropyAnalyzer",
+      "layer": "RED",
+      "color": "#FF4444",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    },
+    {
+      "id": "963ef81e1865",
+      "name": "PatternDetector_L1",
+      "type": "PatternDetector",
+      "layer": "RED",
+      "color": "#FF4444",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    },
+    {
+      "id": "2ecf7aac9a7a",
+      "name": "AnomalyFinder_L1",
+      "type": "AnomalyFinder",
+      "layer": "RED",
+      "color": "#FF4444",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    },
+    {
+      "id": "f872113228e5",
+      "name": "PatternLearner_L2",
+      "type": "PatternLearner",
+      "layer": "ORANGE",
+      "color": "#FF8844",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    },
+    {
+      "id": "eeafbe2db774",
+      "name": "ConceptExtractor_L2",
+      "type": "ConceptExtractor",
+      "layer": "ORANGE",
+      "color": "#FF8844",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    },
+    {
+      "id": "75b0fd90b5c6",
+      "name": "RelationLearner_L2",
+      "type": "RelationLearner",
+      "layer": "ORANGE",
+      "color": "#FF8844",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    },
+    {
+      "id": "1242540b3180",
+      "name": "TestGenerator_L3",
+      "type": "TestGenerator",
+      "layer": "YELLOW",
+      "color": "#FFAA00",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    },
+    {
+      "id": "97a4fcdb3123",
+      "name": "CodeSynthesizer_L3",
+      "type": "CodeSynthesizer",
+      "layer": "YELLOW",
+      "color": "#FFAA00",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    },
+    {
+      "id": "4ae04ce0499d",
+      "name": "ExampleProducer_L3",
+      "type": "ExampleProducer",
+      "layer": "YELLOW",
+      "color": "#FFAA00",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    },
+    {
+      "id": "ed1ff969a44b",
+      "name": "CodeReflector_L4",
+      "type": "CodeReflector",
+      "layer": "GREEN",
+      "color": "#00FF88",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    },
+    {
+      "id": "db22a1cb6b66",
+      "name": "StructureMapper_L4",
+      "type": "StructureMapper",
+      "layer": "GREEN",
+      "color": "#00FF88",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    },
+    {
+      "id": "e417d9939ee0",
+      "name": "GapAnalyzer_L4",
+      "type": "GapAnalyzer",
+      "layer": "GREEN",
+      "color": "#00FF88",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    },
+    {
+      "id": "71d2f9342350",
+      "name": "CodeBuilder_L5",
+      "type": "CodeBuilder",
+      "layer": "BLUE",
+      "color": "#00D9FF",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    },
+    {
+      "id": "c1b71ca7ccca",
+      "name": "ModuleAssembler_L5",
+      "type": "ModuleAssembler",
+      "layer": "BLUE",
+      "color": "#00D9FF",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    },
+    {
+      "id": "6a2e7e3d6593",
+      "name": "PipelineConstructor_L5",
+      "type": "PipelineConstructor",
+      "layer": "BLUE",
+      "color": "#00D9FF",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    },
+    {
+      "id": "84ec210e017f",
+      "name": "DecisionEngineDevTool_L6",
+      "type": "DecisionEngineDevTool",
+      "layer": "INDIGO",
+      "color": "#4444FF",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    },
+    {
+      "id": "b2bc3663ec50",
+      "name": "ConvergenceChecker_L6",
+      "type": "ConvergenceChecker",
+      "layer": "INDIGO",
+      "color": "#4444FF",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    },
+    {
+      "id": "bfbcb495809d",
+      "name": "InterfaceDesigner_L6",
+      "type": "InterfaceDesigner",
+      "layer": "INDIGO",
+      "color": "#4444FF",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    },
+    {
+      "id": "f9a3e4f9bd16",
+      "name": "ConsciousnessProbe_L7",
+      "type": "ConsciousnessProbe",
+      "layer": "VIOLET",
+      "color": "#AA44FF",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    },
+    {
+      "id": "597ad4ea884b",
+      "name": "AbstractionBuilder_L7",
+      "type": "AbstractionBuilder",
+      "layer": "VIOLET",
+      "color": "#AA44FF",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    },
+    {
+      "id": "b81113d55cb4",
+      "name": "IntegrationWeaver_L7",
+      "type": "IntegrationWeaver",
+      "layer": "VIOLET",
+      "color": "#AA44FF",
+      "version": "1.0.0",
+      "thresholds": [
+        "Q_KAPPA",
+        "MU_1",
+        "MU_P",
+        "PHI_INV",
+        "MU_2",
+        "TRIAD_LOW",
+        "TRIAD_HIGH",
+        "Z_CRITICAL"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "tools_run": 21,
+  "lessons_extracted": 21,
+  "weights_trained": 29,
+  "exp_training_quality": 1.0,
+  "final_weights": {
+    "coupling_weights": 13,
+    "frequency_biases": 12,
+    "operator_strengths": {
+      "IDENTITY": 0.2621231979030144,
+      "AMPLIFY": 0.21363040629095678,
+      "CONTAIN": 0.1310615989515072,
+      "EXCHANGE": 0.1310615989515072,
+      "INHIBIT": 0.1310615989515072,
+      "CATALYZE": 0.1310615989515072
+    },
+    "training_steps": 1,
+    "total_lessons": 21,
+    "weight_updates": 27
+  }
+}

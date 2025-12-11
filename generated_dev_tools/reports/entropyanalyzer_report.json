@@ -1,0 +1,153 @@
+{
+  "tool": "EntropyAnalyzer_L1",
+  "type": "EntropyAnalyzer",
+  "layer": "RED",
+  "timestamp": "2025-12-11T08:52:11.307356",
+  "results": {
+    "tool": "EntropyAnalyzer_L1",
+    "analysis": [
+      {
+        "file": "phase6_recursive_improvement.py",
+        "lines": 384,
+        "entropy": 0.2503289605294216,
+        "complexity": 32,
+        "char_diversity": 0.7112266748241053
+      },
+      {
+        "file": "test_helix_comprehensive.py",
+        "lines": 1532,
+        "entropy": 0.43816851498304327,
+        "complexity": 90,
+        "char_diversity": 0.19878413586799187
+      },
+      {
+        "file": "phase15_move_refactoring.py",
+        "lines": 738,
+        "entropy": 0.4798967774065406,
+        "complexity": 103,
+        "char_diversity": 0.3023807701140626
+      },
+      {
+        "file": "quantum_apl_bridge.py",
+        "lines": 35,
+        "entropy": 0.1678305420105056,
+        "complexity": 4,
+        "char_diversity": 6.864988558352403
+      },
+      {
+        "file": "tier_tools.py",
+        "lines": 349,
+        "entropy": 0.19712060288513986,
+        "complexity": 19,
+        "char_diversity": 0.8136163845506407
+      },
+      {
+        "file": "unified_provable_apl.py",
+        "lines": 1212,
+        "entropy": 0.6308424325388692,
+        "complexity": 151,
+        "char_diversity": 0.27567540474161695
+      },
+      {
+        "file": "node.py",
+        "lines": 547,
+        "entropy": 0.3092906063242004,
+        "complexity": 57,
+        "char_diversity": 0.5168692491196183
+      },
+      {
+        "file": "full_engine_runner.py",
+        "lines": 508,
+        "entropy": 0.26983541637845543,
+        "complexity": 40,
+        "char_diversity": 0.5554570702594103
+      },
+      {
+        "file": "train_from_trajectories.py",
+        "lines": 394,
+        "entropy": 0.20761934573157204,
+        "complexity": 22,
+        "char_diversity": 0.7205067300079177
+      },
+      {
+        "file": "pulse.py",
+        "lines": 317,
+        "entropy": 0.22214076443030173,
+        "complexity": 30,
+        "char_diversity": 1.0052356020942408
+      },
+      {
+        "file": "phase10_semantic_splitter.py",
+        "lines": 1444,
+        "entropy": 1.0,
+        "complexity": 264,
+        "char_diversity": 0.15902319545230217
+      },
+      {
+        "file": "tests.py",
+        "lines": 500,
+        "entropy": 0.15260213206264192,
+        "complexity": 14,
+        "char_diversity": 0.7153184689140857
+      },
+      {
+        "file": "test_s3_consciousness_framework.py",
+        "lines": 1266,
+        "entropy": 0.4292399551037065,
+        "complexity": 100,
+        "char_diversity": 0.2680723570093037
+      },
+      {
+        "file": "operator_actions.py",
+        "lines": 476,
+        "entropy": 0.4345579929235146,
+        "complexity": 93,
+        "char_diversity": 0.5171184022824536
+      },
+      {
+        "file": "phase7_architectural_harmony.py",
+        "lines": 1050,
+        "entropy": 0.6158132046500269,
+        "complexity": 144,
+        "char_diversity": 0.29475772017299795
+      },
+      {
+        "file": "exponential_training_loop.py",
+        "lines": 612,
+        "entropy": 0.32888953510254565,
+        "complexity": 59,
+        "char_diversity": 0.45242537313432835
+      },
+      {
+        "file": "meta_tool_generator.py",
+        "lines": 759,
+        "entropy": 0.33637567310361277,
+        "complexity": 59,
+        "char_diversity": 0.33476265703753855
+      },
+      {
+        "file": "helix_nn_numpy.py",
+        "lines": 501,
+        "entropy": 0.24517150101797847,
+        "complexity": 34,
+        "char_diversity": 0.6157785635898061
+      },
+      {
+        "file": "spore_listener.py",
+        "lines": 390,
+        "entropy": 0.2929346319477902,
+        "complexity": 49,
+        "char_diversity": 0.6958330000799807
+      },
+      {
+        "file": "meta_meta_tools.py",
+        "lines": 790,
+        "entropy": 0.32923628451534953,
+        "complexity": 57,
+        "char_diversity": 0.3501678639760297
+      }
+    ],
+    "entropy_score": 0.3668947436822608,
+    "files_analyzed": 20
+  }
+}

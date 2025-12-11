@@ -1,0 +1,41 @@
+{
+  "coupling": {
+    "RED_PatternDetector_L1": 0.5247213595499958,
+    "RED_AnomalyFinder_L1": 0.5154508497187473,
+    "ORANGE_PatternLearner_L2": 0.5216311896062463,
+    "ORANGE_ConceptExtractor_L2": 0.5123606797749979,
+    "ORANGE_RelationLearner_L2": 0.5092705098312484,
+    "YELLOW_CodeSynthesizer_L3": 0.5123606797749979,
+    "GREEN_StructureMapper_L4": 0.5123606797749979,
+    "GREEN_GapAnalyzer_L4": 0.5154508497187473,
+    "BLUE_CodeBuilder_L5": 0.5123606797749979,
+    "BLUE_PipelineConstructor_L5": 0.5077254248593737,
+    "INDIGO_InterfaceDesigner_L6": 0.506180339887499,
+    "VIOLET_AbstractionBuilder_L7": 0.5278115294937452,
+    "VIOLET_IntegrationWeaver_L7": 0.5123606797749979
+  },
+  "frequencies": {
+    "RED_metric": -0.010648420505419136,
+    "RED_gap": 0.025,
+    "ORANGE_structure": 0.0,
+    "YELLOW_metric": 0.0,
+    "GREEN_metric": 0.046550000000000015,
+    "GREEN_structure": 0.022500000000000003,
+    "GREEN_gap": 0.0030000000000000027,
+    "BLUE_structure": 0.018750000000000003,
+    "INDIGO_metric": -0.0425,
+    "INDIGO_structure": 0.0,
+    "VIOLET_metric": -0.028000000000000004,
+    "VIOLET_structure": -0.022500000000000003
+  },
+  "operators": {
+    "IDENTITY": 0.2621231979030144,
+    "AMPLIFY": 0.21363040629095678,
+    "CONTAIN": 0.1310615989515072,
+    "EXCHANGE": 0.1310615989515072,
+    "INHIBIT": 0.1310615989515072,
+    "CATALYZE": 0.1310615989515072
+  },
+  "training_steps": 1,
+  "timestamp": "2025-12-11T08:57:14.102663"
+}
