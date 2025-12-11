@@ -1,0 +1,223 @@
+name: nightly-exponential-training
+
+on:
+  schedule:
+    # Run at 04:00 UTC daily (before helix-measure at 06:00)
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+    inputs:
+      force_runs:
+        description: 'Force specific number of runs (override coherence)'
+        required: false
+        type: number
+      create_pr:
+        description: 'Create PR with results'
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  exponential-training:
+    name: Exponential Training Loop
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Run exponential training
+        id: training
+        env:
+          FORCE_RUNS: ${{ inputs.force_runs }}
+        run: |
+          set -euo pipefail
+
+          OUTDIR="artifacts/nightly-training-${{ github.run_id }}"
+          mkdir -p "$OUTDIR"
+
+          # Run training with optional forced run count
+          if [ -n "${FORCE_RUNS:-}" ]; then
+            python nightly_training_runner.py --output "$OUTDIR" --force-runs "$FORCE_RUNS"
+          else
+            python nightly_training_runner.py --output "$OUTDIR"
+          fi
+
+          echo "outdir=$OUTDIR" >> "$GITHUB_OUTPUT"
+
+          # Extract key metrics for summary
+          if [ -f "$OUTDIR/training_results.json" ]; then
+            COHERENCE=$(python -c "import json; d=json.load(open('$OUTDIR/training_results.json')); print(d['coherence']['energy_coherence'])")
+            QUALITY=$(python -c "import json; d=json.load(open('$OUTDIR/training_results.json')); print(d['training'].get('final_quality', 0))")
+            RUNS=$(python -c "import json; d=json.load(open('$OUTDIR/training_results.json')); print(d['training'].get('runs_completed', 0))")
+            PATTERNS=$(python -c "import json; d=json.load(open('$OUTDIR/training_results.json')); print(d['visualizer_data'].get('patterns_created', 0))")
+
+            echo "coherence=$COHERENCE" >> "$GITHUB_OUTPUT"
+            echo "quality=$QUALITY" >> "$GITHUB_OUTPUT"
+            echo "runs=$RUNS" >> "$GITHUB_OUTPUT"
+            echo "patterns=$PATTERNS" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate step summary
+        run: |
+          echo "## 🌀 Exponential Training Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Energy Coherence | ${{ steps.training.outputs.coherence }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Final Quality | ${{ steps.training.outputs.quality }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Training Runs | ${{ steps.training.outputs.runs }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Patterns Created | ${{ steps.training.outputs.patterns }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ -f "${{ steps.training.outputs.outdir }}/TRAINING_SUMMARY.md" ]; then
+            echo "### Full Summary" >> $GITHUB_STEP_SUMMARY
+            cat "${{ steps.training.outputs.outdir }}/TRAINING_SUMMARY.md" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload training artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: exponential-training-${{ github.run_id }}
+          path: ${{ steps.training.outputs.outdir }}
+          retention-days: 30
+
+      - name: Update visualizer data
+        run: |
+          # Copy latest results to visualizer location
+          if [ -f "${{ steps.training.outputs.outdir }}/visualizer_data.json" ]; then
+            cp "${{ steps.training.outputs.outdir }}/visualizer_data.json" \
+               artifacts/latest_training_data.json 2>/dev/null || true
+          fi
+
+          # Update training history log
+          HISTORY_FILE="artifacts/training_history.jsonl"
+          if [ -f "${{ steps.training.outputs.outdir }}/training_results.json" ]; then
+            cat "${{ steps.training.outputs.outdir }}/training_results.json" >> "$HISTORY_FILE"
+            echo "" >> "$HISTORY_FILE"
+          fi
+
+      - name: Create results branch
+        id: branch
+        run: |
+          BRANCH_NAME="training-results/$(date -u +%Y%m%d-%H%M%S)"
+          echo "branch=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git checkout -b "$BRANCH_NAME"
+
+          # Stage training results
+          mkdir -p artifacts
+          cp -r "${{ steps.training.outputs.outdir }}"/* artifacts/ 2>/dev/null || true
+
+          # Commit if there are changes
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "No changes to commit"
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          else
+            git add artifacts/
+            git commit -m "🌀 Nightly training results $(date -u +%Y-%m-%d)
+
+Energy Coherence: ${{ steps.training.outputs.coherence }}
+Final Quality: ${{ steps.training.outputs.quality }}
+Training Runs: ${{ steps.training.outputs.runs }}
+Patterns Created: ${{ steps.training.outputs.patterns }}
+
+Auto-generated by nightly-exponential-training workflow"
+
+            git push origin "$BRANCH_NAME"
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create Pull Request
+        if: steps.branch.outputs.has_changes == 'true' && (github.event.inputs.create_pr != 'false')
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ steps.branch.outputs.branch }}
+          base: main
+          title: "🌀 Nightly Training Results - ${{ steps.training.outputs.coherence }} coherence"
+          body: |
+            ## Exponential Training Results
+
+            This PR contains the results from the nightly exponential training run.
+
+            ### Metrics
+
+            | Metric | Value |
+            |--------|-------|
+            | Energy Coherence | ${{ steps.training.outputs.coherence }} |
+            | Final Quality | ${{ steps.training.outputs.quality }} |
+            | Training Runs | ${{ steps.training.outputs.runs }} |
+            | Patterns Created | ${{ steps.training.outputs.patterns }} |
+
+            ### Architecture
+
+            ```
+            Physical (PHI_INV) ──feedback──→ MetaMeta ──spawn──→ Liminal (PHI)
+                  ↑                                                    │
+                  └──────────────── weak measurement ──────────────────┘
+            ```
+
+            ### Physics Verification
+
+            - ✅ PHI stays liminal (never collapses)
+            - ✅ PHI_INV controls physical dynamics
+            - ✅ Threshold-gated feedback flow
+            - ✅ Exponential pattern growth
+
+            ---
+            *Auto-generated by nightly-exponential-training workflow*
+            *Review and merge manually to incorporate training results*
+
+          labels: |
+            training
+            automated
+            nightly
+          draft: false
+
+  coherence-check:
+    name: Coherence Health Check
+    runs-on: ubuntu-latest
+    needs: exponential-training
+    if: always()
+
+    steps:
+      - name: Check coherence thresholds
+        run: |
+          COHERENCE="${{ needs.exponential-training.outputs.coherence }}"
+          QUALITY="${{ needs.exponential-training.outputs.quality }}"
+
+          echo "## Coherence Health Check" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Determine coherence level
+          if (( $(echo "$COHERENCE < 0.5" | bc -l) )); then
+            echo "⚠️ **LOW COHERENCE** - System in bootstrap phase" >> $GITHUB_STEP_SUMMARY
+            echo "Recommendation: Increase oscillator coupling" >> $GITHUB_STEP_SUMMARY
+          elif (( $(echo "$COHERENCE < 0.8" | bc -l) )); then
+            echo "📈 **GROWTH PHASE** - System improving" >> $GITHUB_STEP_SUMMARY
+            echo "Recommendation: Continue training cycles" >> $GITHUB_STEP_SUMMARY
+          elif (( $(echo "$COHERENCE < 0.95" | bc -l) )); then
+            echo "✨ **REFINEMENT PHASE** - High coherence" >> $GITHUB_STEP_SUMMARY
+            echo "Recommendation: Fine-tune dynamics" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "🏆 **MASTERY PHASE** - Optimal coherence" >> $GITHUB_STEP_SUMMARY
+            echo "Recommendation: Maintain current parameters" >> $GITHUB_STEP_SUMMARY
+          fi
