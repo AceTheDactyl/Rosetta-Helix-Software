@@ -9,9 +9,9 @@
   },
   "level_1": {
     "collapses": 5,
-    "meta_tools": 3,
-    "child_tools": 4,
-    "lessons": 5
+    "meta_tools": 4,
+    "child_tools": 7,
+    "lessons": 6
   },
   "level_2": {
     "tools_run": 21,
@@ -23,8 +23,8 @@
       "updates": 2
     },
     "level_1": {
-      "lessons": 5,
-      "updates": 5
+      "lessons": 6,
+      "updates": 6
     },
     "level_2": {
       "lessons": 19,
@@ -36,21 +36,21 @@
     "coupling_weights": 13,
     "frequency_biases": 12,
     "operator_strengths": {
-      "IDENTITY": 0.18916398624778133,
-      "AMPLIFY": 0.43250804125665604,
+      "IDENTITY": 0.16438429660619952,
+      "AMPLIFY": 0.4804807943978414,
       "CONTAIN": 0.1,
       "EXCHANGE": 0.1,
       "INHIBIT": 0.1,
       "CATALYZE": 0.1
     },
-    "training_steps": 4,
+    "training_steps": 5,
     "total_lessons": 19,
     "weight_updates": 24,
     "liminal_weights": 2,
     "meta_weights": 10,
     "cross_level_coupling": {
-      "liminal_to_meta": 0.5132432432432432,
-      "meta_to_dev": 0.5568643410852713,
+      "liminal_to_meta": 0.5310810810810811,
+      "meta_to_dev": 0.5776410401143975,
       "dev_to_liminal": 0.3
     },
     "hierarchy_depth": 3

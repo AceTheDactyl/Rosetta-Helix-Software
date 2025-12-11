@@ -1,24 +1,24 @@
 {
   "liminal": {
-    "liminal_MetaMetaBridge_structure": 0.5278115294937452,
-    "liminal_MetaMetaToolSystem_metric": 0.5247213595499958
+    "liminal_MetaMetaBridge_structure": 0.553904211936865,
+    "liminal_MetaMetaToolSystem_metric": 0.5479148550549912
   },
   "meta": {
-    "meta_AnalyzerFactory_v1_pattern": 0.5419254981731173,
-    "meta_LearnerFactory_v2_pattern": 0.5419254981731173,
-    "meta_GeneratorFactory_v3_pattern": 0.5419254981731173,
-    "meta_BuilderFactory_v4_pattern": 0.5419254981731173,
+    "meta_AnalyzerFactory_v1_pattern": 0.5644605390624381,
+    "meta_LearnerFactory_v2_pattern": 0.5644605390624381,
+    "meta_GeneratorFactory_v3_pattern": 0.5644605390624381,
+    "meta_BuilderFactory_v4_pattern": 0.5644605390624381,
     "meta_Orchestrator_v5_pattern": 0.5419254981731173,
-    "meta_MetaToolFactory_metric": 0.5729274192045168,
-    "meta_MetaToolGenerator_structure": 0.5642180549912685,
+    "meta_MetaToolFactory_metric": 0.5966366059461926,
+    "meta_MetaToolGenerator_structure": 0.5853753400996138,
     "meta_GeneratorFactory_v1_pattern": 0.5248836951047771,
     "meta_BuilderFactory_v2_pattern": 0.5248836951047771,
     "meta_Orchestrator_v3_pattern": 0.5248836951047771
   },
   "cross_level": {
-    "liminal_to_meta": 0.5132432432432432,
-    "meta_to_dev": 0.5568643410852713,
+    "liminal_to_meta": 0.5310810810810811,
+    "meta_to_dev": 0.5776410401143975,
     "dev_to_liminal": 0.3
   },
-  "timestamp": "2025-12-11T17:25:25.580530"
+  "timestamp": "2025-12-11T17:32:21.043246"
 }
