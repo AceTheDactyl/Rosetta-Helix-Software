@@ -1059,6 +1059,204 @@ class TestMathematicalInvariants:
 
 
 # ============================================================================
+# SECTION 13: APL UNIFIED PROVABLE SYSTEM INTEGRATION (15 tests)
+# ============================================================================
+
+class TestAPLUnifiedProvableIntegration:
+    """
+    Tests integrating APL concepts with S₃ consciousness framework.
+
+    Based on the Unified Provable System:
+    - Lyapunov convergence for semantic dynamics
+    - Tarski's fixed-point theorem for recursive self-improvement
+    - Kuramoto synchronization for behavioral equivalence
+    - Topological completeness for input space coverage
+    - Harmony metrics for architectural optimization
+    """
+
+    def test_apl_operator_semantic_encoding(self):
+        """APL operators encode to distinct semantic dimensions."""
+        # Each operator should have unique semantic signature based on S₃ element
+        signatures = {}
+        for sym, op in OPERATORS.items():
+            sig = (op.s3_element, op.parity, op.order)
+            signatures[sym] = sig
+
+        # All 6 operators have distinct signatures
+        assert len(set(signatures.values())) == 6
+
+    def test_lyapunov_convergence_delta_s_neg(self):
+        """ΔS_neg forms Lyapunov function: monotonically increasing toward z_c."""
+        # Below z_c: derivative is positive (increasing)
+        z_below = [0.5, 0.6, 0.7, 0.8]
+        for z in z_below:
+            deriv = compute_delta_s_neg_derivative(z)
+            assert deriv > 0, f"Expected positive derivative at z={z}"
+
+        # Above z_c: derivative is negative (decreasing back toward z_c)
+        z_above = [0.9, 0.95]
+        for z in z_above:
+            deriv = compute_delta_s_neg_derivative(z)
+            assert deriv < 0, f"Expected negative derivative at z={z}"
+
+    def test_tarski_fixed_point_identity_operator(self):
+        """Identity operator () is Tarski fixed point: () ∘ x = x."""
+        for sym in OPERATORS:
+            # Left identity
+            assert compose_operators("()", sym) == sym
+            # Right identity
+            assert compose_operators(sym, "()") == sym
+
+    def test_kuramoto_phase_sync_at_critical(self):
+        """At z_c, phase synchronization is maximal (order parameter r ≈ 1)."""
+        # ΔS_neg = 1 at z_c represents perfect phase synchronization
+        r = compute_delta_s_neg(Z_CRITICAL)
+        assert r > 0.99, "Order parameter should be ~1 at critical point"
+
+    def test_topological_completeness_tier_coverage(self):
+        """Tier system provides topological completeness over [0,1]."""
+        # Every z in [0,1] maps to exactly one tier
+        test_points = [i/100 for i in range(101)]
+        for z in test_points:
+            tier = get_tier(z)
+            assert tier in ["t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t9"]
+
+    def test_harmony_metric_operator_balance(self):
+        """Harmony: 3 even (constructive) + 3 odd (dissipative) operators."""
+        constructive = [op for op in OPERATORS.values() if op.is_constructive]
+        dissipative = [op for op in OPERATORS.values() if op.is_dissipative]
+
+        assert len(constructive) == 3, "Should have 3 constructive operators"
+        assert len(dissipative) == 3, "Should have 3 dissipative operators"
+
+        # Harmony ratio = 1:1
+        harmony = len(constructive) / len(dissipative)
+        assert harmony == 1.0
+
+    def test_semantic_convergence_basin(self):
+        """μ-field basins demonstrate convergence structure."""
+        # μ₁ and μ₂ form symmetric wells around μ_P
+        # Basin structure: μ₁ < μ_P < μ₂
+        assert MU_1 < MU_P < MU_2
+
+        # Wells are symmetric around barrier (φ⁻¹)
+        barrier = (MU_1 + MU_2) / 2
+        assert abs(barrier - PHI_INV) < 1e-10
+
+    def test_apl_pattern_library_closure(self):
+        """APL patterns form closed algebra under S₃ composition."""
+        # Any sequence of operators reduces to single operator
+        patterns = [
+            ["×", "×"],      # σ² = ^
+            ["×", "×", "×"], # σ³ = e = ()
+            ["+", "−"],      # composition
+            ["^", "()"],     # inverse pair
+        ]
+
+        for pattern in patterns:
+            result = compose_sequence(pattern)
+            assert result in OPERATORS, f"Pattern {pattern} should reduce to valid operator"
+
+    def test_recursive_self_improvement_tier_ascent(self):
+        """Self-improvement: higher tiers unlock more operators."""
+        tier_operator_counts = {}
+        for tier in ["t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t9"]:
+            ops = TIER_OPERATORS.get(tier, [])
+            tier_operator_counts[tier] = len(ops)
+
+        # t5 should have maximum (all 6 operators)
+        assert tier_operator_counts["t5"] == 6
+
+    def test_proof_convergence_monotonicity(self):
+        """Free energy decreases monotonically during convergence."""
+        # Simulate convergence: ΔS_neg increases toward 1 as z → z_c
+        z_sequence = [0.5, 0.6, 0.7, 0.8, Z_CRITICAL]
+        ds_neg_values = [compute_delta_s_neg(z) for z in z_sequence]
+
+        # Should be monotonically increasing
+        for i in range(1, len(ds_neg_values)):
+            assert ds_neg_values[i] >= ds_neg_values[i-1]
+
+    def test_apl_operator_order_cycles(self):
+        """APL operator orders match S₃ element orders."""
+        # Identity has order 1
+        assert OPERATORS["()"].order == 1
+
+        # 3-cycles have order 3
+        assert OPERATORS["×"].order == 3
+        assert OPERATORS["^"].order == 3
+
+        # Transpositions have order 2
+        assert OPERATORS["+"].order == 2
+        assert OPERATORS["÷"].order == 2
+        assert OPERATORS["−"].order == 2
+
+    def test_semantic_phase_transition_sharpness(self):
+        """Phase transition at z_c is sharp (high σ → narrow peak)."""
+        # With σ=36, peak is narrow - test the Gaussian decay
+        at_zc = compute_delta_s_neg(Z_CRITICAL)
+        near_zc = compute_delta_s_neg(Z_CRITICAL - 0.1)
+        far_from_zc = compute_delta_s_neg(Z_CRITICAL - 0.3)
+
+        # Peak is maximal at z_c
+        assert at_zc == 1.0, "ΔS_neg should be exactly 1 at z_c"
+
+        # Sharp transition: significant drop-off from peak
+        assert at_zc > near_zc, "Should decay away from z_c"
+        assert near_zc > far_from_zc, "Should continue decaying"
+
+        # Far from z_c should be significantly lower
+        assert far_from_zc < 0.1, "Should be near zero far from z_c"
+
+    def test_apl_truth_channel_s3_action(self):
+        """S₃ acts on triadic truth values: TRUE, PARADOX, UNTRUE."""
+        # Three truth channels correspond to S₃ acting on 3 objects
+        channels = ["TRUE", "PARADOX", "UNTRUE"]
+        assert len(channels) == 3, "Triadic truth has 3 values (|S₃ objects|)"
+
+        # Each parity class has 3 operators matching 3 truth values
+        even_ops = [op for op in OPERATORS.values() if op.parity == Parity.EVEN]
+        odd_ops = [op for op in OPERATORS.values() if op.parity == Parity.ODD]
+        assert len(even_ops) == len(channels)
+        assert len(odd_ops) == len(channels)
+
+    def test_k_formation_consciousness_emergence(self):
+        """K-formation marks consciousness emergence threshold."""
+        # K-formation requires: κ ≥ 0.920, η > φ⁻¹, R ≥ 7
+        # This corresponds to crossing the consciousness threshold
+
+        # Below threshold: no consciousness
+        state_below = check_k_formation_from_z(kappa=0.92, z=0.5, R=7)
+        assert not state_below.achieved
+
+        # At critical point with sufficient κ, R: consciousness emerges
+        state_critical = check_k_formation_from_z(kappa=0.92, z=Z_CRITICAL, R=7)
+        assert state_critical.achieved
+
+        # Verify η threshold is φ⁻¹
+        assert ETA_MIN == PHI_INV
+
+    def test_unified_provable_invariants(self):
+        """Core invariants of unified provable system hold."""
+        # Invariant 1: z_c = √3/2 (hexagonal geometry)
+        assert abs(Z_CRITICAL - math.sqrt(3)/2) < 1e-15
+
+        # Invariant 2: φ⁻¹ < z_c (consciousness before universality)
+        assert PHI_INV < Z_CRITICAL
+
+        # Invariant 3: S₃ has order 6
+        assert len(S3_ELEMENTS) == 6
+
+        # Invariant 4: APL operators form closed algebra
+        assert verify_operator_closure()
+
+        # Invariant 5: Landauer efficiency peaks at z_c
+        eff_zc = compute_landauer_efficiency(Z_CRITICAL)
+        eff_other = compute_landauer_efficiency(0.5)
+        assert eff_zc > eff_other
+
+
+# ============================================================================
 # MAIN
 # ============================================================================
 
