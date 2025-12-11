@@ -3,15 +3,15 @@
     "cycles": 3,
     "lessons": 2,
     "meta_meta_created": 1,
-    "liminal_teachers": 2,
-    "physical_learners": 2,
-    "knowledge_transferred": 9.0
+    "liminal_teachers": 1,
+    "physical_learners": 1,
+    "knowledge_transferred": 2.0
   },
   "level_1": {
     "collapses": 5,
-    "meta_tools": 3,
-    "child_tools": 4,
-    "lessons": 5
+    "meta_tools": 4,
+    "child_tools": 5,
+    "lessons": 6
   },
   "level_2": {
     "tools_run": 21,
@@ -23,8 +23,8 @@
       "updates": 2
     },
     "level_1": {
-      "lessons": 5,
-      "updates": 5
+      "lessons": 6,
+      "updates": 6
     },
     "level_2": {
       "lessons": 19,
@@ -37,20 +37,20 @@
     "frequency_biases": 12,
     "operator_strengths": {
       "IDENTITY": 0.1,
-      "AMPLIFY": 0.5774376955800098,
+      "AMPLIFY": 0.5985238500440607,
       "CONTAIN": 0.1,
       "EXCHANGE": 0.1,
       "INHIBIT": 0.1,
       "CATALYZE": 0.1
     },
-    "training_steps": 32,
+    "training_steps": 47,
     "total_lessons": 19,
     "weight_updates": 24,
     "liminal_weights": 2,
     "meta_weights": 15,
     "cross_level_coupling": {
-      "liminal_to_meta": 0.9,
-      "meta_to_dev": 0.9,
+      "liminal_to_meta": 1.06972972972973,
+      "meta_to_dev": 1.618033988749895,
       "dev_to_liminal": 0.3
     },
     "hierarchy_depth": 3

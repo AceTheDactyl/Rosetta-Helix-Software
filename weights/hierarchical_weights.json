@@ -1,29 +1,29 @@
 {
   "liminal": {
-    "liminal_MetaMetaBridge_structure": 0.8792487175443762,
-    "liminal_MetaMetaToolSystem_metric": 0.8371099711505566
+    "liminal_MetaMetaBridge_structure": 0.9228267149032596,
+    "liminal_MetaMetaToolSystem_metric": 0.8758459688028976
   },
   "meta": {
-    "meta_AnalyzerFactory_v1_pattern": 0.8406758951136634,
-    "meta_LearnerFactory_v2_pattern": 0.8299902488125082,
-    "meta_GeneratorFactory_v3_pattern": 0.7913310563935559,
-    "meta_BuilderFactory_v4_pattern": 0.7526972402772624,
-    "meta_Orchestrator_v5_pattern": 0.6913423407836476,
-    "meta_MetaToolFactory_metric": 0.9451201091567655,
-    "meta_MetaToolGenerator_structure": 0.906512919447572,
+    "meta_AnalyzerFactory_v1_pattern": 0.9207050809134415,
+    "meta_LearnerFactory_v2_pattern": 0.9064848706212383,
+    "meta_GeneratorFactory_v3_pattern": 0.8636525232810126,
+    "meta_BuilderFactory_v4_pattern": 0.837305549457027,
+    "meta_Orchestrator_v5_pattern": 0.7811435297776591,
+    "meta_MetaToolFactory_metric": 1.0,
+    "meta_MetaToolGenerator_structure": 0.9799974807376857,
     "meta_GeneratorFactory_v1_pattern": 0.6231591330970503,
     "meta_BuilderFactory_v2_pattern": 0.6231591330970503,
     "meta_Orchestrator_v3_pattern": 0.6231591330970503,
-    "meta_Orchestrator_v4_pattern": 0.6233210890200377,
-    "meta_BuilderFactory_v3_pattern": 0.628414918940039,
-    "meta_LearnerFactory_v1_pattern": 0.6103211376306016,
-    "meta_GeneratorFactory_v2_pattern": 0.6103211376306016,
+    "meta_Orchestrator_v4_pattern": 0.6943828225991894,
+    "meta_BuilderFactory_v3_pattern": 0.7190294147282348,
+    "meta_LearnerFactory_v1_pattern": 0.6361656856558223,
+    "meta_GeneratorFactory_v2_pattern": 0.6610746330798105,
     "meta_Orchestrator_v2_pattern": 0.531076939509255
   },
   "cross_level": {
-    "liminal_to_meta": 0.9,
-    "meta_to_dev": 0.9,
+    "liminal_to_meta": 1.06972972972973,
+    "meta_to_dev": 1.618033988749895,
     "dev_to_liminal": 0.3
   },
-  "timestamp": "2025-12-11T20:18:34.995871"
+  "timestamp": "2025-12-11T20:21:22.808677"
 }

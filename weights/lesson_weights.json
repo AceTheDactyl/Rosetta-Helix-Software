@@ -1,28 +1,28 @@
 {
   "coupling": {
-    "RED_PatternDetector_L1": 0.8823020702206412,
-    "RED_AnomalyFinder_L1": 0.8762428546288508,
-    "ORANGE_PatternLearner_L2": 0.834514311443061,
-    "ORANGE_ConceptExtractor_L2": 0.8125695619048405,
-    "ORANGE_RelationLearner_L2": 0.7344271714286302,
-    "YELLOW_CodeSynthesizer_L3": 0.6911510351103205,
-    "GREEN_StructureMapper_L4": 0.8125695619048405,
+    "RED_PatternDetector_L1": 0.8974918946147369,
+    "RED_AnomalyFinder_L1": 0.9518849187261004,
+    "ORANGE_PatternLearner_L2": 0.8478054077878948,
+    "ORANGE_ConceptExtractor_L2": 0.8660082444359457,
+    "ORANGE_RelationLearner_L2": 0.7745061833269592,
+    "YELLOW_CodeSynthesizer_L3": 0.6987459473073684,
+    "GREEN_StructureMapper_L4": 0.8660082444359457,
     "GREEN_GapAnalyzer_L4": 0.5154508497187473,
-    "BLUE_CodeBuilder_L5": 0.6911510351103205,
-    "BLUE_PipelineConstructor_L5": 0.695355976190525,
-    "INDIGO_InterfaceDesigner_L6": 0.65628478095242,
+    "BLUE_CodeBuilder_L5": 0.6987459473073684,
+    "BLUE_PipelineConstructor_L5": 0.7287551527724658,
+    "INDIGO_InterfaceDesigner_L6": 0.6830041222179727,
     "VIOLET_AbstractionBuilder_L7": 0.5278115294937452,
-    "VIOLET_IntegrationWeaver_L7": 0.8125695619048405
+    "VIOLET_IntegrationWeaver_L7": 0.8660082444359457
   },
   "frequencies": {
-    "RED_metric": -0.8947616437325948,
+    "RED_metric": -1.0,
     "RED_gap": 1.0,
     "ORANGE_structure": 0.0,
     "YELLOW_metric": 0.0,
     "GREEN_metric": 1.0,
     "GREEN_structure": 1.0,
     "GREEN_gap": 0.0030000000000000027,
-    "BLUE_structure": 0.9008517419006302,
+    "BLUE_structure": 1.0,
     "INDIGO_metric": -1.0,
     "INDIGO_structure": 0.0,
     "VIOLET_metric": -1.0,
@@ -30,12 +30,12 @@
   },
   "operators": {
     "IDENTITY": 0.1,
-    "AMPLIFY": 0.5774376955800098,
+    "AMPLIFY": 0.5985238500440607,
     "CONTAIN": 0.1,
     "EXCHANGE": 0.1,
     "INHIBIT": 0.1,
     "CATALYZE": 0.1
   },
-  "training_steps": 32,
-  "timestamp": "2025-12-11T20:18:34.995519"
+  "training_steps": 47,
+  "timestamp": "2025-12-11T20:21:22.808293"
 }
