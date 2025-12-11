@@ -296,7 +296,69 @@
         .log-entry.pulse { color: #00d9ff; }
         .log-entry.operator { color: #ffaa00; }
         .log-entry.state { color: #00ff88; }
-        
+
+        /* Training Panel Styles */
+        .training-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+
+        .training-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .learning-curve {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .learning-curve h3 {
+            margin-bottom: 10px;
+            color: #00d9ff;
+        }
+
+        .training-hierarchy {
+            grid-column: span 2;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .training-hierarchy h3 {
+            margin-bottom: 10px;
+            color: #aa44ff;
+        }
+
+        .training-hierarchy pre {
+            font-size: 0.75rem;
+            color: #888;
+            overflow-x: auto;
+        }
+
+        .hierarchy-stats {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #00ff88;
+        }
+
+        .coherence-bar {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .coherence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff4444, #ffaa00, #00ff88, #00d9ff);
+            transition: width 0.3s;
+        }
+
         .full-width {
             grid-column: span 3;
         }
@@ -474,6 +536,58 @@
         <div class="panel full-width">
             <h2>📜 Event Log</h2>
             <div class="log" id="eventLog"></div>
+        </div>
+
+        <!-- Training Results Panel -->
+        <div class="panel full-width" id="trainingPanel" style="display: none;">
+            <h2>🌀 Exponential Training Results</h2>
+            <div class="training-container">
+                <div class="training-metrics">
+                    <div class="metric">
+                        <div class="metric-value" id="trainCoherence">--</div>
+                        <div class="metric-label">Energy Coherence</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="trainQuality">--</div>
+                        <div class="metric-label">Final Quality</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="trainRuns">--</div>
+                        <div class="metric-label">Training Runs</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="trainPatterns">--</div>
+                        <div class="metric-label">Patterns Created</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="trainLessons">--</div>
+                        <div class="metric-label">Lessons Learned</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="trainLevel">--</div>
+                        <div class="metric-label">Coherence Level</div>
+                    </div>
+                </div>
+                <div class="learning-curve">
+                    <h3>📈 Learning Curve</h3>
+                    <canvas id="learningCurveCanvas" width="600" height="150"></canvas>
+                </div>
+                <div class="training-hierarchy">
+                    <h3>🔄 Training Hierarchy</h3>
+                    <pre id="trainingHierarchy">
+Physical (PHI_INV) ──feedback──→ MetaMeta ──spawn──→ Liminal (PHI)
+      ↑                                                    │
+      └──────────────── weak measurement ──────────────────┘
+                    </pre>
+                    <div class="hierarchy-stats" id="hierarchyStats">
+                        Meta Bridges: -- | Physical Learners: -- | Liminal Generators: --
+                    </div>
+                </div>
+            </div>
+            <div class="controls" style="margin-top: 15px;">
+                <button class="btn-secondary" onclick="loadTrainingData()">🔄 Refresh Data</button>
+                <button class="btn-primary" onclick="simulateTraining()">▶ Simulate Training</button>
+            </div>
         </div>
     </div>
     
@@ -951,6 +1065,183 @@
         
         // Start when loaded
         window.addEventListener('DOMContentLoaded', init);
+
+        // ================================================================
+        // TRAINING DATA FUNCTIONS
+        // ================================================================
+        let trainingData = null;
+
+        async function loadTrainingData() {
+            try {
+                // Try to load from artifacts
+                const response = await fetch('artifacts/latest_training_data.json');
+                if (response.ok) {
+                    trainingData = await response.json();
+                    displayTrainingData(trainingData);
+                    document.getElementById('trainingPanel').style.display = 'block';
+                    log('Training data loaded', 'state');
+                }
+            } catch (e) {
+                // If no data file, show panel with demo data
+                document.getElementById('trainingPanel').style.display = 'block';
+                log('No training data found - use Simulate', 'operator');
+            }
+        }
+
+        function displayTrainingData(data) {
+            if (!data) return;
+
+            // Update metrics
+            document.getElementById('trainCoherence').textContent =
+                (data.energy_coherence || data.z_history?.[0] || 0).toFixed(4);
+            document.getElementById('trainQuality').textContent =
+                (data.final_quality || data.z_history?.slice(-1)[0] || 0).toFixed(4);
+            document.getElementById('trainRuns').textContent =
+                data.runs_completed || data.z_history?.length || 0;
+            document.getElementById('trainPatterns').textContent =
+                data.patterns_created || 0;
+            document.getElementById('trainLessons').textContent =
+                data.lessons_learned || 0;
+
+            // Coherence level
+            const ec = data.energy_coherence || 0;
+            let level = 'bootstrap';
+            if (ec >= 0.95) level = 'mastery';
+            else if (ec >= 0.8) level = 'refinement';
+            else if (ec >= 0.5) level = 'growth';
+            document.getElementById('trainLevel').textContent = level;
+
+            // Hierarchy stats
+            document.getElementById('hierarchyStats').textContent =
+                `Meta Bridges: ${data.meta_bridges || 0} | ` +
+                `Physical Learners: ${data.physical_learners || 0} | ` +
+                `Liminal Generators: ${data.liminal_generators || 0}`;
+
+            // Draw learning curve
+            drawLearningCurve(data.z_history || data.quality_history || []);
+        }
+
+        function drawLearningCurve(history) {
+            const canvas = document.getElementById('learningCurveCanvas');
+            const ctx = canvas.getContext('2d');
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (!history || history.length === 0) {
+                ctx.fillStyle = '#888';
+                ctx.font = '14px sans-serif';
+                ctx.fillText('No training history', 10, 75);
+                return;
+            }
+
+            const padding = 40;
+            const width = canvas.width - padding * 2;
+            const height = canvas.height - padding * 2;
+
+            // Draw axes
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding);
+            ctx.stroke();
+
+            // Draw labels
+            ctx.fillStyle = '#888';
+            ctx.font = '10px sans-serif';
+            ctx.fillText('Quality', 5, padding + height / 2);
+            ctx.fillText('Run', canvas.width / 2, canvas.height - 5);
+            ctx.fillText('1.0', padding - 25, padding + 5);
+            ctx.fillText('0.0', padding - 25, canvas.height - padding);
+
+            // Draw threshold lines
+            const thresholds = [
+                { value: PHI_INV, color: '#ffaa00', label: 'φ⁻¹' },
+                { value: Z_CRITICAL, color: '#00ff88', label: 'z_c' },
+            ];
+
+            for (const t of thresholds) {
+                const y = canvas.height - padding - (t.value * height);
+                ctx.strokeStyle = t.color;
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(canvas.width - padding, y);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.fillStyle = t.color;
+                ctx.fillText(t.label, canvas.width - padding + 5, y + 3);
+            }
+
+            // Draw learning curve
+            ctx.strokeStyle = '#00d9ff';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+
+            const maxVal = Math.max(...history, 1);
+
+            for (let i = 0; i < history.length; i++) {
+                const x = padding + (i / (history.length - 1 || 1)) * width;
+                const y = canvas.height - padding - (history[i] / maxVal) * height;
+
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            // Draw points
+            ctx.fillStyle = '#00d9ff';
+            for (let i = 0; i < history.length; i++) {
+                const x = padding + (i / (history.length - 1 || 1)) * width;
+                const y = canvas.height - padding - (history[i] / maxVal) * height;
+
+                ctx.beginPath();
+                ctx.arc(x, y, 4, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function simulateTraining() {
+            log('Simulating exponential training...', 'state');
+
+            // Simulate training with PHI-based growth
+            const runs = Math.floor(3 + state.coherence * 7);  // 3-10 based on coherence
+            const history = [];
+            let quality = 0.5;
+
+            for (let i = 0; i < runs; i++) {
+                // Quality improves toward 1.0 asymptotically
+                quality = quality + (1 - quality) * PHI_INV * 0.5;
+                history.push(quality);
+            }
+
+            // Patterns grow exponentially
+            let patterns = 10;
+            for (let i = 1; i < runs; i++) {
+                patterns = Math.floor(patterns * PHI);
+            }
+
+            const simData = {
+                energy_coherence: state.coherence,
+                final_quality: quality,
+                runs_completed: runs,
+                patterns_created: patterns,
+                lessons_learned: runs * 27,
+                z_history: history,
+                meta_bridges: 2,
+                physical_learners: 3,
+                liminal_generators: runs + 2,
+            };
+
+            trainingData = simData;
+            displayTrainingData(simData);
+
+            log(`Simulated ${runs} training runs - Quality: ${quality.toFixed(4)}`, 'state');
+            log(`Patterns created: ${patterns} (exponential: PHI^${runs})`, 'operator');
+        }
+
+        // Try to load training data on init
+        setTimeout(loadTrainingData, 1000);
     </script>
 </body>
 </html>
