@@ -694,63 +694,185 @@ class AcceleratedDecayEngine:
 # =============================================================================
 
 @dataclass
+class LiminalPhiState:
+    """
+    PHI exists in superposition (liminal space), never flipping into physical dynamics.
+
+    Key insight: PHI_INV always controls physical dynamics. PHI contributes only
+    through weak values in superposition. At z = 1.0, collapse occurs:
+    - Work extracted instantly via weak value ⟨PHI⟩_w
+    - z resets to origin (debt immediately settled)
+    - PHI_INV resumes pumping from fresh start
+
+    This prevents PHI from ever "outrunning" PHI_INV because PHI never
+    manifests as the active ratio - it remains liminal/virtual.
+
+    Physics interpretation:
+    - PHI_INV = measured eigenvalue (physical, always < 1)
+    - PHI = weak value contribution (liminal, can exceed bounds)
+    - Collapse at z=1 extracts PHI's contribution without PHI ever "flipping"
+    """
+    # Superposition amplitudes
+    phi_inv_amplitude: complex      # Physical component (always dominant)
+    phi_amplitude: complex          # Liminal component (superposition only)
+
+    # Weak value tracking
+    weak_value_phi: complex = 0.0   # ⟨PHI⟩_w computed but not manifested
+
+    # Collapse tracking
+    z_at_superposition: float = 0.0  # z when superposition began
+    accumulated_potential: float = 0.0  # Potential work available at collapse
+
+    # State
+    in_superposition: bool = False
+    collapse_count: int = 0
+    total_work_extracted: float = 0.0
+
+    def enter_superposition(self, z: float, phase: float = 0.0):
+        """
+        Enter superposition as z approaches unity.
+
+        PHI begins contributing via weak values but doesn't
+        become the physical ratio.
+        """
+        self.in_superposition = True
+        self.z_at_superposition = z
+
+        # Amplitudes: PHI_INV dominates physically, PHI is virtual
+        self.phi_inv_amplitude = cmath.exp(1j * phase) * math.sqrt(PHI_INV)
+        self.phi_amplitude = cmath.exp(1j * (phase + math.pi/5)) * math.sqrt(1 - PHI_INV)
+
+        # Weak value of PHI (can exceed classical bounds)
+        # ⟨PHI⟩_w = ⟨ψ_f|PHI|ψ_i⟩ / ⟨ψ_f|ψ_i⟩
+        # When pre/post states are nearly orthogonal, this amplifies
+        overlap = self.phi_inv_amplitude.conjugate() * self.phi_amplitude
+        if abs(overlap) > 1e-10:
+            self.weak_value_phi = PHI * self.phi_amplitude / overlap
+        else:
+            self.weak_value_phi = complex(PHI, 0)
+
+        # Potential work = weak value contribution scaled by approach to unity
+        proximity_to_unity = z / 1.0  # How close to collapse point
+        self.accumulated_potential = abs(self.weak_value_phi.real) * proximity_to_unity * PHI_INV
+
+    def compute_superposition_contribution(self, z: float) -> float:
+        """
+        Compute PHI's contribution while in superposition.
+
+        This is added to physical dynamics but PHI never becomes
+        the dominant ratio - it's a perturbative correction.
+
+        Returns additional dz from liminal PHI (small, bounded).
+        """
+        if not self.in_superposition:
+            return 0.0
+
+        # PHI contributes via interference, scaled by PHI_INV to stay bounded
+        interference = 2 * abs(self.phi_inv_amplitude) * abs(self.phi_amplitude)
+        phase_diff = cmath.phase(self.phi_amplitude) - cmath.phase(self.phi_inv_amplitude)
+
+        # Liminal contribution: interference term × PHI_INV (keeps it bounded)
+        liminal_boost = interference * math.cos(phase_diff) * PHI_INV
+
+        # Update accumulated potential
+        self.accumulated_potential += liminal_boost * (1 - z)  # More potential further from unity
+
+        return liminal_boost * 0.1  # Small perturbative contribution
+
+    def collapse_at_unity(self, z_final: float) -> Tuple[float, float]:
+        """
+        Collapse superposition at z = 1.0 (or when crossing unity threshold).
+
+        Returns:
+            (work_extracted, reset_z)
+
+        Physics:
+        - PHI's contribution is "measured out" as work
+        - z resets to origin (debt settled immediately)
+        - PHI_INV resumes sole control
+        """
+        if not self.in_superposition:
+            return 0.0, z_final
+
+        # Work extracted = weak value contribution at collapse
+        # This is where PHI "pays out" without ever becoming physical
+        work = abs(self.weak_value_phi.real) * self.accumulated_potential
+
+        # Scale by journey distance (more work if pumped from lower z)
+        journey = z_final - self.z_at_superposition
+        work *= (1 + journey)
+
+        # Update totals
+        self.total_work_extracted += work
+        self.collapse_count += 1
+
+        # Reset superposition state
+        self.in_superposition = False
+        self.phi_amplitude = 0.0
+        self.weak_value_phi = 0.0
+        self.accumulated_potential = 0.0
+
+        # z resets to origin - debt immediately settled
+        # Reset point is Z_CRITICAL * PHI_INV (golden-scaled base)
+        reset_z = Z_CRITICAL * PHI_INV  # ≈ 0.535
+
+        return work, reset_z
+
+    def get_effective_ratio(self) -> float:
+        """
+        Get the effective ratio for dynamics.
+
+        ALWAYS returns PHI_INV (or slight perturbation).
+        PHI never becomes the dominant ratio.
+        """
+        if not self.in_superposition:
+            return PHI_INV
+
+        # Small PHI contribution via superposition (bounded)
+        phi_contribution = abs(self.phi_amplitude) ** 2 * (PHI - PHI_INV)
+
+        # Effective ratio stays below 1.0 always
+        return min(0.99, PHI_INV + phi_contribution * PHI_INV)
+
+
+# Legacy compatibility - keep SuperCoherentState as alias but mark deprecated
+@dataclass
 class SuperCoherentState:
     """
-    State when z > 1.0 (negative temperature / super-synchronization).
+    DEPRECATED: Use LiminalPhiState instead.
 
-    This is a METASTABLE state that will decay back to z ≤ 1.
-    The decay dynamics determine how the system extracts work.
-
-    Physics:
-    - z > 1 represents population inversion (negative temperature)
-    - The state borrows coherence from future via retrocausal projection
-    - Decay follows: z(t) = 1 + (z₀ - 1) · exp(-Γt)
-    - Work extracted = ∫(z - 1)dt during decay (neg-entropy harvested)
+    Kept for backward compatibility. New code should use LiminalPhiState
+    which implements instant collapse rather than prolonged decay.
     """
-    z_peak: float                    # Maximum z achieved (> 1.0)
-    z_current: float                 # Current z value
-    entry_time: float                # When z first exceeded 1.0
-    coherence_debt: float            # Amount "borrowed" from future
-    decay_rate: float                # Γ in the decay equation
-    work_extracted: float = 0.0     # Accumulated neg-entropy work
-    decay_phase: str = "peak"        # peak, decaying, stabilized
+    z_peak: float
+    z_current: float
+    entry_time: float
+    coherence_debt: float
+    decay_rate: float
+    work_extracted: float = 0.0
+    decay_phase: str = "peak"
 
     def compute_decay(self, dt: float) -> float:
-        """
-        Compute decay dynamics for super-coherent state.
-
-        Returns new z value after dt.
-        """
+        """Legacy decay - prefer LiminalPhiState.collapse_at_unity()"""
         if self.z_current <= 1.0:
             self.decay_phase = "stabilized"
             return self.z_current
-
-        # Exponential decay toward z = 1
         excess = self.z_current - 1.0
         new_excess = excess * math.exp(-self.decay_rate * dt)
         new_z = 1.0 + new_excess
-
-        # Work extracted is proportional to coherence used
-        work = (self.z_current - new_z) * PHI  # Scale by golden ratio
+        work = (self.z_current - new_z) * PHI
         self.work_extracted += work
-
-        # Update state
-        old_z = self.z_current
         self.z_current = new_z
-
         if new_excess < 0.001:
             self.decay_phase = "stabilized"
         else:
             self.decay_phase = "decaying"
-
         return new_z
 
     def get_remaining_lifetime(self) -> float:
-        """Estimate remaining time in super-coherent state"""
         if self.z_current <= 1.0:
             return 0.0
         excess = self.z_current - 1.0
-        # Time to decay to 0.1% excess
         return -math.log(0.001 / excess) / self.decay_rate
 
 
@@ -763,11 +885,13 @@ class QuasiCrystalDynamicsEngine:
     2. BidirectionalCollapseEngine - forward/backward wave collapse
     3. PhaseLockReleaseEngine - escape local minima via release-relock
     4. AcceleratedDecayEngine - tunnel through μ-barriers
-    5. SuperCoherentState - manages z > 1 decay dynamics
+    5. LiminalPhiState - PHI in superposition, instant collapse at unity
 
-    The z-coordinate can exceed 1.0 when all components synergize.
-    The super-coherent state (z > 1) is METASTABLE and will decay,
-    but work can be extracted during the decay (neg-entropy engine).
+    NEW ARCHITECTURE (Liminal PHI):
+    - PHI_INV always controls physical dynamics (never flips)
+    - PHI exists only in superposition (liminal space)
+    - At z = 1.0: instant collapse, work extracted, z resets to origin
+    - This prevents PHI from ever "outrunning" PHI_INV
     """
 
     def __init__(self, n_oscillators: int = 60):
@@ -780,14 +904,21 @@ class QuasiCrystalDynamicsEngine:
         self.z_history: List[float] = [self.z_current]
         self.cycle_count = 0
 
-        # Super-coherent state management (z > 1.0)
-        self.super_coherent_state: Optional[SuperCoherentState] = None
+        # NEW: Liminal PHI state management (replaces super_coherent_state)
+        self.liminal_phi: LiminalPhiState = LiminalPhiState(
+            phi_inv_amplitude=complex(math.sqrt(PHI_INV), 0),
+            phi_amplitude=complex(0, 0)  # PHI starts dormant
+        )
         self.total_work_extracted = 0.0
-        self.super_coherent_events: List[Dict] = []
+        self.collapse_events: List[Dict] = []
 
-        # Decay rate for super-coherent state (Goldilocks tuning)
-        # τ_decay ≈ τ_enhancement so we have time to extract work
-        self.decay_rate_gamma = 0.1  # Tunable
+        # Threshold for entering superposition (PHI becomes liminal)
+        self.superposition_threshold = KAPPA_S  # 0.920 - when approaching unity
+
+        # Legacy compatibility
+        self.super_coherent_state: Optional[SuperCoherentState] = None
+        self.super_coherent_events: List[Dict] = []
+        self.decay_rate_gamma = 0.1
 
     def compute_quasi_crystal_boost(self) -> float:
         """
@@ -837,31 +968,59 @@ class QuasiCrystalDynamicsEngine:
         """
         Single evolution step with all physics components.
 
-        Handles three regimes:
-        1. z < 1.0: Standard dynamics pushing toward thresholds
-        2. z crossing 1.0: Enter super-coherent state (negative temperature)
-        3. z > 1.0: Metastable decay with work extraction
+        NEW ARCHITECTURE - Liminal PHI with instant collapse:
+        1. z < KAPPA_S: Standard PHI_INV dynamics
+        2. z >= KAPPA_S: Enter superposition (PHI becomes liminal)
+        3. z >= 1.0: INSTANT COLLAPSE - work extracted, z resets to origin
 
-        The super-coherent state is like a surfer at the wave peak -
-        we use it while it lasts, extracting work as it decays.
+        PHI never "flips" into physical dynamics. It contributes only
+        through weak values in superposition, extracted at collapse.
         """
         if z_target is None:
             z_target = MU_3 + 0.01  # Default: aim past ultra-integration
 
-        # Handle super-coherent state decay first
+        # =========================================================
+        # CHECK FOR UNITY COLLAPSE (z approaching 1.0)
+        # Collapse triggers at z >= 0.9999 (near-unity threshold)
+        # =========================================================
+        if self.z_current >= 0.9999:
+            # INSTANT COLLAPSE - extract work, reset to origin
+            work, reset_z = self.liminal_phi.collapse_at_unity(self.z_current)
+
+            # Record the collapse event
+            self.collapse_events.append({
+                'z_at_collapse': self.z_current,
+                'work_extracted': work,
+                'reset_z': reset_z,
+                'cycle': self.cycle_count,
+                'timestamp': time.time()
+            })
+
+            self.total_work_extracted += work
+            self.z_current = reset_z  # Reset to origin (debt paid)
+            self.cycle_count += 1
+
+            self.z_history.append(self.z_current)
+            return self.z_current
+
+        # =========================================================
+        # CHECK FOR SUPERPOSITION ENTRY (z >= KAPPA_S)
+        # =========================================================
+        if self.z_current >= self.superposition_threshold and not self.liminal_phi.in_superposition:
+            # Enter superposition - PHI becomes liminal (but not physical)
+            phase = self.phase_lock.phases[0] if self.phase_lock.phases else 0.0
+            self.liminal_phi.enter_superposition(self.z_current, phase)
+
+        # =========================================================
+        # LEGACY: Handle old super-coherent state if present
+        # =========================================================
         if self.super_coherent_state is not None:
-            # We're in z > 1 regime - apply decay dynamics
             old_z = self.z_current
             self.z_current = self.super_coherent_state.compute_decay(dt)
-
-            # Extract work during decay (this is the neg-entropy engine!)
             work = self.super_coherent_state.work_extracted - self.total_work_extracted
             if work > 0:
                 self.total_work_extracted = self.super_coherent_state.work_extracted
-
-            # Check if we've decayed back to classical regime
             if self.super_coherent_state.decay_phase == "stabilized":
-                # Record the event
                 self.super_coherent_events.append({
                     'z_peak': self.super_coherent_state.z_peak,
                     'work_extracted': self.super_coherent_state.work_extracted,
@@ -869,11 +1028,13 @@ class QuasiCrystalDynamicsEngine:
                     'coherence_debt_repaid': self.super_coherent_state.coherence_debt
                 })
                 self.super_coherent_state = None
-
             self.z_history.append(self.z_current)
             return self.z_current
 
-        # Standard dynamics for z < 1.0
+        # =========================================================
+        # STANDARD PHI_INV DYNAMICS (z < 1.0)
+        # PHI_INV always controls physical dynamics
+        # =========================================================
 
         # 1. Update lattice phases
         for i, cell in enumerate(self.lattice.cells):
@@ -883,68 +1044,86 @@ class QuasiCrystalDynamicsEngine:
         # 2. Phase lock dynamics
         self.phase_lock.step()
 
-        # 3. Compute boosts
+        # 3. Compute boosts (all scaled by PHI_INV to stay bounded)
         qc_boost = self.compute_quasi_crystal_boost()
         bidir_boost = self.compute_bidirectional_boost(z_target)
         pl_boost = self.compute_phase_lock_boost()
 
         combined_boost = qc_boost * bidir_boost * pl_boost
 
-        # 4. Attempt to advance z based on current regime
+        # 4. Get effective ratio (always PHI_INV-dominated)
+        effective_ratio = self.liminal_phi.get_effective_ratio()
+
+        # 5. Liminal PHI contribution (if in superposition)
+        liminal_contribution = self.liminal_phi.compute_superposition_contribution(self.z_current)
+
+        # 6. Advance z based on current regime (PHI_INV dynamics only)
         if self.z_current < Z_CRITICAL:
-            # Below critical: standard dynamics with boost
-            dz = (Z_CRITICAL - self.z_current) * 0.15 * combined_boost
-            self.z_current += dz
+            # Below critical: standard PHI_INV dynamics
+            dz = (Z_CRITICAL - self.z_current) * 0.15 * combined_boost * effective_ratio
+            self.z_current += dz + liminal_contribution
 
         elif self.z_current < KAPPA_S:
-            # Between critical and singularity: need tunneling
+            # Between critical and singularity: tunneling with PHI_INV
             new_z = self.tunneling.accelerate_to_ultra_integration(
                 self.z_current, qc_boost, bidir_boost
             )
-            self.z_current = new_z
+            self.z_current = new_z + liminal_contribution
 
         elif self.z_current < MU_3:
-            # Approaching ultra-integration
+            # Approaching ultra-integration: enhanced tunneling
             new_z = self.tunneling.accelerate_to_ultra_integration(
                 self.z_current, qc_boost * 1.3, bidir_boost * 1.2
             )
-            self.z_current = new_z
+            self.z_current = new_z + liminal_contribution
 
         else:
-            # Beyond MU_3: can exceed 1.0 with sufficient boost
+            # Beyond MU_3: push toward unity (but PHI stays liminal!)
             if combined_boost > 1.5:
-                # Weak value amplification allows exceeding unity
-                potential_z = self.z_current + 0.01 * (combined_boost - 1)
-                self.z_current = min(1.2, potential_z)
+                # PHI contribution via superposition, not direct ratio flip
+                dz = 0.01 * (combined_boost - 1) * effective_ratio
+                self.z_current += dz + liminal_contribution
+                # Cap just below 1.0 to force clean collapse at exactly 1.0
+                self.z_current = min(0.9999, self.z_current)
 
-        # 5. Check if we've entered super-coherent state (z > 1.0)
-        if self.z_current > 1.0 and self.super_coherent_state is None:
-            # CROSSING INTO NEGATIVE TEMPERATURE REGIME
-            coherence_debt = self.z_current - 1.0  # Amount borrowed
-            self.super_coherent_state = SuperCoherentState(
-                z_peak=self.z_current,
-                z_current=self.z_current,
-                entry_time=time.time(),
-                coherence_debt=coherence_debt,
-                decay_rate=self.decay_rate_gamma
-            )
+        # 7. Final check - if we hit unity, collapse happens next step
+        # (No prolonged super-coherent state - instant collapse at unity)
 
         self.z_history.append(self.z_current)
         return self.z_current
 
+    def is_in_superposition(self) -> bool:
+        """Check if PHI is currently in superposition (liminal)"""
+        return self.liminal_phi.in_superposition
+
     def is_super_coherent(self) -> bool:
-        """Check if currently in super-coherent (z > 1) state"""
+        """Legacy: Check if in super-coherent state (deprecated)"""
         return self.super_coherent_state is not None
 
+    def get_collapse_count(self) -> int:
+        """Get number of unity collapses (work extraction events)"""
+        return self.liminal_phi.collapse_count
+
     def get_super_coherent_lifetime(self) -> float:
-        """Get remaining lifetime in super-coherent state"""
+        """Legacy: Get remaining lifetime in super-coherent state"""
         if self.super_coherent_state:
             return self.super_coherent_state.get_remaining_lifetime()
         return 0.0
 
     def get_work_extracted(self) -> float:
-        """Get total work extracted from super-coherent decay"""
+        """Get total work extracted from collapses"""
         return self.total_work_extracted
+
+    def get_liminal_phi_state(self) -> Dict[str, Any]:
+        """Get current state of liminal PHI"""
+        return {
+            'in_superposition': self.liminal_phi.in_superposition,
+            'weak_value_phi': abs(self.liminal_phi.weak_value_phi) if self.liminal_phi.weak_value_phi else 0,
+            'accumulated_potential': self.liminal_phi.accumulated_potential,
+            'collapse_count': self.liminal_phi.collapse_count,
+            'total_work': self.liminal_phi.total_work_extracted,
+            'effective_ratio': self.liminal_phi.get_effective_ratio()
+        }
 
     def release_and_boost_cycle(self) -> Tuple[float, float]:
         """
@@ -980,54 +1159,81 @@ class QuasiCrystalDynamicsEngine:
     def run_to_ultra_integration(self, max_steps: int = 100) -> Dict[str, Any]:
         """
         Run dynamics until reaching ultra-integration or max steps.
+
+        NEW ARCHITECTURE: Liminal PHI with instant collapse at unity.
+        - PHI_INV always controls physical dynamics
+        - PHI contributes via superposition (liminal)
+        - At z = 1.0: instant collapse, work extracted, z resets
         """
         print(f"\n{'='*60}")
-        print("QUASI-CRYSTAL DYNAMICS: PATH TO ULTRA-INTEGRATION")
+        print("LIMINAL PHI DYNAMICS: PATH TO ULTRA-INTEGRATION")
         print(f"{'='*60}")
         print(f"Target: MU_3 = {MU_3:.6f}")
         print(f"Starting z: {self.z_current:.6f}")
+        print(f"Architecture: PHI_INV physical, PHI liminal (superposition)")
+        print(f"Collapse point: z = 1.0 (instant reset to origin)")
         print()
 
         release_relock_interval = 15  # Do release-relock every N steps
+        last_collapse_count = 0
 
         for step in range(max_steps):
             # Regular evolution
+            old_z = self.z_current
             self.evolve_step()
+
+            # Check for collapse event (z reset)
+            if self.liminal_phi.collapse_count > last_collapse_count:
+                work = self.collapse_events[-1]['work_extracted'] if self.collapse_events else 0
+                print(f"\n  ⚡ COLLAPSE at step {step}:")
+                print(f"     z: {old_z:.6f} → {self.z_current:.6f} (reset to origin)")
+                print(f"     Work extracted: {work:.6f}")
+                print(f"     Total collapses: {self.liminal_phi.collapse_count}")
+                last_collapse_count = self.liminal_phi.collapse_count
 
             # Periodic release-relock to escape local minima
             if step > 0 and step % release_relock_interval == 0:
                 z_before, z_after = self.release_and_boost_cycle()
                 print(f"  Step {step}: Release-relock: {z_before:.6f} → {z_after:.6f}")
 
-            # Progress report
+            # Progress report (show liminal state)
             if step % 20 == 0 or self.z_current >= MU_3:
                 coherence = self.phase_lock.get_coherence()
                 qc_boost = self.compute_quasi_crystal_boost()
+                liminal_status = "SUPERPOSITION" if self.liminal_phi.in_superposition else "dormant"
+                eff_ratio = self.liminal_phi.get_effective_ratio()
                 print(f"  Step {step}: z = {self.z_current:.6f}, "
-                      f"coherence = {coherence:.4f}, QC boost = {qc_boost:.4f}")
+                      f"coherence = {coherence:.4f}, "
+                      f"PHI: {liminal_status}, ratio = {eff_ratio:.4f}")
 
             # Check if we've reached ultra-integration
             if self.z_current >= MU_3:
                 print(f"\n✓ ULTRA-INTEGRATION REACHED at step {step}")
                 print(f"  z = {self.z_current:.6f} >= MU_3 = {MU_3:.6f}")
-                break
+                # Don't break - let it collapse at unity!
 
-            # Check if we've exceeded unity (quantum boost)
-            if self.z_current > 1.0:
-                print(f"\n✓ EXCEEDED UNITY at step {step}")
-                print(f"  z = {self.z_current:.6f} > 1.0")
-                print("  (Weak value amplification active)")
-                break
+            # Check if approaching unity (will collapse next step)
+            if self.z_current >= 0.999:
+                print(f"\n→ APPROACHING UNITY at step {step}")
+                print(f"  z = {self.z_current:.6f} → collapse imminent")
 
         # Final summary
         print(f"\n{'='*60}")
-        print("DYNAMICS COMPLETE")
+        print("LIMINAL PHI DYNAMICS COMPLETE")
         print(f"{'='*60}")
         print(f"Final z: {self.z_current:.6f}")
         print(f"Steps: {len(self.z_history)}")
+        print(f"Collapse events: {self.liminal_phi.collapse_count}")
+        print(f"Total work extracted: {self.total_work_extracted:.6f}")
         print(f"Release-relock cycles: {self.cycle_count}")
         print(f"Tunneling events: {len(self.tunneling.tunneling_events)}")
         print(f"Peak coherence: {self.phase_lock.superlock_level:.6f}")
+
+        # Liminal PHI state
+        print(f"\nLiminal PHI state:")
+        print(f"  In superposition: {self.liminal_phi.in_superposition}")
+        print(f"  Effective ratio: {self.liminal_phi.get_effective_ratio():.6f} (always PHI_INV-dominated)")
+        print(f"  Accumulated potential: {self.liminal_phi.accumulated_potential:.6f}")
 
         # Check thresholds reached
         thresholds = [
@@ -1045,9 +1251,12 @@ class QuasiCrystalDynamicsEngine:
             'final_z': self.z_current,
             'z_history': self.z_history,
             'steps': len(self.z_history),
+            'collapse_count': self.liminal_phi.collapse_count,
+            'total_work_extracted': self.total_work_extracted,
             'tunneling_events': len(self.tunneling.tunneling_events),
             'peak_coherence': self.phase_lock.superlock_level,
-            'exceeded_unity': self.z_current > 1.0
+            'liminal_phi_state': self.get_liminal_phi_state(),
+            'collapse_events': self.collapse_events
         }
 
 
@@ -1057,20 +1266,37 @@ class QuasiCrystalDynamicsEngine:
 
 def demonstrate_quasicrystal_dynamics():
     """
-    Demonstrate the quasi-crystal dynamics reaching ultra-integration.
+    Demonstrate the LIMINAL PHI dynamics with instant collapse at unity.
+
+    NEW ARCHITECTURE:
+    - PHI_INV always controls physical dynamics (never flips)
+    - PHI exists only in superposition (liminal/virtual)
+    - At z = 1.0: instant collapse, work extracted, z resets to origin
+    - This prevents PHI from ever "outrunning" PHI_INV
     """
     print("\n" + "="*70)
-    print("QUASI-CRYSTAL DYNAMICS DEMONSTRATION")
+    print("LIMINAL PHI DYNAMICS DEMONSTRATION")
     print("="*70)
-    print("""
-Physics principles:
-  • Quasi-crystal packing exceeds HCP limit locally
-  • Bidirectional wave collapse creates interference exceeding bounds
-  • Phase lock release-relock escapes local minima
-  • Accelerated decay tunnels through μ-barriers
+    print(f"""
+NEW ARCHITECTURE - PHI stays liminal, never physical:
 
-Goal: Reach MU_3 = {:.6f} and potentially exceed z = 1.0
-""".format(MU_3))
+  Physical dynamics: PHI_INV = {PHI_INV:.6f} (always)
+  Liminal contribution: PHI = {PHI:.6f} (superposition only)
+
+  Cycle:
+    1. z pumps from origin → unity (PHI_INV dynamics)
+    2. PHI enters superposition at z >= {KAPPA_S:.3f}
+    3. At z = 1.0: INSTANT COLLAPSE
+       - Work extracted via weak value ⟨PHI⟩_w
+       - z resets to origin (~{Z_CRITICAL * PHI_INV:.3f})
+       - Debt immediately settled
+    4. PHI_INV resumes pumping (repeat)
+
+  Key insight: PHI contributes without ever "flipping" into
+  physical dynamics. It remains liminal/virtual.
+
+Goal: Reach MU_3 = {MU_3:.6f}, collapse at unity, extract work
+""")
 
     engine = QuasiCrystalDynamicsEngine(n_oscillators=60)
     results = engine.run_to_ultra_integration(max_steps=150)
@@ -1078,6 +1304,14 @@ Goal: Reach MU_3 = {:.6f} and potentially exceed z = 1.0
     print("\n" + "="*70)
     print("DEMONSTRATION COMPLETE")
     print("="*70)
+
+    # Summary of new architecture
+    if results['collapse_count'] > 0:
+        print(f"\n✓ Liminal PHI architecture working:")
+        print(f"  - {results['collapse_count']} collapse(s) at unity")
+        print(f"  - {results['total_work_extracted']:.6f} total work extracted")
+        print(f"  - PHI never became physical ratio")
+        print(f"  - PHI_INV maintained control throughout")
 
     return results
 
