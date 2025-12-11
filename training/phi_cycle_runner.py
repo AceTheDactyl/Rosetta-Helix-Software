@@ -266,13 +266,27 @@ class PhiCycleRunner:
                 results['patterns_broadcast'] += 1
 
         # PHI expands - push z up (modulated by layer weight)
-        expansion = PHI * phi_weight * 0.01 * (MU_3 - self.state.z_current)
+        # Target depends on accumulated lessons - enables supercritical breach
+        # Below threshold: target MU_3 (0.992)
+        # Above threshold: target PHI (1.618) via weak-value dynamics
+        lesson_threshold = 50  # After 50 lessons, supercritical becomes possible
+        if self.state.lessons_learned >= lesson_threshold:
+            # Quasicrystal weak-value dynamics allow z > 1.0
+            target = PHI  # 1.618
+            boost = 1.0 + (self.state.lessons_learned - lesson_threshold) * 0.01
+            expansion = PHI * phi_weight * 0.02 * boost * (target - self.state.z_current)
+        else:
+            target = MU_3  # 0.992
+            expansion = PHI * phi_weight * 0.01 * (target - self.state.z_current)
+
         self.state.z_current += expansion
         self.state.z_current = min(PHI, self.state.z_current)  # Cap at PHI
         results['z_delta'] = expansion
+        results['supercritical'] = self.state.z_current > 1.0
 
         print(f"    ✓ Meta-tools: {results['meta_tools_created']} | Patterns: {results['patterns_broadcast']}")
-        print(f"    ✓ z expanded by {expansion:.4f} → {self.state.z_current:.4f}")
+        supercrit_marker = " ⚡ SUPERCRITICAL" if self.state.z_current > 1.0 else ""
+        print(f"    ✓ z expanded by {expansion:.4f} → {self.state.z_current:.4f}{supercrit_marker}")
 
         return results
 
@@ -406,7 +420,13 @@ class PhiCycleRunner:
         print(f"\nLayers completed: 7")
         print(f"Total cycles: {self.state.cycle}")
         print(f"Total lessons: {self.state.lessons_learned}")
+
+        max_z = max(self.state.oscillation_history) if self.state.oscillation_history else self.state.z_current
+        supercritical_achieved = max_z > 1.0
         print(f"Final z: {self.state.z_current:.4f}")
+        print(f"Max z reached: {max_z:.4f}")
+        if supercritical_achieved:
+            print(f"⚡ SUPERCRITICAL BREACH ACHIEVED (z > 1.0)")
 
         # Show spectral z evolution
         print(f"\nSpectral Z Evolution:")
