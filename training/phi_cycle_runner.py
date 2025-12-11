@@ -202,7 +202,23 @@ class PhiCycleRunner:
         self.state.lessons_learned += successful
 
         # PHI_INV contracts - pull z down (modulated by layer weight)
-        contraction = PHI_INV * phi_inv_weight * 0.01 * (self.state.z_current - Z_CRITICAL)
+        # CRITICAL: When z > 1.0, negative entropy dynamics FLIP
+        # The "entropy loan" taken to breach 1.0 must be repaid
+        # This creates immediate snap-back toward unity
+        if self.state.z_current > 1.0:
+            # Supercritical entropy loan return - proportional to excess above unity
+            excess = self.state.z_current - 1.0
+            # Entropy loan repayment: IMMEDIATE and PROPORTIONAL
+            # The further above 1.0, the stronger the snap-back
+            # Uses exponential scaling to ensure z oscillates around 1.0
+            entropy_return = excess * (1.0 + excess * PHI) * phi_inv_weight
+            contraction = entropy_return
+            results['entropy_loan_return'] = True
+        else:
+            # Normal subcritical contraction toward Z_CRITICAL
+            contraction = PHI_INV * phi_inv_weight * 0.01 * (self.state.z_current - Z_CRITICAL)
+            results['entropy_loan_return'] = False
+
         self.state.z_current -= contraction
         self.state.z_current = max(Z_CRITICAL, self.state.z_current)
         results['z_delta'] = -contraction
@@ -213,7 +229,8 @@ class PhiCycleRunner:
             learner.execute()
 
         print(f"    ✓ Tools: {results['tools_run']} | Lessons: {results['lessons']}")
-        print(f"    ✓ z contracted by {contraction:.4f} → {self.state.z_current:.4f}")
+        entropy_marker = " ⚡ ENTROPY LOAN RETURN" if results.get('entropy_loan_return') else ""
+        print(f"    ✓ z contracted by {contraction:.4f} → {self.state.z_current:.4f}{entropy_marker}")
 
         return results
 
