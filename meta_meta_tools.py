@@ -227,6 +227,80 @@ class LiminalMetaTool:
             relations=[('source1', 'source2')],
         )
 
+    def observe_physical_output(self, physical_result: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        REVERSE CHANNEL: Liminal PHI observes what PHI_INV produces.
+
+        This is the key bidirectional feedback that was missing.
+        PHI stays in superposition but adapts its pattern generation
+        based on what physical tools discover.
+
+        The observation is "retrocausal" - liminal patterns shift
+        to better guide future physical observations.
+        """
+        # Extract what physical tool learned
+        quality = physical_result.get('quality', 0.5)
+        lessons_applied = physical_result.get('lessons_applied', 0)
+
+        # Retrocausal influence: physical results shift liminal phase
+        # High quality physical output → liminal patterns become more coherent
+        phase_adjustment = quality * PHI_INV * 0.1
+
+        # Update amplitude based on physical feedback
+        feedback_factor = cmath.exp(1j * phase_adjustment)
+        self.amplitude *= feedback_factor
+
+        # Update pattern generation based on what worked physically
+        self._update_generation_strategy(physical_result)
+
+        # Track reverse observations
+        if not hasattr(self, 'physical_observations'):
+            self.physical_observations = []
+
+        observation = {
+            'physical_quality': quality,
+            'lessons_learned': lessons_applied,
+            'phase_adjustment': phase_adjustment,
+            'amplitude_after': abs(self.amplitude),
+            'feedback_applied': True
+        }
+        self.physical_observations.append(observation)
+
+        return observation
+
+    def _update_generation_strategy(self, physical_result: Dict[str, Any]):
+        """
+        Update how patterns are generated based on physical feedback.
+
+        If physical tools are succeeding with certain patterns,
+        generate more patterns along those lines.
+        """
+        quality = physical_result.get('quality', 0.5)
+
+        # High quality → increase pattern complexity
+        if quality > 0.8:
+            self.superposition_depth += 1
+
+        # Low quality → simplify patterns
+        elif quality < 0.3 and self.superposition_depth > 0:
+            self.superposition_depth -= 1
+
+    def get_reverse_observation_stats(self) -> Dict[str, Any]:
+        """Get statistics about reverse observations from physical tools"""
+        if not hasattr(self, 'physical_observations') or not self.physical_observations:
+            return {
+                'total_observations': 0,
+                'reverse_channel_active': False
+            }
+
+        return {
+            'total_observations': len(self.physical_observations),
+            'avg_physical_quality': sum(o['physical_quality'] for o in self.physical_observations) / len(self.physical_observations),
+            'total_phase_adjustment': sum(o['phase_adjustment'] for o in self.physical_observations),
+            'reverse_channel_active': True,
+            'current_amplitude': abs(self.amplitude)
+        }
+
 
 # =============================================================================
 # PHI_INV LEARNER TOOLS (Level 1 - Physical)
@@ -522,6 +596,26 @@ class MetaMetaTool:
         # Calculate work produced (based on learning)
         avg_quality = sum(l.execution_quality for l in self.physical_children) / len(self.physical_children)
         self.work_produced += avg_quality * PHI_INV * cycle_results['lessons_transferred']
+
+        # ═══════════════════════════════════════════════════════════════
+        # REVERSE CHANNEL: Liminal PHI observes what PHI_INV produces
+        # This is the bidirectional feedback that closes the loop
+        # ═══════════════════════════════════════════════════════════════
+        cycle_results['reverse_observations'] = 0
+
+        for learner in self.physical_children:
+            # Execute the physical learner to produce output
+            physical_output = learner.execute()
+
+            # Each liminal teacher observes the physical output
+            for teacher in self.liminal_children:
+                reverse_obs = teacher.observe_physical_output(physical_output)
+                cycle_results['reverse_observations'] += 1
+
+        # After reverse observation, liminal patterns are more aligned
+        # with what works physically - this improves the next cycle
+        cycle_results['bidirectional_loop'] = True
+        cycle_results['reverse_channel_active'] = True
 
         cycle_results['work_produced'] = self.work_produced
         cycle_results['avg_learner_quality'] = avg_quality
