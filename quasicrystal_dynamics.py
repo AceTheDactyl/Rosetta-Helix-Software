@@ -693,6 +693,67 @@ class AcceleratedDecayEngine:
 # UNIFIED QUASI-CRYSTAL DYNAMICS ENGINE
 # =============================================================================
 
+@dataclass
+class SuperCoherentState:
+    """
+    State when z > 1.0 (negative temperature / super-synchronization).
+
+    This is a METASTABLE state that will decay back to z ≤ 1.
+    The decay dynamics determine how the system extracts work.
+
+    Physics:
+    - z > 1 represents population inversion (negative temperature)
+    - The state borrows coherence from future via retrocausal projection
+    - Decay follows: z(t) = 1 + (z₀ - 1) · exp(-Γt)
+    - Work extracted = ∫(z - 1)dt during decay (neg-entropy harvested)
+    """
+    z_peak: float                    # Maximum z achieved (> 1.0)
+    z_current: float                 # Current z value
+    entry_time: float                # When z first exceeded 1.0
+    coherence_debt: float            # Amount "borrowed" from future
+    decay_rate: float                # Γ in the decay equation
+    work_extracted: float = 0.0     # Accumulated neg-entropy work
+    decay_phase: str = "peak"        # peak, decaying, stabilized
+
+    def compute_decay(self, dt: float) -> float:
+        """
+        Compute decay dynamics for super-coherent state.
+
+        Returns new z value after dt.
+        """
+        if self.z_current <= 1.0:
+            self.decay_phase = "stabilized"
+            return self.z_current
+
+        # Exponential decay toward z = 1
+        excess = self.z_current - 1.0
+        new_excess = excess * math.exp(-self.decay_rate * dt)
+        new_z = 1.0 + new_excess
+
+        # Work extracted is proportional to coherence used
+        work = (self.z_current - new_z) * PHI  # Scale by golden ratio
+        self.work_extracted += work
+
+        # Update state
+        old_z = self.z_current
+        self.z_current = new_z
+
+        if new_excess < 0.001:
+            self.decay_phase = "stabilized"
+        else:
+            self.decay_phase = "decaying"
+
+        return new_z
+
+    def get_remaining_lifetime(self) -> float:
+        """Estimate remaining time in super-coherent state"""
+        if self.z_current <= 1.0:
+            return 0.0
+        excess = self.z_current - 1.0
+        # Time to decay to 0.1% excess
+        return -math.log(0.001 / excess) / self.decay_rate
+
+
 class QuasiCrystalDynamicsEngine:
     """
     Unified engine combining all physics for exceeding threshold bounds.
@@ -702,8 +763,11 @@ class QuasiCrystalDynamicsEngine:
     2. BidirectionalCollapseEngine - forward/backward wave collapse
     3. PhaseLockReleaseEngine - escape local minima via release-relock
     4. AcceleratedDecayEngine - tunnel through μ-barriers
+    5. SuperCoherentState - manages z > 1 decay dynamics
 
     The z-coordinate can exceed 1.0 when all components synergize.
+    The super-coherent state (z > 1) is METASTABLE and will decay,
+    but work can be extracted during the decay (neg-entropy engine).
     """
 
     def __init__(self, n_oscillators: int = 60):
@@ -715,6 +779,15 @@ class QuasiCrystalDynamicsEngine:
         self.z_current = 0.5  # Start below Z_CRITICAL
         self.z_history: List[float] = [self.z_current]
         self.cycle_count = 0
+
+        # Super-coherent state management (z > 1.0)
+        self.super_coherent_state: Optional[SuperCoherentState] = None
+        self.total_work_extracted = 0.0
+        self.super_coherent_events: List[Dict] = []
+
+        # Decay rate for super-coherent state (Goldilocks tuning)
+        # τ_decay ≈ τ_enhancement so we have time to extract work
+        self.decay_rate_gamma = 0.1  # Tunable
 
     def compute_quasi_crystal_boost(self) -> float:
         """
@@ -760,12 +833,47 @@ class QuasiCrystalDynamicsEngine:
         """
         return self.phase_lock.get_superlock_boost()
 
-    def evolve_step(self, z_target: float = None) -> float:
+    def evolve_step(self, z_target: float = None, dt: float = 0.1) -> float:
         """
         Single evolution step with all physics components.
+
+        Handles three regimes:
+        1. z < 1.0: Standard dynamics pushing toward thresholds
+        2. z crossing 1.0: Enter super-coherent state (negative temperature)
+        3. z > 1.0: Metastable decay with work extraction
+
+        The super-coherent state is like a surfer at the wave peak -
+        we use it while it lasts, extracting work as it decays.
         """
         if z_target is None:
             z_target = MU_3 + 0.01  # Default: aim past ultra-integration
+
+        # Handle super-coherent state decay first
+        if self.super_coherent_state is not None:
+            # We're in z > 1 regime - apply decay dynamics
+            old_z = self.z_current
+            self.z_current = self.super_coherent_state.compute_decay(dt)
+
+            # Extract work during decay (this is the neg-entropy engine!)
+            work = self.super_coherent_state.work_extracted - self.total_work_extracted
+            if work > 0:
+                self.total_work_extracted = self.super_coherent_state.work_extracted
+
+            # Check if we've decayed back to classical regime
+            if self.super_coherent_state.decay_phase == "stabilized":
+                # Record the event
+                self.super_coherent_events.append({
+                    'z_peak': self.super_coherent_state.z_peak,
+                    'work_extracted': self.super_coherent_state.work_extracted,
+                    'duration': time.time() - self.super_coherent_state.entry_time,
+                    'coherence_debt_repaid': self.super_coherent_state.coherence_debt
+                })
+                self.super_coherent_state = None
+
+            self.z_history.append(self.z_current)
+            return self.z_current
+
+        # Standard dynamics for z < 1.0
 
         # 1. Update lattice phases
         for i, cell in enumerate(self.lattice.cells):
@@ -782,7 +890,7 @@ class QuasiCrystalDynamicsEngine:
 
         combined_boost = qc_boost * bidir_boost * pl_boost
 
-        # 4. Attempt to advance z
+        # 4. Attempt to advance z based on current regime
         if self.z_current < Z_CRITICAL:
             # Below critical: standard dynamics with boost
             dz = (Z_CRITICAL - self.z_current) * 0.15 * combined_boost
@@ -806,10 +914,37 @@ class QuasiCrystalDynamicsEngine:
             # Beyond MU_3: can exceed 1.0 with sufficient boost
             if combined_boost > 1.5:
                 # Weak value amplification allows exceeding unity
-                self.z_current = min(1.2, self.z_current + 0.01 * (combined_boost - 1))
+                potential_z = self.z_current + 0.01 * (combined_boost - 1)
+                self.z_current = min(1.2, potential_z)
+
+        # 5. Check if we've entered super-coherent state (z > 1.0)
+        if self.z_current > 1.0 and self.super_coherent_state is None:
+            # CROSSING INTO NEGATIVE TEMPERATURE REGIME
+            coherence_debt = self.z_current - 1.0  # Amount borrowed
+            self.super_coherent_state = SuperCoherentState(
+                z_peak=self.z_current,
+                z_current=self.z_current,
+                entry_time=time.time(),
+                coherence_debt=coherence_debt,
+                decay_rate=self.decay_rate_gamma
+            )
 
         self.z_history.append(self.z_current)
         return self.z_current
+
+    def is_super_coherent(self) -> bool:
+        """Check if currently in super-coherent (z > 1) state"""
+        return self.super_coherent_state is not None
+
+    def get_super_coherent_lifetime(self) -> float:
+        """Get remaining lifetime in super-coherent state"""
+        if self.super_coherent_state:
+            return self.super_coherent_state.get_remaining_lifetime()
+        return 0.0
+
+    def get_work_extracted(self) -> float:
+        """Get total work extracted from super-coherent decay"""
+        return self.total_work_extracted
 
     def release_and_boost_cycle(self) -> Tuple[float, float]:
         """
