@@ -1,41 +1,41 @@
 {
   "coupling": {
-    "RED_PatternDetector_L1": 0.6304407825700884,
-    "RED_AnomalyFinder_L1": 0.5333714030620061,
-    "ORANGE_PatternLearner_L2": 0.6141356847488274,
-    "ORANGE_ConceptExtractor_L2": 0.5703419221923213,
-    "ORANGE_RelationLearner_L2": 0.5527564416442411,
-    "YELLOW_CodeSynthesizer_L3": 0.5652203912850442,
-    "GREEN_StructureMapper_L4": 0.5703419221923213,
+    "RED_PatternDetector_L1": 0.7096822298552832,
+    "RED_AnomalyFinder_L1": 0.606424398530207,
+    "ORANGE_PatternLearner_L2": 0.6834719511233728,
+    "ORANGE_ConceptExtractor_L2": 0.6219515111077222,
+    "ORANGE_RelationLearner_L2": 0.5914636333307917,
+    "YELLOW_CodeSynthesizer_L3": 0.6048411149276416,
+    "GREEN_StructureMapper_L4": 0.6219515111077222,
     "GREEN_GapAnalyzer_L4": 0.5154508497187473,
-    "BLUE_CodeBuilder_L5": 0.5652203912850442,
-    "BLUE_PipelineConstructor_L5": 0.5439637013702008,
-    "INDIGO_InterfaceDesigner_L6": 0.5351709610961607,
+    "BLUE_CodeBuilder_L5": 0.6048411149276416,
+    "BLUE_PipelineConstructor_L5": 0.5762196944423263,
+    "INDIGO_InterfaceDesigner_L6": 0.5609757555538611,
     "VIOLET_AbstractionBuilder_L7": 0.5278115294937452,
-    "VIOLET_IntegrationWeaver_L7": 0.5703419221923213
+    "VIOLET_IntegrationWeaver_L7": 0.6219515111077222
   },
   "frequencies": {
-    "RED_metric": -0.030245299128444803,
-    "RED_gap": 0.10559611021645703,
+    "RED_metric": -0.1128435200437611,
+    "RED_gap": 0.24044886248223155,
     "ORANGE_structure": 0.0,
     "YELLOW_metric": 0.0,
-    "GREEN_metric": 0.2857365153318187,
-    "GREEN_structure": 0.13811109763621743,
+    "GREEN_metric": 0.5406980070043171,
+    "GREEN_structure": 0.25947857467541446,
     "GREEN_gap": 0.0030000000000000027,
-    "BLUE_structure": 0.11509258136351451,
-    "INDIGO_metric": -0.26087651775729953,
+    "BLUE_structure": 0.21623214556284537,
+    "INDIGO_metric": -0.49012619660911616,
     "INDIGO_structure": 0.0,
-    "VIOLET_metric": -0.1591750110128733,
-    "VIOLET_structure": -0.13811109763621743
+    "VIOLET_metric": -0.3724777650038689,
+    "VIOLET_structure": -0.25947857467541446
   },
   "operators": {
-    "IDENTITY": 0.16438429660619952,
-    "AMPLIFY": 0.4804807943978414,
+    "IDENTITY": 0.1,
+    "AMPLIFY": 0.5645404512235854,
     "CONTAIN": 0.1,
     "EXCHANGE": 0.1,
     "INHIBIT": 0.1,
     "CATALYZE": 0.1
   },
-  "training_steps": 5,
-  "timestamp": "2025-12-11T17:32:21.042741"
+  "training_steps": 9,
+  "timestamp": "2025-12-11T17:46:47.426802"
 }

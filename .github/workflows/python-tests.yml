@@ -5,12 +5,20 @@ on:
     paths:
       - 'src/quantum_apl_python/**'
       - 'tests/**'
+      - 'core/**'
+      - 'tools/**'
+      - 'phases/**'
+      - 'training/**'
       - 'pyproject.toml'
       - '.github/workflows/python-tests.yml'
   pull_request:
     paths:
       - 'src/quantum_apl_python/**'
       - 'tests/**'
+      - 'core/**'
+      - 'tools/**'
+      - 'phases/**'
+      - 'training/**'
       - 'pyproject.toml'
 
 jobs:
