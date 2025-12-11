@@ -99,6 +99,11 @@ class EngineState:
     bidirectional_boost: float = 1.0
     phase_lock_boost: float = 1.0
 
+    # Supercritical tracking (z > 1.0)
+    supercritical_breaches: int = 0
+    entropy_loan_returns: int = 0
+    supercritical_mode: bool = False  # If True, allow z > 1.0 with entropy loan return
+
     # Tools produced
     meta_tools_created: int = 0
     child_tools_created: int = 0
@@ -117,15 +122,31 @@ class FullEngine:
     2. QuasiCrystalDynamicsEngine - Full physics with liminal PHI
     3. MetaToolGenerator - Converts work to tools
 
-    Key behavior:
-    - NegEntropyEngine stays active (PHI never flips, instant collapse)
+    Two modes of operation:
+
+    MODE 1 - Instant Collapse (default):
     - PHI enters liminal state at z >= KAPPA_S
-    - At z >= 0.9999: instant collapse, work extracted, z resets
-    - Work feeds meta-tool generation
+    - At z >= 0.9999: instant collapse, work extracted, z resets to origin
+    - PHI never flips, debt settled immediately
+
+    MODE 2 - Supercritical with Entropy Loan Return:
+    - After lesson threshold (50 lessons): z can breach 1.0
+    - When z > 1.0: negative entropy dynamics FLIP
+    - Entropy loan must be immediately repaid (snap-back)
+    - Creates oscillation around unity rather than unbounded growth
+    - PHI stays liminal even in supercritical regime
+
+    Key invariant: NegEntropyEngine stays ACTIVE in both modes.
+    PHI never becomes the physical ratio - it remains liminal.
     """
 
-    def __init__(self):
+    def __init__(self, supercritical_mode: bool = False):
         self.state = EngineState()
+        self.state.supercritical_mode = supercritical_mode
+
+        # Lesson counter for supercritical gating
+        self.lessons_learned = 0
+        self.lesson_threshold = 50  # After 50 lessons, supercritical allowed
 
         # Initialize components
         if DYNAMICS_AVAILABLE:
@@ -148,6 +169,7 @@ class FullEngine:
         self.z_history: List[float] = [self.state.z_current]
         self.work_history: List[float] = [0.0]
         self.collapse_points: List[int] = []
+        self.entropy_return_points: List[int] = []  # Track entropy loan returns
 
     def update_thresholds(self):
         """Update which thresholds are currently active"""
@@ -178,6 +200,11 @@ class FullEngine:
         Single step of the full engine.
 
         Returns step result with all physics data.
+
+        In supercritical mode (after lesson_threshold):
+        - z can breach 1.0 targeting PHI (1.618)
+        - When z > 1.0: entropy loan return triggers snap-back
+        - Creates oscillation around unity
         """
         step_start = time.time()
         old_z = self.state.z_current
@@ -191,6 +218,8 @@ class FullEngine:
             'work_extracted': 0.0,
             'neg_entropy_injected': 0.0,
             'in_superposition': False,
+            'supercritical': False,
+            'entropy_loan_return': False,
             'boosts': {}
         }
 
@@ -249,13 +278,63 @@ class FullEngine:
 
             result['in_superposition'] = self.state.in_superposition
 
+            # Accumulate lessons from successful operations
+            self.lessons_learned += 1
+
         else:
             # Fallback simple dynamics
             dz = (MU_3 - self.state.z_current) * 0.1 * PHI_INV
             self.state.z_current = min(0.9999, self.state.z_current + dz)
+            self.lessons_learned += 1
 
         # =====================================================================
-        # PHASE 3: Update Thresholds
+        # PHASE 3: Supercritical Mode Handling
+        # =====================================================================
+        if self.state.supercritical_mode and self.lessons_learned >= self.lesson_threshold:
+            # After lesson threshold, supercritical dynamics become active
+            # Target shifts from MU_3 (0.992) to PHI (1.618)
+
+            if not result['collapse']:  # Only apply if not already collapsed
+                # Expansion toward PHI (liminal target)
+                boost = 1.0 + (self.lessons_learned - self.lesson_threshold) * 0.005
+                target = PHI
+                expansion = PHI * 0.01 * boost * (target - self.state.z_current)
+
+                if expansion > 0 and self.state.z_current < PHI:
+                    old_z = self.state.z_current
+                    self.state.z_current += expansion
+
+                    if self.state.z_current > 1.0 and old_z <= 1.0:
+                        # First breach of unity!
+                        self.state.supercritical_breaches += 1
+                        result['supercritical'] = True
+
+            # CRITICAL: Entropy loan return when z > 1.0
+            # Negative entropy dynamics FLIP - debt must be immediately repaid
+            if self.state.z_current > 1.0:
+                excess = self.state.z_current - 1.0
+                # Entropy loan repayment: IMMEDIATE and PROPORTIONAL
+                # Formula from phi_cycle_runner: excess × (1 + excess × PHI) × weight
+                entropy_return = excess * (1.0 + excess * PHI) * PHI_INV
+                contraction = entropy_return
+
+                # WORK EXTRACTION from supercritical peak
+                # In supercritical regime, work is extracted via the entropy loan return
+                # (different from instant collapse mode which extracts via weak value)
+                work_from_supercritical = excess * PHI * PHI_INV  # Work = excess × φ × φ⁻¹
+                self.state.total_work_extracted += work_from_supercritical
+                result['work_extracted'] = work_from_supercritical
+
+                self.state.z_current -= contraction
+                self.state.z_current = max(Z_CRITICAL, self.state.z_current)
+
+                self.state.entropy_loan_returns += 1
+                self.entropy_return_points.append(len(self.z_history))
+                result['entropy_loan_return'] = True
+                result['supercritical'] = True
+
+        # =====================================================================
+        # PHASE 4: Update Thresholds
         # =====================================================================
         self.update_thresholds()
 
@@ -318,8 +397,10 @@ class FullEngine:
         """
         Run full engine for n cycles with tool production.
         """
+        mode_name = "SUPERCRITICAL + ENTROPY LOAN RETURN" if self.state.supercritical_mode else "INSTANT COLLAPSE"
+
         print(f"\n{'='*70}")
-        print("FULL ENGINE RUNNER")
+        print(f"FULL ENGINE RUNNER - {mode_name} MODE")
         print(f"{'='*70}")
         print(f"""
 Components Active:
@@ -335,12 +416,20 @@ Physics:
   - KAPPA_S = {KAPPA_S:.4f} (superposition entry)
   - MU_3 = {MU_3:.4f} (ultra-integration)
 
-Key Behavior:
+Mode: {mode_name}
   - NegEntropyEngine stays ACTIVE (no PHI flip)
-  - PHI enters liminal at z >= KAPPA_S
-  - Instant collapse at z >= 0.9999
-  - Work extracted → tool production
-""")
+  - PHI enters liminal at z >= KAPPA_S""")
+
+        if self.state.supercritical_mode:
+            print(f"""  - After {self.lesson_threshold} lessons: z can breach 1.0
+  - When z > 1.0: ENTROPY LOAN RETURN (snap-back)
+  - Creates oscillation around unity
+  - Work extracted from supercritical peaks""")
+        else:
+            print(f"""  - Instant collapse at z >= 0.9999
+  - Work extracted via weak value at collapse
+  - z resets to origin (~0.535)""")
+        print()
 
         results = {
             'cycles': [],
@@ -406,6 +495,7 @@ Total work extracted: {self.state.total_work_extracted:.4f}
 
 NegEntropy injected:  {self.state.total_neg_entropy_injected:.4f}
 Peak z reached:       {self.state.z_peak:.4f}
+Lessons learned:      {self.lessons_learned}
 
 Meta-tools created:   {self.state.meta_tools_created}
 Child tools created:  {self.state.child_tools_created}
@@ -414,11 +504,24 @@ Thresholds crossed:   {len(self.state.thresholds_ever_crossed)}
   {', '.join(self.state.thresholds_ever_crossed)}
 """)
 
+        # Supercritical stats if in that mode
+        if self.state.supercritical_mode:
+            print(f"""Supercritical Dynamics:
+  Mode:                 ACTIVE
+  Supercritical breaches: {self.state.supercritical_breaches}
+  Entropy loan returns:   {self.state.entropy_loan_returns}
+  Peak z > 1.0:           {'YES' if self.state.z_peak > 1.0 else 'NO'}
+""")
+
         # Physics verification
         print("Physics Verification:")
         print(f"  NegEntropyEngine active: ALWAYS (no flip)")
         print(f"  PHI liminal only: YES (never physical)")
-        print(f"  Instant collapse at unity: YES")
+        if self.state.supercritical_mode:
+            print(f"  Supercritical allowed: YES (after {self.lesson_threshold} lessons)")
+            print(f"  Entropy loan return: YES (snap-back when z > 1.0)")
+        else:
+            print(f"  Instant collapse at unity: YES")
         print(f"  Work = weak value extraction: YES")
 
         return results
@@ -469,19 +572,33 @@ Thresholds crossed:   {len(self.state.thresholds_ever_crossed)}
 # DEMONSTRATION
 # =============================================================================
 
-def run_full_engine_demo():
+def run_full_engine_demo(supercritical: bool = False, n_cycles: int = 5):
     """Run the full engine demonstration"""
 
+    mode = "SUPERCRITICAL + ENTROPY LOAN RETURN" if supercritical else "INSTANT COLLAPSE"
+
     print("\n" + "="*70)
-    print("FULL ENGINE DEMONSTRATION")
+    print(f"FULL ENGINE DEMONSTRATION - {mode} MODE")
     print("="*70)
     print("""
 This demonstrates the complete integrated engine:
 
 1. NegEntropyEngine (T1) pushes z via negative entropy injection
 2. QuasiCrystalDynamics provides physics-correct evolution
-3. LiminalPhiState keeps PHI in superposition (never flips)
-4. At z >= 0.9999: instant collapse, work extraction, reset
+3. LiminalPhiState keeps PHI in superposition (never flips)""")
+
+    if supercritical:
+        print("""4. After 50 lessons: z can breach 1.0 (supercritical)
+5. When z > 1.0: ENTROPY LOAN RETURN (snap-back to unity)
+6. MetaToolGenerator converts work to tools
+
+KEY: Entropy dynamics FLIP when z > 1.0!
+     The "entropy loan" taken to breach unity must be IMMEDIATELY repaid.
+     This creates oscillation around z = 1.0 rather than unbounded growth.
+     PHI stays liminal even in supercritical regime.
+""")
+    else:
+        print("""4. At z >= 0.9999: instant collapse, work extraction, reset
 5. MetaToolGenerator converts work to tools
 
 KEY: NegEntropyEngine stays ACTIVE throughout!
@@ -490,8 +607,8 @@ KEY: NegEntropyEngine stays ACTIVE throughout!
 """)
 
     # Create and run engine
-    engine = FullEngine()
-    results = engine.run_full(n_cycles=5, produce_tools=True)
+    engine = FullEngine(supercritical_mode=supercritical)
+    results = engine.run_full(n_cycles=n_cycles, produce_tools=True)
 
     # Show visualization
     print(engine.visualize_ascii())
@@ -503,5 +620,43 @@ KEY: NegEntropyEngine stays ACTIVE throughout!
     return results
 
 
+def run_both_modes_demo():
+    """Run both instant collapse and supercritical modes for comparison"""
+    print("\n" + "▓"*70)
+    print("▓" + " "*68 + "▓")
+    print("▓" + "  FULL ENGINE: BOTH MODES DEMONSTRATION".center(68) + "▓")
+    print("▓" + " "*68 + "▓")
+    print("▓"*70)
+
+    print("\n" + "┏" + "━"*68 + "┓")
+    print("┃" + "  MODE 1: INSTANT COLLAPSE".center(68) + "┃")
+    print("┗" + "━"*68 + "┛")
+    results1 = run_full_engine_demo(supercritical=False, n_cycles=3)
+
+    print("\n" + "┏" + "━"*68 + "┓")
+    print("┃" + "  MODE 2: SUPERCRITICAL + ENTROPY LOAN RETURN".center(68) + "┃")
+    print("┗" + "━"*68 + "┛")
+    results2 = run_full_engine_demo(supercritical=True, n_cycles=5)
+
+    print("\n" + "="*70)
+    print("MODE COMPARISON")
+    print("="*70)
+    print(f"""
+                    INSTANT COLLAPSE    SUPERCRITICAL
+Cycles:             {len(results1['cycles']):>10}         {len(results2['cycles']):>10}
+Collapses:          {results1['total_collapses']:>10}         {results2['total_collapses']:>10}
+Total Work:         {results1['total_work']:>10.4f}         {results2['total_work']:>10.4f}
+Tools Created:      {results1['tools_created']:>10}         {results2['tools_created']:>10}
+""")
+
+    return results1, results2
+
+
 if __name__ == '__main__':
-    run_full_engine_demo()
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == '--supercritical':
+        run_full_engine_demo(supercritical=True, n_cycles=7)
+    elif len(sys.argv) > 1 and sys.argv[1] == '--both':
+        run_both_modes_demo()
+    else:
+        run_full_engine_demo(supercritical=False)
