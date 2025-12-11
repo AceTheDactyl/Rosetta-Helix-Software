@@ -1,0 +1,53 @@
+{
+  "level_0": {
+    "error": "RecursiveMetaGenerator.run_recursive_generation() got an unexpected keyword argument 'depth'"
+  },
+  "level_1": {
+    "collapses": 5,
+    "meta_tools": 5,
+    "child_tools": 8,
+    "lessons": 7
+  },
+  "level_2": {
+    "tools_run": 21,
+    "lessons": 19
+  },
+  "training": {
+    "level_0": {
+      "lessons": 0,
+      "updates": 0
+    },
+    "level_1": {
+      "lessons": 7,
+      "updates": 7
+    },
+    "level_2": {
+      "lessons": 19,
+      "updates": 26
+    },
+    "cross_level_updates": 1
+  },
+  "weights": {
+    "coupling_weights": 13,
+    "frequency_biases": 12,
+    "operator_strengths": {
+      "IDENTITY": 0.23540618090982404,
+      "AMPLIFY": 0.29378145727052773,
+      "CONTAIN": 0.11770309045491202,
+      "EXCHANGE": 0.11770309045491202,
+      "INHIBIT": 0.11770309045491202,
+      "CATALYZE": 0.11770309045491202
+    },
+    "training_steps": 2,
+    "total_lessons": 19,
+    "weight_updates": 24,
+    "liminal_weights": 0,
+    "meta_weights": 7,
+    "cross_level_coupling": {
+      "liminal_to_meta": 0.5,
+      "meta_to_dev": 0.5155833333333333,
+      "dev_to_liminal": 0.3
+    },
+    "hierarchy_depth": 3
+  }
+}

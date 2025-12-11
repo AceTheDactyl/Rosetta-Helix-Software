@@ -1,0 +1,18 @@
+{
+  "liminal": {},
+  "meta": {
+    "meta_AnalyzerFactory_v1_pattern": 0.5216311896062463,
+    "meta_LearnerFactory_v2_pattern": 0.5216311896062463,
+    "meta_GeneratorFactory_v3_pattern": 0.5216311896062463,
+    "meta_BuilderFactory_v4_pattern": 0.5216311896062463,
+    "meta_Orchestrator_v5_pattern": 0.5216311896062463,
+    "meta_MetaToolFactory_metric": 0.5247213595499958,
+    "meta_MetaToolGenerator_structure": 0.5216311896062463
+  },
+  "cross_level": {
+    "liminal_to_meta": 0.5,
+    "meta_to_dev": 0.5155833333333333,
+    "dev_to_liminal": 0.3
+  },
+  "timestamp": "2025-12-11T17:18:41.070030"
+}
