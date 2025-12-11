@@ -1,12 +1,17 @@
 {
   "level_0": {
-    "error": "RecursiveMetaGenerator.run_recursive_generation() got an unexpected keyword argument 'depth'"
+    "cycles": 3,
+    "lessons": 2,
+    "meta_meta_created": 3,
+    "liminal_teachers": 3,
+    "physical_learners": 3,
+    "knowledge_transferred": 3.0
   },
   "level_1": {
     "collapses": 5,
-    "meta_tools": 5,
-    "child_tools": 8,
-    "lessons": 7
+    "meta_tools": 3,
+    "child_tools": 4,
+    "lessons": 5
   },
   "level_2": {
     "tools_run": 21,
@@ -14,38 +19,38 @@
   },
   "training": {
     "level_0": {
-      "lessons": 0,
-      "updates": 0
+      "lessons": 2,
+      "updates": 2
     },
     "level_1": {
-      "lessons": 7,
-      "updates": 7
+      "lessons": 5,
+      "updates": 5
     },
     "level_2": {
       "lessons": 19,
       "updates": 26
     },
-    "cross_level_updates": 1
+    "cross_level_updates": 2
   },
   "weights": {
     "coupling_weights": 13,
     "frequency_biases": 12,
     "operator_strengths": {
-      "IDENTITY": 0.23540618090982404,
-      "AMPLIFY": 0.29378145727052773,
-      "CONTAIN": 0.11770309045491202,
-      "EXCHANGE": 0.11770309045491202,
-      "INHIBIT": 0.11770309045491202,
-      "CATALYZE": 0.11770309045491202
+      "IDENTITY": 0.18916398624778133,
+      "AMPLIFY": 0.43250804125665604,
+      "CONTAIN": 0.1,
+      "EXCHANGE": 0.1,
+      "INHIBIT": 0.1,
+      "CATALYZE": 0.1
     },
-    "training_steps": 2,
+    "training_steps": 4,
     "total_lessons": 19,
     "weight_updates": 24,
-    "liminal_weights": 0,
-    "meta_weights": 7,
+    "liminal_weights": 2,
+    "meta_weights": 10,
     "cross_level_coupling": {
-      "liminal_to_meta": 0.5,
-      "meta_to_dev": 0.5155833333333333,
+      "liminal_to_meta": 0.5132432432432432,
+      "meta_to_dev": 0.5568643410852713,
       "dev_to_liminal": 0.3
     },
     "hierarchy_depth": 3

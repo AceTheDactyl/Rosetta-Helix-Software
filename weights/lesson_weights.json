@@ -1,41 +1,41 @@
 {
   "coupling": {
-    "RED_PatternDetector_L1": 0.5539691997980258,
-    "RED_AnomalyFinder_L1": 0.5148487584516713,
-    "ORANGE_PatternLearner_L2": 0.5472230498232726,
-    "ORANGE_ConceptExtractor_L2": 0.5274662729126738,
-    "ORANGE_RelationLearner_L2": 0.5205997046845053,
-    "YELLOW_CodeSynthesizer_L3": 0.5269845998990129,
-    "GREEN_StructureMapper_L4": 0.5274662729126738,
+    "RED_PatternDetector_L1": 0.6067054930780718,
+    "RED_AnomalyFinder_L1": 0.5136938841003416,
+    "ORANGE_PatternLearner_L2": 0.5933673064433128,
+    "ORANGE_ConceptExtractor_L2": 0.5564403886826027,
+    "ORANGE_RelationLearner_L2": 0.5423302915119521,
+    "YELLOW_CodeSynthesizer_L3": 0.5533527465390359,
+    "GREEN_StructureMapper_L4": 0.5564403886826027,
     "GREEN_GapAnalyzer_L4": 0.5154508497187473,
-    "BLUE_CodeBuilder_L5": 0.5269845998990129,
-    "BLUE_PipelineConstructor_L5": 0.5171664205704211,
-    "INDIGO_InterfaceDesigner_L6": 0.5137331364563369,
+    "BLUE_CodeBuilder_L5": 0.5533527465390359,
+    "BLUE_PipelineConstructor_L5": 0.5352752429266266,
+    "INDIGO_InterfaceDesigner_L6": 0.5282201943413014,
     "VIOLET_AbstractionBuilder_L7": 0.5278115294937452,
-    "VIOLET_IntegrationWeaver_L7": 0.5274662729126738
+    "VIOLET_IntegrationWeaver_L7": 0.5564403886826027
   },
   "frequencies": {
-    "RED_metric": -0.016700618062894888,
-    "RED_gap": 0.040762954015345965,
+    "RED_metric": -0.02865925220988467,
+    "RED_gap": 0.07286066493489568,
     "ORANGE_structure": 0.0,
     "YELLOW_metric": 0.0,
-    "GREEN_metric": 0.10525124075314837,
-    "GREEN_structure": 0.05087331722762273,
+    "GREEN_metric": 0.22478311621755148,
+    "GREEN_structure": 0.10864919688281222,
     "GREEN_gap": 0.0030000000000000027,
-    "BLUE_structure": 0.042394431023018944,
-    "INDIGO_metric": -0.09609404365217626,
+    "BLUE_structure": 0.0905409974023435,
+    "INDIGO_metric": -0.20522626077864525,
     "INDIGO_structure": 0.0,
-    "VIOLET_metric": -0.05826487170946425,
-    "VIOLET_structure": -0.05087331722762273
+    "VIOLET_metric": -0.11989247667499969,
+    "VIOLET_structure": -0.10864919688281222
   },
   "operators": {
-    "IDENTITY": 0.23540618090982404,
-    "AMPLIFY": 0.29378145727052773,
-    "CONTAIN": 0.11770309045491202,
-    "EXCHANGE": 0.11770309045491202,
-    "INHIBIT": 0.11770309045491202,
-    "CATALYZE": 0.11770309045491202
+    "IDENTITY": 0.18916398624778133,
+    "AMPLIFY": 0.43250804125665604,
+    "CONTAIN": 0.1,
+    "EXCHANGE": 0.1,
+    "INHIBIT": 0.1,
+    "CATALYZE": 0.1
   },
-  "training_steps": 2,
-  "timestamp": "2025-12-11T17:18:41.069775"
+  "training_steps": 4,
+  "timestamp": "2025-12-11T17:25:25.580323"
 }
