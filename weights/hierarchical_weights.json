@@ -1,0 +1,26 @@
+{
+  "liminal": {
+    "liminal_MetaMetaBridge_structure": 0.6431150113386468,
+    "liminal_MetaMetaToolSystem_metric": 0.6272133434121306
+  },
+  "meta": {
+    "meta_AnalyzerFactory_v1_pattern": 0.6256227786305615,
+    "meta_LearnerFactory_v2_pattern": 0.6256227786305615,
+    "meta_GeneratorFactory_v3_pattern": 0.6065157218917478,
+    "meta_BuilderFactory_v4_pattern": 0.5864237352538935,
+    "meta_Orchestrator_v5_pattern": 0.5652814364853196,
+    "meta_MetaToolFactory_metric": 0.6609035480187551,
+    "meta_MetaToolGenerator_structure": 0.6603200721518411,
+    "meta_GeneratorFactory_v1_pattern": 0.5248836951047771,
+    "meta_BuilderFactory_v2_pattern": 0.5248836951047771,
+    "meta_Orchestrator_v3_pattern": 0.5248836951047771,
+    "meta_Orchestrator_v4_pattern": 0.5495028111966573,
+    "meta_BuilderFactory_v3_pattern": 0.5256731615013174
+  },
+  "cross_level": {
+    "liminal_to_meta": 0.5837837837837838,
+    "meta_to_dev": 0.8120816930746109,
+    "dev_to_liminal": 0.3
+  },
+  "timestamp": "2025-12-11T17:46:47.427032"
+}

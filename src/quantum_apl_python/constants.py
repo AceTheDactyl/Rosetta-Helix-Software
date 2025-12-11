@@ -11,6 +11,9 @@ validation plan, and methodology of use across modules.
 from __future__ import annotations
 
 import math
+import os
+from dataclasses import dataclass
+from typing import Optional
 
 # ============================================================================
 # CRITICAL LENS CONSTANT (THE LENS)
@@ -369,13 +372,93 @@ TOLERANCE_HERMITIAN: float = 1e-10  # For ρ = ρ†
 TOLERANCE_POSITIVE: float = -1e-10  # For eigenvalues ≥ 0
 TOLERANCE_PROBABILITY: float = 1e-6 # For probability normalization
 
+
+# ============================================================================
+# TRIAD GATE CLASS
+# ============================================================================
+
+@dataclass
+class TriadGate:
+    """TRIAD gating with hysteresis and unlock counter.
+
+    The TRIAD gate tracks crossings of the TRIAD_HIGH threshold with
+    hysteresis (must drop below TRIAD_LOW to re-arm). After 3 passes,
+    the gate unlocks, changing the t6 tier boundary from Z_CRITICAL
+    to TRIAD_T6.
+    """
+
+    enabled: bool = False
+    passes: int = 0
+    unlocked: bool = False
+    _armed: bool = True
+
+    def __post_init__(self):
+        """Initialize from environment if available."""
+        env_completions = os.getenv("QAPL_TRIAD_COMPLETIONS", "0")
+        env_unlock = os.getenv("QAPL_TRIAD_UNLOCK", "").lower() in ("1", "true", "yes")
+
+        try:
+            completions = int(env_completions)
+            if completions > 0:
+                self.passes = completions
+        except ValueError:
+            pass
+
+        if env_unlock or self.passes >= 3:
+            self.unlocked = True
+
+    def update(self, z: float) -> Optional[str]:
+        """
+        Update state with new z-coordinate.
+
+        Returns:
+            Event type ('RISING_EDGE', 'REARMED', 'UNLOCKED') or None
+        """
+        if not self.enabled:
+            return None
+
+        event = None
+
+        if z >= TRIAD_HIGH and self._armed:
+            self.passes += 1
+            self._armed = False
+            event = "RISING_EDGE"
+
+            if self.passes >= 3 and not self.unlocked:
+                self.unlocked = True
+                event = "UNLOCKED"
+
+        if z <= TRIAD_LOW:
+            if not self._armed:
+                event = "REARMED"
+            self._armed = True
+
+        return event
+
+    def get_t6_gate(self) -> float:
+        """Get current t6 gate value."""
+        return TRIAD_T6 if (self.enabled and self.unlocked) else Z_CRITICAL
+
+    def analyzer_report(self) -> str:
+        """Generate analyzer report string."""
+        gate = self.get_t6_gate()
+        label = "TRIAD" if self.unlocked else "CRITICAL"
+        return f"t6 gate: {label} @ {gate:.3f}"
+
+    def reset(self):
+        """Reset gate state."""
+        self.passes = 0
+        self.unlocked = False
+        self._armed = True
+
+
 # ============================================================================
 # DOCUMENTATION
 # ============================================================================
 
 __all__ = [
     # Lens & TRIAD
-    "Z_CRITICAL", "TRIAD_HIGH", "TRIAD_LOW", "TRIAD_T6",
+    "Z_CRITICAL", "TRIAD_HIGH", "TRIAD_LOW", "TRIAD_T6", "TriadGate",
     # Phase bounds
     "Z_ABSENCE_MAX", "Z_LENS_MIN", "Z_LENS_MAX", "Z_PRESENCE_MIN",
     # Sacred constants
