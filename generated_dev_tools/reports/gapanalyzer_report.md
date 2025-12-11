@@ -1,0 +1,32 @@
+# GapAnalyzer_L4 Report
+
+**Layer:** GREEN
+**Type:** GapAnalyzer
+**Generated:** 2025-12-11 08:52:13
+
+---
+
+## Results
+
+### Gaps
+
+- **missing_tests:** ['phase6_recursive_improvement.py', 'phase15_move_refactoring.py', 'quantum_apl_bridge.py', 'tier_tools.py', 'unified_provable_apl.py', 'node.py', 'full_engine_runner.py', 'train_from_trajectories.py', 'pulse.py', 'phase10_semantic_splitter.py', 'operator_actions.py', 'phase7_architectural_harmony.py', 'exponential_training_loop.py', 'meta_tool_generator.py', 'helix_nn_numpy.py', 'spore_listener.py', 'meta_meta_tools.py', 'autonomous_builder.py', 'quasicrystal_dynamics.py', 'phase2_composition.py']
+- **incomplete_implementations:** ['phase15_move_refactoring.py', 'autonomous_builder.py', 'phase2_composition.py', 'phase23_autonomous_executor.py']
+- **missing_documentation:** ['phase6_recursive_improvement.py:__init__', 'phase15_move_refactoring.py:__init__', 'phase15_move_refactoring.py:visit_Attribute', 'phase15_move_refactoring.py:visit_Call', 'phase15_move_refactoring.py:__init__', 'phase15_move_refactoring.py:__init__', 'phase15_move_refactoring.py:visit_Import', 'phase15_move_refactoring.py:visit_ImportFrom', 'phase15_move_refactoring.py:__init__', 'phase15_move_refactoring.py:__init__', 'phase15_move_refactoring.py:__init__', 'tier_tools.py:ToolCategory', 'unified_provable_apl.py:__init__', 'unified_provable_apl.py:__init__', 'unified_provable_apl.py:__init__', 'unified_provable_apl.py:__init__', 'unified_provable_apl.py:__init__', 'unified_provable_apl.py:__init__', 'unified_provable_apl.py:__init__', 'unified_provable_apl.py:__init__']
+- **orphan_code:** []
+
+### Gap Counts
+
+- **missing_tests:** 20
+- **incomplete_implementations:** 4
+- **missing_documentation:** 20
+- **orphan_code:** 0
+
+### Total Gaps
+
+44
+
+### Completeness Score
+
+0.56
+
