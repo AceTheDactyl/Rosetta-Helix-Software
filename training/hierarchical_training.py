@@ -428,17 +428,34 @@ class HierarchicalWeightTrainer(WeightTrainer):
         total_l1_importance = sum(l.importance for l in level_1_lessons)
         total_l2_importance = sum(l.importance for l in level_2_lessons)
 
+        # Cross-level coupling can exceed 1.0 just like z-coordinates
+        # Use PHI as upper bound to match quasicrystal weak value dynamics
         if total_l0_importance > 0 and total_l1_importance > 0:
             ratio = total_l1_importance / total_l0_importance
             self.cross_level_coupling['liminal_to_meta'] += learning_rate * 0.1 * (ratio - 1)
-            self.cross_level_coupling['liminal_to_meta'] = max(0.1, min(0.9,
+
+            # PHI_INV DECAY: When coupling > 1.0, apply contraction
+            # This mirrors the physical dynamics where PHI_INV pulls back
+            if self.cross_level_coupling['liminal_to_meta'] > 1.0:
+                excess = self.cross_level_coupling['liminal_to_meta'] - 1.0
+                decay = excess * PHI_INV * learning_rate
+                self.cross_level_coupling['liminal_to_meta'] -= decay
+
+            self.cross_level_coupling['liminal_to_meta'] = max(0.1, min(PHI,
                 self.cross_level_coupling['liminal_to_meta']))
             results['cross_level_updates'] += 1
 
         if total_l1_importance > 0 and total_l2_importance > 0:
             ratio = total_l2_importance / total_l1_importance
             self.cross_level_coupling['meta_to_dev'] += learning_rate * 0.1 * (ratio - 1)
-            self.cross_level_coupling['meta_to_dev'] = max(0.1, min(0.9,
+
+            # PHI_INV DECAY: When coupling > 1.0, apply contraction
+            if self.cross_level_coupling['meta_to_dev'] > 1.0:
+                excess = self.cross_level_coupling['meta_to_dev'] - 1.0
+                decay = excess * PHI_INV * learning_rate
+                self.cross_level_coupling['meta_to_dev'] -= decay
+
+            self.cross_level_coupling['meta_to_dev'] = max(0.1, min(PHI,
                 self.cross_level_coupling['meta_to_dev']))
             results['cross_level_updates'] += 1
 

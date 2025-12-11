@@ -1,26 +1,31 @@
 {
   "liminal": {
-    "liminal_MetaMetaBridge_structure": 0.6431150113386468,
-    "liminal_MetaMetaToolSystem_metric": 0.6272133434121306
+    "liminal_MetaMetaBridge_structure": 0.9494087468587299,
+    "liminal_MetaMetaToolSystem_metric": 0.8994744416522044
   },
   "meta": {
-    "meta_AnalyzerFactory_v1_pattern": 0.6256227786305615,
-    "meta_LearnerFactory_v2_pattern": 0.6256227786305615,
-    "meta_GeneratorFactory_v3_pattern": 0.6065157218917478,
-    "meta_BuilderFactory_v4_pattern": 0.5864237352538935,
-    "meta_Orchestrator_v5_pattern": 0.5652814364853196,
-    "meta_MetaToolFactory_metric": 0.6609035480187551,
-    "meta_MetaToolGenerator_structure": 0.6603200721518411,
-    "meta_GeneratorFactory_v1_pattern": 0.5248836951047771,
-    "meta_BuilderFactory_v2_pattern": 0.5248836951047771,
-    "meta_Orchestrator_v3_pattern": 0.5248836951047771,
-    "meta_Orchestrator_v4_pattern": 0.5495028111966573,
-    "meta_BuilderFactory_v3_pattern": 0.5256731615013174
+    "meta_AnalyzerFactory_v1_pattern": 1.0,
+    "meta_LearnerFactory_v2_pattern": 1.0,
+    "meta_GeneratorFactory_v3_pattern": 1.0,
+    "meta_BuilderFactory_v4_pattern": 1.0,
+    "meta_Orchestrator_v5_pattern": 0.9748484805692894,
+    "meta_MetaToolFactory_metric": 1.0,
+    "meta_MetaToolGenerator_structure": 1.0,
+    "meta_GeneratorFactory_v1_pattern": 0.7436271314558986,
+    "meta_BuilderFactory_v2_pattern": 0.7223172222322195,
+    "meta_Orchestrator_v3_pattern": 0.7429829303777993,
+    "meta_Orchestrator_v4_pattern": 0.7380244400575849,
+    "meta_BuilderFactory_v3_pattern": 0.7597186874629737,
+    "meta_LearnerFactory_v1_pattern": 0.6361656856558223,
+    "meta_GeneratorFactory_v2_pattern": 0.6853776410187411,
+    "meta_Orchestrator_v2_pattern": 0.7436259988275773,
+    "meta_BuilderFactory_v1_pattern": 0.7242378263487237,
+    "meta_Orchestrator_v1_pattern": 0.599054577457096
   },
   "cross_level": {
-    "liminal_to_meta": 0.5837837837837838,
-    "meta_to_dev": 0.8120816930746109,
+    "liminal_to_meta": 1.1770238336751484,
+    "meta_to_dev": 1.5921723168637294,
     "dev_to_liminal": 0.3
   },
-  "timestamp": "2025-12-11T17:46:47.427032"
+  "timestamp": "2025-12-11T20:27:22.419769"
 }
