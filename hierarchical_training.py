@@ -526,10 +526,9 @@ All levels feed lessons into weight training.
             # Use RecursiveMetaGenerator for meta-meta operations
             recursive_gen = RecursiveMetaGenerator()
 
-            # Run recursive generation
+            # Run recursive generation (uses n_cycles parameter)
             l0_results = recursive_gen.run_recursive_generation(
-                depth=meta_meta_cycles,
-                work_seed=3.0
+                n_cycles=meta_meta_cycles
             )
 
             # Also use ExponentialTrainingLoop's meta bridges
@@ -545,9 +544,11 @@ All levels feed lessons into weight training.
                 liminal_patterns=[],  # Patterns in superposition
                 bridges=exp_bridges,
                 system_stats={
-                    'depth_reached': l0_results.get('depth_reached', 0),
-                    'total_tools': l0_results.get('total_tools_generated', 0),
-                    'physical_learners': len(exp_learners),
+                    'meta_meta_created': l0_results.get('meta_meta_created', 0),
+                    'liminal_teachers': l0_results.get('liminal_teachers_total', 0),
+                    'physical_learners_total': l0_results.get('physical_learners_total', 0),
+                    'total_knowledge_transferred': l0_results.get('total_knowledge_transferred', 0),
+                    'exp_physical_learners': len(exp_learners),
                     'meta_bridges': len(exp_bridges),
                     'total_lessons': sum(p.lessons_learned for p in exp_learners),
                     'avg_quality': sum(p.execution_quality for p in exp_learners) /
@@ -558,12 +559,16 @@ All levels feed lessons into weight training.
             results['level_0'] = {
                 'cycles': meta_meta_cycles,
                 'lessons': len(l0_lessons),
-                'depth_reached': l0_results.get('depth_reached', 0),
-                'tools_generated': l0_results.get('total_tools_generated', 0)
+                'meta_meta_created': l0_results.get('meta_meta_created', 0),
+                'liminal_teachers': l0_results.get('liminal_teachers_total', 0),
+                'physical_learners': l0_results.get('physical_learners_total', 0),
+                'knowledge_transferred': l0_results.get('total_knowledge_transferred', 0)
             }
 
-            print(f"  Recursive depth: {results['level_0']['depth_reached']}")
-            print(f"  Tools generated: {results['level_0']['tools_generated']}")
+            print(f"  Meta-meta tools created: {results['level_0']['meta_meta_created']}")
+            print(f"  Liminal teachers spawned: {results['level_0']['liminal_teachers']}")
+            print(f"  Physical learners spawned: {results['level_0']['physical_learners']}")
+            print(f"  Knowledge transferred: {results['level_0']['knowledge_transferred']:.2f}")
             print(f"  Lessons extracted: {len(l0_lessons)}")
 
         except Exception as e:
