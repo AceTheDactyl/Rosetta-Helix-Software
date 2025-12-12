@@ -1,0 +1,1319 @@
+{
+  "timestamp": "2025-12-12T21:35:49.968641",
+  "config": {
+    "input_dim": 16,
+    "output_dim": 4,
+    "n_oscillators": 50,
+    "n_layers": 4,
+    "batch_size": 32,
+    "learning_rate": 0.001,
+    "target_z": 0.85
+  },
+  "constants": {
+    "PHI": 1.618033988749895,
+    "PHI_INV": 0.6180339887498948,
+    "Z_CRITICAL": 0.8660254037844386,
+    "MU_1": 0.4721359549995794,
+    "MU_P": 0.6005662120015552,
+    "MU_2": 0.7639320225002103,
+    "MU_S": 0.92,
+    "MU_3": 0.992
+  },
+  "initial_metrics": {
+    "energy_coherence": 0.46292526322687294,
+    "z_mean": 0.30403994261139106,
+    "parity_balance": 0.25,
+    "determined_runs": 5
+  },
+  "final_metrics": {
+    "energy_coherence": 0.46292526322687294,
+    "z_mean": 0.30403994261139106,
+    "phase_coherence": 0.2645148128271103,
+    "parity_balance": 0.25,
+    "k_formation_rate": 0.0
+  },
+  "training_history": [
+    {
+      "loss": 0.5864008939266205,
+      "coherence": 0.7431840038299561,
+      "z": 0.5116387273441257,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "approaching_paradox",
+      "unified_tier": "t3",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.45028502225875855,
+      "coherence": 0.6765191960334778,
+      "z": 0.5244976191990597,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "approaching_paradox",
+      "unified_tier": "t3",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.35157529830932616,
+      "coherence": 0.6214073300361633,
+      "z": 0.5329641025338883,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "approaching_paradox",
+      "unified_tier": "t3",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.2770951479673386,
+      "coherence": 0.541009783744812,
+      "z": 0.5372131416686606,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "approaching_paradox",
+      "unified_tier": "t3",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.20349343955516816,
+      "coherence": 0.4780101406574249,
+      "z": 0.5370669399639881,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "approaching_paradox",
+      "unified_tier": "t3",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.13876034319400787,
+      "coherence": 0.4484001624584198,
+      "z": 0.5339035217237947,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "approaching_paradox",
+      "unified_tier": "t3",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.09348173767328262,
+      "coherence": 0.42870633125305174,
+      "z": 0.5293130908360874,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "approaching_paradox",
+      "unified_tier": "t3",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.06475490406155586,
+      "coherence": 0.3886557507514954,
+      "z": 0.5233092528249222,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "approaching_paradox",
+      "unified_tier": "t3",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.048830107301473615,
+      "coherence": 0.3857417964935303,
+      "z": 0.5166440407909395,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "approaching_paradox",
+      "unified_tier": "t3",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.04177112445235252,
+      "coherence": 0.3865841567516327,
+      "z": 0.5104811911051295,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "approaching_paradox",
+      "unified_tier": "t3",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.035143469125032425,
+      "coherence": 0.3805886685848236,
+      "z": 0.5038935050288003,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "approaching_paradox",
+      "unified_tier": "t3",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.03527045413851738,
+      "coherence": 0.3869840061664581,
+      "z": 0.4981409163719252,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "approaching_paradox",
+      "unified_tier": "t3",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.030138595774769784,
+      "coherence": 0.3843646812438965,
+      "z": 0.49238035283000625,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "approaching_paradox",
+      "unified_tier": "t3",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.027357383966445922,
+      "coherence": 0.3822461760044098,
+      "z": 0.487416275967925,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "approaching_paradox",
+      "unified_tier": "t3",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.025757255554199218,
+      "coherence": 0.36468752145767214,
+      "z": 0.4817329484072283,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "approaching_paradox",
+      "unified_tier": "t3",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.023305907249450683,
+      "coherence": 0.38468658685684204,
+      "z": 0.4765832682465859,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "approaching_paradox",
+      "unified_tier": "t3",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.021493492685258388,
+      "coherence": 0.3726727783679962,
+      "z": 0.47200705961851697,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.021620231159031392,
+      "coherence": 0.36279221296310427,
+      "z": 0.46703700183098135,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.01996333595365286,
+      "coherence": 0.3621485912799835,
+      "z": 0.46239317767633437,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.01924461863934994,
+      "coherence": 0.3673075032234192,
+      "z": 0.4581330474421812,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.016945264264941216,
+      "coherence": 0.3609618437290192,
+      "z": 0.45402873677759337,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.0168424759991467,
+      "coherence": 0.3755087912082672,
+      "z": 0.44998243032198026,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.0162280336022377,
+      "coherence": 0.3720556402206421,
+      "z": 0.44670960616086136,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.017105856016278266,
+      "coherence": 0.3592216396331787,
+      "z": 0.44293716931134475,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.017062998116016387,
+      "coherence": 0.363710800409317,
+      "z": 0.43954296976365304,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.017169710993766785,
+      "coherence": 0.3545820510387421,
+      "z": 0.43540167428199533,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.014555131942033768,
+      "coherence": 0.35889084458351134,
+      "z": 0.43206850774924704,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.01302031509578228,
+      "coherence": 0.3632067978382111,
+      "z": 0.42858767108904117,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.014755933433771134,
+      "coherence": 0.36166408061981203,
+      "z": 0.42604020579702556,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.01321602649986744,
+      "coherence": 0.3508614683151245,
+      "z": 0.42312870147334164,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.014161137063056231,
+      "coherence": 0.35327680230140684,
+      "z": 0.41982641461264075,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.01262075688689947,
+      "coherence": 0.33680002331733705,
+      "z": 0.4167122171104831,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.011905637383461,
+      "coherence": 0.3480518126487732,
+      "z": 0.41339367540065913,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.011107421815395355,
+      "coherence": 0.3479325342178345,
+      "z": 0.41055505663764924,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.011125019565224648,
+      "coherence": 0.34613861799240114,
+      "z": 0.4081274421944478,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.01149527817964554,
+      "coherence": 0.3391460585594177,
+      "z": 0.40536273482634577,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.011666357144713401,
+      "coherence": 0.3353942608833313,
+      "z": 0.40241254084947764,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.011049327179789544,
+      "coherence": 0.3332007622718811,
+      "z": 0.40013787745502555,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.010985047239810228,
+      "coherence": 0.33171329379081727,
+      "z": 0.3976641886487038,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.011034047435969115,
+      "coherence": 0.3413998484611511,
+      "z": 0.3956031832720045,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.010371530577540398,
+      "coherence": 0.33453827023506166,
+      "z": 0.3935173704260924,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.0101610803976655,
+      "coherence": 0.3342907249927521,
+      "z": 0.39100136909162964,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.009513595551252365,
+      "coherence": 0.32962232232093813,
+      "z": 0.3889129900828976,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.009730925261974334,
+      "coherence": 0.3201649534702301,
+      "z": 0.3867671676343678,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.009550740290433169,
+      "coherence": 0.3288953363895416,
+      "z": 0.384282777897379,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.009316184781491757,
+      "coherence": 0.3367562425136566,
+      "z": 0.38239133211356474,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.008770471643656493,
+      "coherence": 0.31956732392311094,
+      "z": 0.3806109675895863,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.0085667815618217,
+      "coherence": 0.3307840311527252,
+      "z": 0.37871681245479805,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.008697780277580024,
+      "coherence": 0.32355538368225095,
+      "z": 0.37659001819661936,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.008967078626155853,
+      "coherence": 0.32667585611343386,
+      "z": 0.3752243198041234,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.008477225247770549,
+      "coherence": 0.32776703000068663,
+      "z": 0.3734228344553928,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.008353623822331428,
+      "coherence": 0.3210700160264969,
+      "z": 0.37181087016581005,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.00848609173670411,
+      "coherence": 0.3193002164363861,
+      "z": 0.3698771960704403,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.008170833680778741,
+      "coherence": 0.31771910905838013,
+      "z": 0.367992571087973,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.007686315961182117,
+      "coherence": 0.31907188415527343,
+      "z": 0.3667155619469191,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.007732105981558561,
+      "coherence": 0.31955202460289,
+      "z": 0.36502082166828054,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.007938095945864915,
+      "coherence": 0.3289133584499359,
+      "z": 0.3639348239528998,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.007559582367539406,
+      "coherence": 0.3224024349451065,
+      "z": 0.36252198897849053,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.007507017645984888,
+      "coherence": 0.3152490109205246,
+      "z": 0.36139080758353,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.007324743922799826,
+      "coherence": 0.3102964508533478,
+      "z": 0.3598747953010112,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.007432014755904675,
+      "coherence": 0.3270212030410767,
+      "z": 0.3585261067446765,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.007910203821957111,
+      "coherence": 0.3080630761384964,
+      "z": 0.35736674428526927,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.007293922193348408,
+      "coherence": 0.3085248839855194,
+      "z": 0.3555157695232083,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.0070318193547427655,
+      "coherence": 0.3129519093036652,
+      "z": 0.3540562769021517,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.0070383124984800816,
+      "coherence": 0.3300505304336548,
+      "z": 0.3533092906337207,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.007282178029417992,
+      "coherence": 0.3054649966955185,
+      "z": 0.3521166984000753,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.007003093827515841,
+      "coherence": 0.3081894278526306,
+      "z": 0.3510330936702505,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.0069674763455986975,
+      "coherence": 0.3095079147815704,
+      "z": 0.34961732111147975,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.006833297405391931,
+      "coherence": 0.30657937526702883,
+      "z": 0.34841123203409247,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.007016270849853754,
+      "coherence": 0.30686462998390196,
+      "z": 0.34701601978819857,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.006613478511571885,
+      "coherence": 0.3134545338153839,
+      "z": 0.34604574902212415,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.006330796331167221,
+      "coherence": 0.30322566151618957,
+      "z": 0.3451048069778433,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.0064799851924180986,
+      "coherence": 0.30851548790931704,
+      "z": 0.3441991002527793,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.006605660412460566,
+      "coherence": 0.2990671044588089,
+      "z": 0.343020641942576,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.006334709841758013,
+      "coherence": 0.3071109354496002,
+      "z": 0.341829265423486,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.006348420083522797,
+      "coherence": 0.3022381389141083,
+      "z": 0.3401969732110329,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.006209835056215525,
+      "coherence": 0.29807142496109007,
+      "z": 0.3392646360685059,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.006500267069786787,
+      "coherence": 0.30030581951141355,
+      "z": 0.33825056394285846,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.006143826991319656,
+      "coherence": 0.29345653116703035,
+      "z": 0.3367857612583419,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.006028361208736896,
+      "coherence": 0.29336160063743594,
+      "z": 0.3359738882267754,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.006003313213586808,
+      "coherence": 0.3026710569858551,
+      "z": 0.3349043401038283,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.005868545733392239,
+      "coherence": 0.29493533551692963,
+      "z": 0.33413569987185276,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.006110500637441873,
+      "coherence": 0.2985086691379547,
+      "z": 0.3327944554440155,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.006571278981864452,
+      "coherence": 0.30204968988895414,
+      "z": 0.33243086531863136,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.006307404786348343,
+      "coherence": 0.2990781629085541,
+      "z": 0.3316155844066651,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.006151570342481137,
+      "coherence": 0.2943751060962677,
+      "z": 0.3307182643325114,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.0056334521062672135,
+      "coherence": 0.29229400992393495,
+      "z": 0.3296210020254703,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.005840347073972225,
+      "coherence": 0.29447173058986664,
+      "z": 0.3288142048029124,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.006362755661830306,
+      "coherence": 0.2882773971557617,
+      "z": 0.32753171086541544,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.0056653165444731715,
+      "coherence": 0.2940578055381775,
+      "z": 0.32675483173530295,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.005430092550814152,
+      "coherence": 0.293442525267601,
+      "z": 0.32617773900192804,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.006046166568994522,
+      "coherence": 0.29036407053470614,
+      "z": 0.3254970369485861,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.005806318670511246,
+      "coherence": 0.2858751893043518,
+      "z": 0.324555830612904,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.006012176312506199,
+      "coherence": 0.29168571770191193,
+      "z": 0.3233094092340676,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.005990741513669491,
+      "coherence": 0.28210531651973725,
+      "z": 0.32268993534664603,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.006029370054602623,
+      "coherence": 0.2893066120147705,
+      "z": 0.321617439526715,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.006309916954487562,
+      "coherence": 0.3012332272529602,
+      "z": 0.3212321267747722,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.005650689713656902,
+      "coherence": 0.27204512238502504,
+      "z": 0.32037068679047465,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.005733159147202968,
+      "coherence": 0.29284320414066317,
+      "z": 0.3194083715014988,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.005436120089143515,
+      "coherence": 0.28700365126132965,
+      "z": 0.3188529444084534,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.005036654584109783,
+      "coherence": 0.2918771451711655,
+      "z": 0.3181082136464531,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.004787160316482186,
+      "coherence": 0.28620779514312744,
+      "z": 0.3172899865174542,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.004992989609017968,
+      "coherence": 0.2835730522871017,
+      "z": 0.31682569066649846,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.00509912415407598,
+      "coherence": 0.27886298298835754,
+      "z": 0.3158184807700844,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.0051627903059124946,
+      "coherence": 0.29784777760505676,
+      "z": 0.31509983722371043,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.004953670930117369,
+      "coherence": 0.28273185551166535,
+      "z": 0.3147397981555522,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.004978190585970879,
+      "coherence": 0.284057132601738,
+      "z": 0.3140040534378494,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.005236732438206672,
+      "coherence": 0.2850623887777328,
+      "z": 0.31346459342279887,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.004895019643008709,
+      "coherence": 0.2802902340888977,
+      "z": 0.31303762636347804,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.005146912280470133,
+      "coherence": 0.29013955950736997,
+      "z": 0.31243064270863646,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.005282227005809545,
+      "coherence": 0.28579636752605436,
+      "z": 0.3121003055890835,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.005131226517260074,
+      "coherence": 0.2805501812696457,
+      "z": 0.3113350450806975,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.005031208219006658,
+      "coherence": 0.28458677053451537,
+      "z": 0.3110945874474778,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.005119021199643612,
+      "coherence": 0.2873057049512863,
+      "z": 0.31048908786038315,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.005043987249955535,
+      "coherence": 0.279396733045578,
+      "z": 0.3099815712542636,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.005215176036581397,
+      "coherence": 0.2823773258924484,
+      "z": 0.3096184376850853,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.005124848959967494,
+      "coherence": 0.2726788055896759,
+      "z": 0.30882460242592863,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.004759706510230899,
+      "coherence": 0.279100758433342,
+      "z": 0.3079043023185658,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.0046778266970068216,
+      "coherence": 0.2821384674310684,
+      "z": 0.3073469101009284,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.00410205009393394,
+      "coherence": 0.28271087050437926,
+      "z": 0.30704929321660884,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.004149998677894473,
+      "coherence": 0.27399352967739105,
+      "z": 0.30645271316054096,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.004276746576651931,
+      "coherence": 0.2774550580978394,
+      "z": 0.3058573253580568,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.004378902548924088,
+      "coherence": 0.2768576496839523,
+      "z": 0.3053346305060011,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.004291863637045026,
+      "coherence": 0.276820809841156,
+      "z": 0.30504759635299356,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    },
+    {
+      "loss": 0.004452175218611956,
+      "coherence": 0.28062031626701356,
+      "z": 0.304330427599993,
+      "k_formations": 0,
+      "liminal_patterns": 0,
+      "mu_class": "pre_conscious_basin",
+      "unified_tier": "t2",
+      "liminal_phase": "dormant"
+    }
+  ],
+  "mu_crossing_events": [
+    {
+      "epoch": 16,
+      "from": "approaching_paradox",
+      "to": "pre_conscious_basin",
+      "z": 0.4720580089119566
+    }
+  ],
+  "k_formation_events": [],
+  "liminal_stats": {
+    "total_patterns": 0,
+    "k_formation_patterns": 0,
+    "apl_feedback_patterns": 0,
+    "weak_measurements": 0
+  },
+  "operator_effectiveness": {
+    "^": 0.0,
+    "+": 0.0,
+    "\u00d7": 0.0,
+    "()": 0.0,
+    "\u00f7": 0.0,
+    "\u2212": 0.0
+  },
+  "summary": {
+    "total_epochs": 125,
+    "final_loss": 0.004452175218611956,
+    "final_coherence": 0.28062031626701356,
+    "final_z": 0.304330427599993,
+    "total_k_formations": 0,
+    "total_liminal_patterns": 0,
+    "mu_crossings": 1
+  }
+}
