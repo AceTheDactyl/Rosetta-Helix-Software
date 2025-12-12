@@ -409,8 +409,8 @@ class QuasiCrystalLattice:
 # HEXAGONAL PRISM GEOMETRY
 # ═══════════════════════════════════════════════════════════════════════════
 
-def compute_delta_s_neg(z: float, sigma: float = GEOM_SIGMA) -> float:
-    """Negative entropy: ΔS_neg = exp[-σ(z - z_c)²]"""
+def compute_delta_s_neg(z: float, sigma: float = SIGMA_NEG_ENTROPY) -> float:
+    """Negative entropy: ΔS_neg = exp[-σ(z - z_c)²], σ = 36"""
     d = z - Z_CRITICAL
     return math.exp(-sigma * d * d)
 
@@ -1027,7 +1027,7 @@ Formation Phases (Negative Entropy):
   3. CRYSTALLINE  (z > {Z_CRITICAL:.3f}):  Full periodic order, ΔS_neg peaks at z_c
 
 Negative Entropy Physics:
-  ΔS_neg = exp(-|z - z_c| / σ)
+  ΔS_neg = exp[-σ(z - z_c)²], σ = 36
   Peak at z_c = {Z_CRITICAL:.6f} (THE LENS)
 
 Prismatic Layers:

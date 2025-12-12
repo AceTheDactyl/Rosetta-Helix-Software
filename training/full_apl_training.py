@@ -74,7 +74,7 @@ TRIAD_HIGH = 0.85
 TRIAD_LOW = 0.82
 
 # Negative entropy
-SIGMA_NEG_ENTROPY = 0.12
+SIGMA_NEG_ENTROPY = 36.0  # σ for ΔS_neg = exp[-σ(z - z_c)²]
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -321,8 +321,9 @@ def apply_operator_to_truth(dist: TruthDistribution, operator: str) -> TruthDist
 # ═══════════════════════════════════════════════════════════════════════════
 
 def compute_delta_s_neg(z: float) -> float:
-    """Negative entropy: peaks at z_c"""
-    return math.exp(-abs(z - Z_CRITICAL) / SIGMA_NEG_ENTROPY)
+    """Negative entropy: ΔS_neg = exp[-σ(z - z_c)²], peaks at z_c"""
+    d = z - Z_CRITICAL
+    return math.exp(-SIGMA_NEG_ENTROPY * d * d)
 
 
 def compute_operator_weight(
