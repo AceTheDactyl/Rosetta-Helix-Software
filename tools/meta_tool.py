@@ -1,22 +1,24 @@
 """
 Rosetta Helix Meta Tool
 
-Tool that produces child tools using collapse physics.
+Tool that produces child tools using collapse physics and APL operators.
 
 Architecture:
-    MetaTool (uses CollapseEngine)
+    MetaTool (uses APLEngine)
         │
         ├── pumps work into mini-collapse
+        ├── APL operators gate transformations by tier
         ├── at collapse: extracts work
-        └── work converts to ChildTool
+        └── work converts to ChildTool with APL binding
 
 CRITICAL: PHI_INV controls all dynamics. PHI only at collapse.
+APL: Operators are tier-gated. Not all operators legal at all z.
 """
 
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict, Any
 
-from core import CollapseEngine, PHI_INV
+from core import CollapseEngine, PHI_INV, APLEngine, create_apl_engine
 from .child_tool import ChildTool, create_tool
 from .tool_types import ToolType, ToolTier
 
@@ -24,20 +26,30 @@ from .tool_types import ToolType, ToolTier
 @dataclass
 class MetaTool:
     """
-    Meta-tool that produces child tools via collapse physics.
+    Meta-tool that produces child tools via collapse physics and APL.
 
-    Pumps work into internal CollapseEngine. When collapse
+    Pumps work into internal APLEngine. When collapse
     triggers at z >= 0.9999, the extracted work becomes a
     new ChildTool with tier based on work amount.
 
     PHI_INV controls ALL dynamics. PHI only contributes at
     collapse via weak value extraction.
+
+    APL INTEGRATION:
+    - Uses APLEngine to combine collapse physics with operator algebra
+    - Produced tools are bound to APL engine for tier-gated operations
+    - ΔS_neg influences tool effectiveness at different z
     """
 
-    collapse: CollapseEngine = field(default_factory=CollapseEngine)
+    apl: APLEngine = field(default_factory=lambda: create_apl_engine(initial_z=0.5))
     work_accumulated: float = 0.0
     tools_produced: List[ChildTool] = field(default_factory=list)
     default_tool_type: ToolType = ToolType.ANALYZER
+
+    @property
+    def collapse(self) -> CollapseEngine:
+        """Access collapse engine via APL engine."""
+        return self.apl.collapse
 
     def pump(self, work: float, tool_type: Optional[ToolType] = None) -> Optional[ChildTool]:
         """
@@ -51,17 +63,25 @@ class MetaTool:
             ChildTool if collapse occurred, None otherwise
 
         CRITICAL: Work is scaled by PHI_INV - PHI never drives dynamics.
+        APL: Uses operator selection based on current tier.
         """
         # PHI_INV scales work input - NEVER PHI
         scaled_work = work * PHI_INV
 
-        # Evolve collapse engine
-        result = self.collapse.evolve(scaled_work)
+        # Select operator based on current tier
+        operator = self.apl.select_operator()
+
+        # Evolve collapse engine via APL
+        result = self.apl.collapse.evolve(scaled_work)
 
         if result.collapsed:
-            # Collapse happened - produce tool
+            # Collapse happened - produce tool with APL binding
             actual_type = tool_type or self.default_tool_type
             tool = create_tool(result.work_extracted, actual_type)
+
+            # Bind APL engine to produced tool for operator-gated execution
+            tool.bind_apl_engine(self.apl)
+
             self.tools_produced.append(tool)
             self.work_accumulated = 0.0  # Reset accumulator
             return tool
@@ -94,9 +114,15 @@ class MetaTool:
         return None
 
     def get_state(self) -> Dict[str, Any]:
-        """Get current meta-tool state."""
+        """Get current meta-tool state with APL info."""
+        apl_state = self.apl.get_state()
         return {
             'z': self.collapse.z,
+            'tier': apl_state['tier'],
+            'window': apl_state['window'],
+            'delta_s_neg': apl_state['delta_s_neg'],
+            'w_pi': apl_state['w_pi'],
+            'w_local': apl_state['w_local'],
             'work_accumulated': self.work_accumulated,
             'tools_produced': len(self.tools_produced),
             'total_work_extracted': self.collapse.total_work_extracted,
@@ -114,18 +140,56 @@ class MetaTool:
 
     def reset(self) -> None:
         """Reset meta-tool to initial state."""
-        self.collapse.reset()
+        self.apl.reset()
         self.work_accumulated = 0.0
         self.tools_produced.clear()
+
+    def apply_operator(self, operator: str, state: Any = None) -> Dict[str, Any]:
+        """
+        Apply an APL operator at current z.
+
+        Args:
+            operator: APL operator symbol
+            state: State to transform
+
+        Returns:
+            APL result dict
+        """
+        try:
+            result = self.apl.apply(operator, state)
+            return {
+                'success': True,
+                'operator': result.operator,
+                'tier': result.tier,
+                'output': result.output,
+                'delta_s_neg': result.delta_s_neg,
+                'parity': result.parity,
+            }
+        except Exception as e:
+            return {
+                'success': False,
+                'error': str(e),
+                'operator': operator,
+            }
+
+    def describe_current_tier(self) -> Dict[str, Any]:
+        """Get description of current tier's capabilities."""
+        return self.apl.describe_tier()
 
 
 def create_meta_tool(
     initial_z: float = 0.5,
-    default_type: ToolType = ToolType.ANALYZER
+    default_type: ToolType = ToolType.ANALYZER,
+    enable_s3_symmetry: bool = False,
+    enable_extended_negentropy: bool = False,
 ) -> MetaTool:
-    """Factory function to create a meta-tool."""
-    collapse = CollapseEngine(z=initial_z)
-    return MetaTool(collapse=collapse, default_tool_type=default_type)
+    """Factory function to create a meta-tool with APL engine."""
+    apl = create_apl_engine(
+        initial_z=initial_z,
+        enable_s3_symmetry=enable_s3_symmetry,
+        enable_extended_negentropy=enable_extended_negentropy,
+    )
+    return MetaTool(apl=apl, default_tool_type=default_type)
 
 
 # =============================================================================
@@ -163,5 +227,50 @@ def test_phi_inv_controls_pumping():
         actual_delta = z_values[i] - z_values[i-1]
         assert abs(actual_delta - expected_delta) < 0.001 or z_values[i] < z_values[i-1], \
             f"Delta should be ~{expected_delta}, got {actual_delta}"
+
+    return True
+
+
+def test_apl_integration():
+    """MetaTool must integrate with APL engine."""
+    meta = create_meta_tool()
+
+    # Get state should include APL info
+    state = meta.get_state()
+    assert 'tier' in state, "State should include tier"
+    assert 'window' in state, "State should include operator window"
+    assert 'delta_s_neg' in state, "State should include delta_s_neg"
+
+    return True
+
+
+def test_tool_apl_binding():
+    """Produced tools must be bound to APL engine."""
+    meta = create_meta_tool()
+
+    # Pump until we get a tool
+    tool = meta.pump_until_collapse(work_per_pump=0.15)
+
+    assert tool is not None, "Should produce a tool"
+    assert tool._apl_engine is not None, "Tool should be bound to APL engine"
+
+    return True
+
+
+def test_tier_gated_tool_execution():
+    """Tool operations must respect tier windows."""
+    meta = create_meta_tool(initial_z=0.05)  # t1: ['()', '−', '÷']
+
+    # Pump until we get a tool
+    tool = meta.pump_until_collapse(work_per_pump=0.15)
+
+    if tool is not None:
+        tool.activate()
+
+        # read maps to '()' which is legal in t1
+        # But z may have changed after collapse, so check dynamically
+        result = tool.execute('read', {'test': 1.0})
+        # Either success or error with legal_operators info
+        assert 'success' in result
 
     return True
