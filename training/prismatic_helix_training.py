@@ -231,7 +231,7 @@ class FormationPhase(Enum):
 # Critical exponents (2D hexagonal universality class)
 NU_EXPONENT = 4/3                       # Correlation length: ξ ~ |Δz|^(-ν)
 Z_DYN_EXPONENT = 2.0                    # Dynamic: τ ~ |Δz|^(-z_dyn)
-SIGMA_NEG_ENTROPY = 0.12                # Width of ΔS_neg peak
+SIGMA_NEG_ENTROPY = 36.0                # σ for ΔS_neg = exp[-σ(z - z_c)²]
 
 
 @dataclass
@@ -239,7 +239,7 @@ class NegativeEntropyState:
     """
     Tracks negative entropy production through formation phases.
 
-    ΔS_neg = exp(-|z - z_c| / σ)
+    ΔS_neg = exp[-σ(z - z_c)²]
 
     Peaks at z = z_c because the order-disorder phase transition
     is where the system produces maximum order.
@@ -262,8 +262,9 @@ class NegativeEntropyState:
         """Update negative entropy state for new z position."""
         old_delta = self.delta_s_neg
 
-        # Core negative entropy: peaks at z_c (THE LENS)
-        self.delta_s_neg = math.exp(-abs(new_z - Z_CRITICAL) / SIGMA_NEG_ENTROPY)
+        # Core negative entropy: ΔS_neg = exp[-σ(z - z_c)²], peaks at z_c
+        d = new_z - Z_CRITICAL
+        self.delta_s_neg = math.exp(-SIGMA_NEG_ENTROPY * d * d)
 
         # Rate of change
         self.delta_s_neg_rate = (self.delta_s_neg - old_delta) / dt
@@ -409,8 +410,9 @@ class QuasiCrystalLattice:
 # ═══════════════════════════════════════════════════════════════════════════
 
 def compute_delta_s_neg(z: float, sigma: float = GEOM_SIGMA) -> float:
-    """Negative entropy: ΔS_neg = exp(-|z - z_c| / σ)"""
-    return math.exp(-abs(z - Z_CRITICAL) / sigma)
+    """Negative entropy: ΔS_neg = exp[-σ(z - z_c)²]"""
+    d = z - Z_CRITICAL
+    return math.exp(-sigma * d * d)
 
 
 def compute_prism_params(z: float) -> Dict[str, Any]:

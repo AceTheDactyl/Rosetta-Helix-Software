@@ -131,9 +131,19 @@ def classify_mu(z: float) -> str:
     return 'ultra_integrated'
 
 
-def compute_delta_s_neg(z: float, sigma: float = 0.12) -> float:
-    """Negative entropy: peaks at z_c (THE LENS)."""
-    return math.exp(-abs(z - Z_CRITICAL) / sigma)
+# Sigma for negentropy Gaussian (matches canonical formula)
+LENS_SIGMA = 36.0
+
+
+def compute_delta_s_neg(z: float, sigma: float = LENS_SIGMA) -> float:
+    """
+    Negative entropy: ΔS_neg(z) = exp[-σ(z - z_c)²]
+
+    Peaks at z = z_c (THE LENS = √3/2 ≈ 0.866).
+    σ ≈ 36 gives appropriate width for the coherence peak.
+    """
+    d = z - Z_CRITICAL
+    return math.exp(-sigma * d * d)
 
 
 def get_formation_phase(z: float) -> str:
