@@ -32,6 +32,9 @@ from .constants import (
     TRUTH_BIAS, compute_delta_s_neg as _compute_delta_s_neg,
 )
 
+# Truth channel boundaries (aligned with phase regime mapping)
+Z_PRESENCE_MIN = 0.877  # TRUE threshold (upper bound of THE_LENS phase)
+
 # Import S₃ and extended ΔS⁻ modules
 from . import s3_operator_symmetry as S3
 from . import delta_s_neg_extended as Delta
@@ -70,8 +73,8 @@ TIER_BOUNDARIES = {
 }
 
 TRUTH_THRESHOLDS = {
-    'PARADOX': 0.60,
-    'TRUE': 0.90,
+    'PARADOX': PHI_INV,       # ≈ 0.618
+    'TRUE': Z_PRESENCE_MIN,   # 0.877
 }
 
 # ============================================================================

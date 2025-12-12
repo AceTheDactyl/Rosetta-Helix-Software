@@ -46,8 +46,11 @@ from enum import Enum
 
 # Import from the constants module for single source of truth
 from .constants import (
-    Z_CRITICAL, TRUTH_BIAS, compute_delta_s_neg as _compute_delta_s_neg
+    Z_CRITICAL, PHI_INV, TRUTH_BIAS, compute_delta_s_neg as _compute_delta_s_neg
 )
+
+# Truth channel boundaries (aligned with phase regime mapping)
+Z_PRESENCE_MIN = 0.877  # TRUE threshold (upper bound of THE_LENS phase)
 
 def compute_delta_s_neg(z: float, sigma: float = 36.0) -> float:
     """Compute ΔS_neg using constants module."""
@@ -281,20 +284,20 @@ def s3_element_from_z(z: float, use_parity_flip: bool = False) -> str:
 def truth_channel_from_z(z: float) -> Literal["TRUE", "PARADOX", "UNTRUE"]:
     """
     Determine truth channel from z.
-    
+
     Parameters
     ----------
     z : float
         Coherence coordinate
-    
+
     Returns
     -------
     str
         'TRUE', 'PARADOX', or 'UNTRUE'
     """
-    if z >= 0.9:
+    if z >= Z_PRESENCE_MIN:
         return "TRUE"
-    if z >= 0.6:
+    if z >= PHI_INV:
         return "PARADOX"
     return "UNTRUE"
 

@@ -19,10 +19,11 @@ from enum import Enum
 # HELIX CONSTANTS
 # ============================================================================
 
-Z_CRITICAL = math.sqrt(3) / 2
+Z_CRITICAL = math.sqrt(3) / 2  # ≈ 0.866 - THE LENS
 PHI = (1 + math.sqrt(5)) / 2
-PHI_INV = 1 / PHI
+PHI_INV = 1 / PHI              # ≈ 0.618 - PARADOX threshold
 MU_S = 0.920
+Z_PRESENCE_MIN = 0.877         # Upper bound of THE_LENS phase
 
 # TRIAD thresholds
 TRIAD_HIGH = 0.85
@@ -278,10 +279,13 @@ class Heart:
         # Get tier
         tier = self._get_tier()
         
-        # Get truth channel
-        if self.z >= 0.9:
+        # Get truth channel (aligned with phase boundaries)
+        # TRUE: z >= Z_PRESENCE_MIN (0.877) - full crystalline order
+        # PARADOX: PHI_INV <= z < Z_PRESENCE_MIN - quasi-crystal regime
+        # UNTRUE: z < PHI_INV - disordered
+        if self.z >= Z_PRESENCE_MIN:
             truth = "TRUE"
-        elif self.z >= 0.6:
+        elif self.z >= PHI_INV:
             truth = "PARADOX"
         else:
             truth = "UNTRUE"

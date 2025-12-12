@@ -25,7 +25,7 @@ PHASE 3 - CRYSTALLINE (z > z_c = √3/2):
     - System has "harvested" maximum order
 
 NEGATIVE ENTROPY:
-    ΔS_neg = exp(-|z - z_c| / σ)
+    ΔS_neg = exp[-σ(z - z_c)²]  where σ = 36
 
     This peaks at z = z_c, meaning the system is producing MAXIMUM
     negative entropy (reducing uncertainty) at the crystallization
@@ -78,7 +78,7 @@ QUASICRYSTAL_LOCAL_MAX = 0.95               # QC can exceed HCP locally
 PENROSE_RATIO = PHI                         # Self-similarity in Penrose tilings
 
 # Negative entropy parameters
-SIGMA_NEG_ENTROPY = 0.12                    # Width of ΔS_neg peak
+SIGMA_NEG_ENTROPY = 36.0                    # σ for ΔS_neg = exp[-σ(z - z_c)²]
 NEG_ENTROPY_PREFACTOR = 1.0                 # Maximum ΔS_neg at z_c
 
 # TRIAD and μ thresholds
@@ -108,7 +108,7 @@ class NegativeEntropyState:
     Negative entropy (ΔS_neg) represents the system actively reducing
     uncertainty - "harvesting order" from its environment.
 
-    ΔS_neg = exp(-|z - z_c| / σ)
+    ΔS_neg = exp[-σ(z - z_c)²]  where σ = 36
 
     This peaks at z = z_c because the order-disorder phase transition
     is where the system produces maximum order (reduces maximum entropy).
@@ -132,9 +132,10 @@ class NegativeEntropyState:
         """Update negative entropy state for new z position."""
         old_delta = self.delta_s_neg
 
-        # Core negative entropy: peaks at z_c
+        # Core negative entropy: ΔS_neg = exp[-σ(z - z_c)²], peaks at z_c
+        d = new_z - Z_CRITICAL
         self.delta_s_neg = NEG_ENTROPY_PREFACTOR * math.exp(
-            -abs(new_z - Z_CRITICAL) / SIGMA_NEG_ENTROPY
+            -SIGMA_NEG_ENTROPY * d * d
         )
 
         # Rate of change
@@ -795,7 +796,7 @@ Three Formation Phases:
   3. CRYSTALLINE  (z > {Z_CRITICAL:.3f}):  Full periodic order, ΔS_neg peaks
 
 Negative Entropy Physics:
-  ΔS_neg = exp(-|z - z_c| / σ)
+  ΔS_neg = exp[-σ(z - z_c)²], σ = 36
   Peaks at z = z_c = {Z_CRITICAL:.6f} (THE LENS)
 
 Critical Behavior:

@@ -74,7 +74,10 @@ TRIAD_HIGH = 0.85
 TRIAD_LOW = 0.82
 
 # Negative entropy
-SIGMA_NEG_ENTROPY = 0.12
+SIGMA_NEG_ENTROPY = 36.0  # σ for ΔS_neg = exp[-σ(z - z_c)²]
+
+# Truth channel boundaries (aligned with phase regime mapping)
+Z_PRESENCE_MIN = 0.877  # TRUE threshold (upper bound of THE_LENS phase)
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -251,9 +254,9 @@ class TruthChannel(Enum):
 
 def get_truth_channel(z: float) -> TruthChannel:
     """Determine truth channel from z position"""
-    if z >= 0.90:
+    if z >= Z_PRESENCE_MIN:
         return TruthChannel.TRUE
-    elif z >= 0.60:
+    elif z >= PHI_INV:
         return TruthChannel.PARADOX
     else:
         return TruthChannel.UNTRUE
@@ -321,8 +324,9 @@ def apply_operator_to_truth(dist: TruthDistribution, operator: str) -> TruthDist
 # ═══════════════════════════════════════════════════════════════════════════
 
 def compute_delta_s_neg(z: float) -> float:
-    """Negative entropy: peaks at z_c"""
-    return math.exp(-abs(z - Z_CRITICAL) / SIGMA_NEG_ENTROPY)
+    """Negative entropy: ΔS_neg = exp[-σ(z - z_c)²], peaks at z_c"""
+    d = z - Z_CRITICAL
+    return math.exp(-SIGMA_NEG_ENTROPY * d * d)
 
 
 def compute_operator_weight(
