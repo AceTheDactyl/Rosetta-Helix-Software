@@ -1,0 +1,998 @@
+{
+  "timestamp": "2025-12-12T22:16:29.399495",
+  "config": {
+    "input_dim": 16,
+    "output_dim": 4,
+    "n_oscillators": 50,
+    "n_layers": 4,
+    "batch_size": 32,
+    "learning_rate": 0.001
+  },
+  "training_history": [
+    {
+      "loss": 0.6048008537292481,
+      "coherence": 0.7856175398826599,
+      "z": 0.8140652637694717,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.4424478399753571,
+      "coherence": 0.7071965646743774,
+      "z": 0.6857246088475573,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.3254209649562836,
+      "coherence": 0.603343391418457,
+      "z": 0.6907097274455816,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.24639751732349396,
+      "coherence": 0.5300868213176727,
+      "z": 0.5449973673375144,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.18335404694080354,
+      "coherence": 0.4905879521369934,
+      "z": 0.5180964323897286,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.128658267557621,
+      "coherence": 0.45809704184532163,
+      "z": 0.5141703967145425,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.08547357469797134,
+      "coherence": 0.44462435483932494,
+      "z": 0.4805177936820148,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.056790641695261004,
+      "coherence": 0.43358911633491515,
+      "z": 0.4655586394263122,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.03865325473248959,
+      "coherence": 0.4283252453804016,
+      "z": 0.46585405719276296,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.02742589868605137,
+      "coherence": 0.426919264793396,
+      "z": 0.45584354328007093,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.02140161529183388,
+      "coherence": 0.42376444101333616,
+      "z": 0.45814028800444445,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.018893005847930907,
+      "coherence": 0.42406205534935,
+      "z": 0.4554221161005658,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.017685653604567052,
+      "coherence": 0.42382224798202517,
+      "z": 0.4561403859168006,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.015777814611792566,
+      "coherence": 0.42217347502708436,
+      "z": 0.46516987174761093,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.015173498168587684,
+      "coherence": 0.42320931911468507,
+      "z": 0.4588088643781484,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.01395172469317913,
+      "coherence": 0.42674437642097474,
+      "z": 0.43711687160787294,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.014920461587607861,
+      "coherence": 0.41986138343811036,
+      "z": 0.45989013202915396,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.013316670134663582,
+      "coherence": 0.42225548028945925,
+      "z": 0.46665271898074395,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.012025232873857022,
+      "coherence": 0.42663357615470887,
+      "z": 0.4493527980723451,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.011528656035661698,
+      "coherence": 0.42406109571456907,
+      "z": 0.4609502470473286,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.011135981846600772,
+      "coherence": 0.42603689908981324,
+      "z": 0.45331045296304423,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.011037862673401833,
+      "coherence": 0.42504207968711855,
+      "z": 0.456242901138617,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.010808144100010394,
+      "coherence": 0.42519727230072024,
+      "z": 0.46293477770236324,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.010340524073690176,
+      "coherence": 0.42910815358161924,
+      "z": 0.4549703113129088,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.009576672315597534,
+      "coherence": 0.42861721873283387,
+      "z": 0.4591618172321088,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.009278938919305802,
+      "coherence": 0.42832582354545595,
+      "z": 0.45489893623021105,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.009050936177372933,
+      "coherence": 0.42777319431304933,
+      "z": 0.4557673591667896,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0091378628090024,
+      "coherence": 0.42492722630500795,
+      "z": 0.45712551094208964,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.009038891959935427,
+      "coherence": 0.42340378642082216,
+      "z": 0.462863610247177,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.00858961571007967,
+      "coherence": 0.42730433344841,
+      "z": 0.44932897797541493,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.008790864534676075,
+      "coherence": 0.42362248539924624,
+      "z": 0.4612849489299321,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.008141678143292665,
+      "coherence": 0.42363365650177004,
+      "z": 0.45516487730605143,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.008041036911308766,
+      "coherence": 0.4265026211738586,
+      "z": 0.4511033450159288,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.007730396781116724,
+      "coherence": 0.42352996706962587,
+      "z": 0.45792037928242657,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.007633181009441614,
+      "coherence": 0.4230819118022919,
+      "z": 0.45723070193791027,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.007395353335887193,
+      "coherence": 0.4224764931201935,
+      "z": 0.4434050641325797,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.00725264560431242,
+      "coherence": 0.4221507930755615,
+      "z": 0.4474765623343607,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0078066211566329,
+      "coherence": 0.41493601083755494,
+      "z": 0.47488146175150475,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.007505180537700653,
+      "coherence": 0.4222276532649994,
+      "z": 0.42525612935593415,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.007292094174772501,
+      "coherence": 0.41941060304641725,
+      "z": 0.45393096113465,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.00662706108763814,
+      "coherence": 0.42179811239242554,
+      "z": 0.4589992842509971,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.00676658283919096,
+      "coherence": 0.4192525100708008,
+      "z": 0.44273837294072654,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.006754617318511009,
+      "coherence": 0.4167294454574585,
+      "z": 0.4607912748681511,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0063683784753084186,
+      "coherence": 0.41604645252227784,
+      "z": 0.43599486555919015,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.006374930832535029,
+      "coherence": 0.41564277291297913,
+      "z": 0.45069661880077455,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.006224777363240719,
+      "coherence": 0.4167481851577759,
+      "z": 0.451015444358412,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.006057757697999477,
+      "coherence": 0.4147347378730774,
+      "z": 0.44398540757743177,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0056931784562766555,
+      "coherence": 0.4134861898422241,
+      "z": 0.4496498177907118,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.005612949728965759,
+      "coherence": 0.41281777262687686,
+      "z": 0.43795001742911777,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.005673119723796844,
+      "coherence": 0.41087562799453736,
+      "z": 0.4472501394230026,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.005862206444144249,
+      "coherence": 0.40949933886528017,
+      "z": 0.4560087439261967,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.005681615341454744,
+      "coherence": 0.40760375022888184,
+      "z": 0.4159832617699776,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0071067091822624206,
+      "coherence": 0.40193137526512146,
+      "z": 0.44474680481090983,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.006103133894503117,
+      "coherence": 0.4056719732284546,
+      "z": 0.45746484749116684,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.005803901050239801,
+      "coherence": 0.4081147336959839,
+      "z": 0.42865818497008507,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.005352883264422416,
+      "coherence": 0.40581183314323427,
+      "z": 0.4495165734839493,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.004795846519991756,
+      "coherence": 0.40265741348266604,
+      "z": 0.4295810704666252,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0048879921343177556,
+      "coherence": 0.4020431613922119,
+      "z": 0.43975966549089096,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.004889322705566883,
+      "coherence": 0.4012530791759491,
+      "z": 0.4337193665912558,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.004711313704028726,
+      "coherence": 0.39977436065673827,
+      "z": 0.4426102455109524,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.004695889623835683,
+      "coherence": 0.39787649750709536,
+      "z": 0.4211505820073047,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.004680154277011752,
+      "coherence": 0.3967288494110107,
+      "z": 0.44192081108296855,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.004556369706988334,
+      "coherence": 0.395542299747467,
+      "z": 0.4344604686970762,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0048225412145257,
+      "coherence": 0.39471903681755066,
+      "z": 0.4236822635168042,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.004707830864936114,
+      "coherence": 0.3929092812538147,
+      "z": 0.43623920580338293,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0044239207543432715,
+      "coherence": 0.39189969897270205,
+      "z": 0.42203195237470054,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.004346104236319661,
+      "coherence": 0.3902073538303375,
+      "z": 0.4413006078194487,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.004215208999812603,
+      "coherence": 0.3904059827327728,
+      "z": 0.4249599892838924,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.004011465106159449,
+      "coherence": 0.3887944507598877,
+      "z": 0.42793236500121773,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.003928074361756444,
+      "coherence": 0.3874789547920227,
+      "z": 0.4227436874408537,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0039686100743711,
+      "coherence": 0.3870298874378204,
+      "z": 0.4293239119369537,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.00393684116192162,
+      "coherence": 0.3853312790393829,
+      "z": 0.4199417937860745,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0038624886237084866,
+      "coherence": 0.38359915852546694,
+      "z": 0.4267861353261586,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.003767698211595416,
+      "coherence": 0.38145686507225035,
+      "z": 0.42156872332430084,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.003933788640424609,
+      "coherence": 0.38181491136550905,
+      "z": 0.42382124328670057,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0037729588896036146,
+      "coherence": 0.38037205100059507,
+      "z": 0.43373816362843776,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.003685750225558877,
+      "coherence": 0.3783791124820709,
+      "z": 0.40338839842253793,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.003974330360069871,
+      "coherence": 0.378630450963974,
+      "z": 0.4234419578415447,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.003945910651236772,
+      "coherence": 0.37737389087677004,
+      "z": 0.43409945833636143,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.003939665798097849,
+      "coherence": 0.377545725107193,
+      "z": 0.4088363728185327,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0038286844361573457,
+      "coherence": 0.3766326308250427,
+      "z": 0.4288522554140855,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.003594873892143369,
+      "coherence": 0.37322758436203,
+      "z": 0.4055446002719322,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0034839827567338943,
+      "coherence": 0.3741799783706665,
+      "z": 0.4195982623596254,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0034553206991404296,
+      "coherence": 0.3721161842346191,
+      "z": 0.4169398824805372,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0033243572618812324,
+      "coherence": 0.371995393037796,
+      "z": 0.40011374615176265,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0032881364412605764,
+      "coherence": 0.37097939014434816,
+      "z": 0.43651292295427896,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.003217088943347335,
+      "coherence": 0.37010361909866335,
+      "z": 0.4086548906760586,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.003222472555935383,
+      "coherence": 0.3684230983257294,
+      "z": 0.3965661910365658,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0030783853027969597,
+      "coherence": 0.3680131685733795,
+      "z": 0.4256132975030498,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0031939366925507785,
+      "coherence": 0.3668380534648895,
+      "z": 0.424417064749257,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0032820894103497266,
+      "coherence": 0.36666583180427553,
+      "z": 0.3914651496666262,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0036546877771615983,
+      "coherence": 0.3655636346340179,
+      "z": 0.4188921183856485,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.004130869945511222,
+      "coherence": 0.36564917922019957,
+      "z": 0.4065848566985416,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.004444091329351068,
+      "coherence": 0.3662989747524261,
+      "z": 0.41744133607029094,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.005051156347617507,
+      "coherence": 0.36578862071037294,
+      "z": 0.40241218904197595,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.005367398802191019,
+      "coherence": 0.36430530071258543,
+      "z": 0.4080578395699558,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.005497944131493568,
+      "coherence": 0.36206374168395994,
+      "z": 0.4083174508940857,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.005379652678966522,
+      "coherence": 0.36321857810020447,
+      "z": 0.4069286296611396,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.003782685175538063,
+      "coherence": 0.3638294422626495,
+      "z": 0.4037499686989942,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.0036076153442263603,
+      "coherence": 0.3619557428359985,
+      "z": 0.4135729159450461,
+      "k_formations": 0,
+      "triad_passes": 1,
+      "triad_unlocked": false,
+      "qc_boost": 1.9961710408648279
+    }
+  ],
+  "triad_events": [
+    {
+      "layer": 3,
+      "event": "pass",
+      "z": 0.8511211673211952,
+      "epoch": 0
+    },
+    {
+      "layer": 2,
+      "event": "rearm",
+      "z": 0.814192861720952,
+      "epoch": 1
+    }
+  ],
+  "prism_activations": {
+    "0": 10000,
+    "1": 10000,
+    "2": 1734,
+    "3": 597,
+    "4": 246,
+    "5": 317,
+    "6": 664
+  },
+  "final_prism": {
+    "z": 0.390158582773522,
+    "delta_s_neg": 0.018957477357773533,
+    "radius": 0.8452606306605566,
+    "height": 0.12341234592439923,
+    "phi": 0.004963055966481347,
+    "z_top": 0.4518647557357216,
+    "z_bot": 0.3284524098113224,
+    "vertices": [
+      {
+        "k": 0,
+        "x": 0.8452502204838954,
+        "y": 0.004195058594121058,
+        "z_top": 0.4518647557357216,
+        "z_bot": 0.3284524098113224
+      },
+      {
+        "k": 1,
+        "x": 0.41899208292907475,
+        "y": 0.7341056927905117,
+        "z_top": 0.4518647557357216,
+        "z_bot": 0.3284524098113224
+      },
+      {
+        "k": 2,
+        "x": -0.4262581375548205,
+        "y": 0.7299106341963908,
+        "z_top": 0.4518647557357216,
+        "z_bot": 0.3284524098113224
+      },
+      {
+        "k": 3,
+        "x": -0.8452502204838954,
+        "y": -0.0041950585941208955,
+        "z_top": 0.4518647557357216,
+        "z_bot": 0.3284524098113224
+      },
+      {
+        "k": 4,
+        "x": -0.41899208292907497,
+        "y": -0.7341056927905116,
+        "z_top": 0.4518647557357216,
+        "z_bot": 0.3284524098113224
+      },
+      {
+        "k": 5,
+        "x": 0.4262581375548201,
+        "y": -0.7299106341963911,
+        "z_top": 0.4518647557357216,
+        "z_bot": 0.3284524098113224
+      }
+    ]
+  },
+  "summary": {
+    "total_epochs": 100,
+    "final_loss": 0.0036076153442263603,
+    "final_coherence": 0.3619557428359985,
+    "final_z": 0.4135729159450461,
+    "triad_passes": 1,
+    "triad_unlocked": false,
+    "qc_boost": 1.9961710408648279
+  }
+}
