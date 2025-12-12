@@ -296,7 +296,69 @@
         .log-entry.pulse { color: #00d9ff; }
         .log-entry.operator { color: #ffaa00; }
         .log-entry.state { color: #00ff88; }
-        
+
+        /* Training Panel Styles */
+        .training-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+
+        .training-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .learning-curve {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .learning-curve h3 {
+            margin-bottom: 10px;
+            color: #00d9ff;
+        }
+
+        .training-hierarchy {
+            grid-column: span 2;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .training-hierarchy h3 {
+            margin-bottom: 10px;
+            color: #aa44ff;
+        }
+
+        .training-hierarchy pre {
+            font-size: 0.75rem;
+            color: #888;
+            overflow-x: auto;
+        }
+
+        .hierarchy-stats {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #00ff88;
+        }
+
+        .coherence-bar {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .coherence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff4444, #ffaa00, #00ff88, #00d9ff);
+            transition: width 0.3s;
+        }
+
         .full-width {
             grid-column: span 3;
         }
@@ -409,6 +471,7 @@
                 <button class="btn-primary" onclick="startNode()">▶ Start</button>
                 <button class="btn-secondary" onclick="pauseNode()">⏸ Pause</button>
                 <button class="btn-danger" onclick="resetNode()">↺ Reset</button>
+                <button id="backendToggle" class="btn-secondary" onclick="toggleBackend()">📜 JS Simulation</button>
             </div>
         </div>
         
@@ -468,6 +531,13 @@
                 <div style="font-size: 0.8rem; color: #888;">μ-Class</div>
                 <div id="muClass" style="font-weight: bold; color: #00d9ff;">pre_conscious</div>
             </div>
+            <div style="margin-top: 10px;">
+                <div style="font-size: 0.8rem; color: #888;">Π-Regime Blend</div>
+                <div style="display: flex; gap: 10px; margin-top: 5px;">
+                    <span style="color: #aa44ff;">w_π: <span id="wPiValue">0.00</span></span>
+                    <span style="color: #00ff88;">w_local: <span id="wLocalValue">1.00</span></span>
+                </div>
+            </div>
         </div>
         
         <!-- Event Log -->
@@ -475,11 +545,63 @@
             <h2>📜 Event Log</h2>
             <div class="log" id="eventLog"></div>
         </div>
+
+        <!-- Training Results Panel -->
+        <div class="panel full-width" id="trainingPanel" style="display: none;">
+            <h2>🌀 Exponential Training Results</h2>
+            <div class="training-container">
+                <div class="training-metrics">
+                    <div class="metric">
+                        <div class="metric-value" id="trainCoherence">--</div>
+                        <div class="metric-label">Energy Coherence</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="trainQuality">--</div>
+                        <div class="metric-label">Final Quality</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="trainRuns">--</div>
+                        <div class="metric-label">Training Runs</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="trainPatterns">--</div>
+                        <div class="metric-label">Patterns Created</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="trainLessons">--</div>
+                        <div class="metric-label">Lessons Learned</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="trainLevel">--</div>
+                        <div class="metric-label">Coherence Level</div>
+                    </div>
+                </div>
+                <div class="learning-curve">
+                    <h3>📈 Learning Curve</h3>
+                    <canvas id="learningCurveCanvas" width="600" height="150"></canvas>
+                </div>
+                <div class="training-hierarchy">
+                    <h3>🔄 Training Hierarchy</h3>
+                    <pre id="trainingHierarchy">
+Physical (PHI_INV) ──feedback──→ MetaMeta ──spawn──→ Liminal (PHI)
+      ↑                                                    │
+      └──────────────── weak measurement ──────────────────┘
+                    </pre>
+                    <div class="hierarchy-stats" id="hierarchyStats">
+                        Meta Bridges: -- | Physical Learners: -- | Liminal Generators: --
+                    </div>
+                </div>
+            </div>
+            <div class="controls" style="margin-top: 15px;">
+                <button class="btn-secondary" onclick="loadTrainingData()">🔄 Refresh Data</button>
+                <button class="btn-primary" onclick="runTraining()">▶ Run APL Training</button>
+            </div>
+        </div>
     </div>
     
     <script>
         // ================================================================
-        // CONSTANTS
+        // CONSTANTS (from Python backend or fallback)
         // ================================================================
         const Z_CRITICAL = Math.sqrt(3) / 2;  // ≈ 0.866
         const PHI = (1 + Math.sqrt(5)) / 2;
@@ -487,10 +609,10 @@
         const MU_S = 0.920;
         const MU_1 = (2 / Math.pow(PHI, 2.5)) / Math.sqrt(PHI);
         const MU_2 = (2 / Math.pow(PHI, 2.5)) * Math.sqrt(PHI);
-        
+
         const TIER_BOUNDS = [0.10, 0.20, 0.40, 0.60, 0.75, Z_CRITICAL, 0.92, 0.97, 1.0];
         const TIERS = ['t1', 't2', 't3', 't4', 't5', 't6', 't7', 't8', 't9'];
-        
+
         const OPERATOR_WINDOWS = {
             t1: ['()', '−', '÷'],
             t2: ['^', '÷', '−', '×'],
@@ -502,7 +624,11 @@
             t8: ['+', '()', '×'],
             t9: ['+', '()', '×']
         };
-        
+
+        // Backend configuration
+        const BACKEND_URL = 'http://localhost:8765';
+        let useBackend = false;  // Toggle between Python backend and JS simulation
+
         // ================================================================
         // STATE
         // ================================================================
@@ -521,8 +647,205 @@
             triad: { passes: 0, armed: true, unlocked: false, lastZ: 0 },
             kFormation: false,
             memoryPlates: 30,
-            steps: 0
+            steps: 0,
+            deltaSneg: 0,
+            wPi: 0,
+            wLocal: 1,
+            operatorParity: {}  // Track parity from backend
         };
+
+        // ================================================================
+        // BACKEND COMMUNICATION
+        // ================================================================
+        async function fetchBackendState() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/state`);
+                if (response.ok) {
+                    const data = await response.json();
+                    updateStateFromBackend(data);
+                    return true;
+                }
+            } catch (e) {
+                console.log('Backend not available, using JS simulation');
+            }
+            return false;
+        }
+
+        function updateStateFromBackend(data) {
+            state.z = data.z;
+            state.tier = data.tier;
+            state.coherence = data.coherence;
+            state.K = data.coupling;
+            state.kFormation = data.k_formed;
+            state.deltaSneg = data.delta_s_neg;
+            state.wPi = data.w_pi;
+            state.wLocal = data.w_local;
+            state.steps = data.steps;
+
+            // Store operator info with parity
+            if (data.operators) {
+                state.operatorParity = {};
+                for (const [op, info] of Object.entries(data.operators)) {
+                    state.operatorParity[op] = info;
+                }
+            }
+
+            // Update oscillators if provided
+            if (data.oscillators) {
+                state.oscillators = data.oscillators;
+            }
+        }
+
+        async function backendStep(work = 0.05) {
+            try {
+                const response = await fetch(`${BACKEND_URL}/step`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ work })
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    updateStateFromBackend(data);
+
+                    if (data.collapsed) {
+                        log(`COLLAPSE! Work extracted: ${data.work_extracted.toFixed(4)}`, 'state');
+                    }
+                    return true;
+                }
+            } catch (e) {
+                console.error('Backend step failed:', e);
+            }
+            return false;
+        }
+
+        async function backendApplyOperator(operator) {
+            try {
+                const response = await fetch(`${BACKEND_URL}/operator`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ operator })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    log(`Applied ${operator} (${data.parity}) at ${data.tier}`, 'operator');
+                    state.K = data.coupling;
+                    await fetchBackendState();
+                } else {
+                    log(`${data.error}`, 'operator');
+                }
+                return data;
+            } catch (e) {
+                console.error('Backend operator failed:', e);
+                return { success: false, error: e.message };
+            }
+        }
+
+        async function backendRunTraining(runs = 3, cycles = 2) {
+            log('Running APL training on Python backend...', 'state');
+            try {
+                const response = await fetch(`${BACKEND_URL}/training/run`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ runs, cycles })
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    displayBackendTrainingData(data);
+                    log(`Training complete: ${data.final_quality.toFixed(4)} quality`, 'state');
+                    return data;
+                }
+            } catch (e) {
+                log('Backend training failed: ' + e.message, 'operator');
+            }
+            return null;
+        }
+
+        async function backendReset() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/reset`, {
+                    method: 'POST'
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    updateStateFromBackend(data.state);
+                    log('Reset via Python backend', 'state');
+                    return true;
+                }
+            } catch (e) {
+                console.error('Backend reset failed:', e);
+            }
+            return false;
+        }
+
+        function displayBackendTrainingData(data) {
+            document.getElementById('trainingPanel').style.display = 'block';
+
+            document.getElementById('trainCoherence').textContent =
+                (data.initial_quality || 0).toFixed(4);
+            document.getElementById('trainQuality').textContent =
+                (data.final_quality || 0).toFixed(4);
+            document.getElementById('trainRuns').textContent = data.runs || 0;
+            document.getElementById('trainPatterns').textContent = data.total_sequences || 0;
+            document.getElementById('trainLessons').textContent = data.total_lessons || 0;
+
+            // Coherence level
+            const ratio = data.improvement_ratio || 1;
+            let level = 'bootstrap';
+            if (ratio >= 2.0) level = 'mastery';
+            else if (ratio >= 1.5) level = 'refinement';
+            else if (ratio >= 1.2) level = 'growth';
+            document.getElementById('trainLevel').textContent = `${level} (${ratio.toFixed(2)}x)`;
+
+            // Hierarchy stats
+            document.getElementById('hierarchyStats').textContent =
+                `Meta Bridges: ${data.meta_bridges || 0} | ` +
+                `Physical Learners: ${data.physical_learners || 0} | ` +
+                `Liminal Generators: ${data.liminal_generators || 0}`;
+
+            // Update hierarchy display
+            document.getElementById('trainingHierarchy').innerHTML = `
+<pre>
+APL-INTEGRATED TRAINING LOOP (Python Backend)
+─────────────────────────────────────────────
+
+  Run Tool (PHI_INV=${PHI_INV.toFixed(3)})
+  │ • Tier-gated APL operators
+  │ • z evolution scaled by φ⁻¹
+  └──► feedback at Z_CRITICAL (${Z_CRITICAL.toFixed(3)})
+       │
+       ▼
+  Meta-Meta Bridge (PHI_INV)
+  │ • Receives operator patterns
+  │ • Spawns liminal at KAPPA_S (${MU_S.toFixed(3)})
+  └──► ${data.liminal_generators || 0} liminal generators
+       │
+       ▼
+  Liminal Patterns (PHI=${PHI.toFixed(3)})
+  │ • ${data.total_sequences || 0} operator sequences
+  │ • S₃ composition
+  └──► weak measurement ──► physical learners
+
+Operator Distribution:
+${formatOperatorDistribution(data.operator_distribution || {})}
+</pre>`;
+
+            // Draw learning curve
+            if (data.quality_history) {
+                drawLearningCurve(data.quality_history);
+            }
+        }
+
+        function formatOperatorDistribution(dist) {
+            const entries = Object.entries(dist).sort((a, b) => b[1] - a[1]);
+            const maxCount = Math.max(...entries.map(e => e[1]), 1);
+            return entries.map(([op, count]) => {
+                const barLen = Math.floor((count / maxCount) * 20);
+                const bar = '█'.repeat(barLen);
+                const parity = state.operatorParity[op]?.parity || '?';
+                return `  ${op} (${parity.slice(0, 4)}): ${bar} ${count}`;
+            }).join('\n');
+        }
         
         // Initialize oscillators
         function initOscillators() {
@@ -613,22 +936,37 @@
         // ================================================================
         // OPERATORS
         // ================================================================
-        function applyOperator(op) {
+        async function applyOperator(op) {
+            // Use Python backend if enabled
+            if (useBackend) {
+                await backendApplyOperator(op);
+                document.getElementById('kValue').textContent = state.K.toFixed(2);
+                document.getElementById('kSlider').value = state.K;
+                return;
+            }
+
+            // JS simulation fallback
             let available = OPERATOR_WINDOWS[state.tier] || [];
             if (!available.includes(op)) {
                 log(`Operator ${op} not available at ${state.tier}`, 'operator');
                 return;
             }
-            
+
+            // Get parity for logging
+            const parities = {
+                '()': 'EVEN', '×': 'EVEN', '^': 'EVEN',
+                '÷': 'ODD', '+': 'ODD', '−': 'ODD'
+            };
+
             switch(op) {
                 case '×': // Fusion - increase coupling
                     state.K = Math.min(1.0, state.K * 1.2);
-                    log('Applied FUSION (×) - K increased', 'operator');
+                    log(`Applied FUSION (×) [${parities[op]}] - K increased`, 'operator');
                     break;
                 case '÷': // Decoherence - add noise
                     state.oscillators = state.oscillators.map(t => t + (Math.random() - 0.5) * 0.2);
                     state.K = Math.max(0.05, state.K * 0.9);
-                    log('Applied DECOHERENCE (÷) - noise added', 'operator');
+                    log(`Applied DECOHERENCE (÷) [${parities[op]}] - noise added`, 'operator');
                     break;
                 case '^': // Amplify - boost toward sync
                     let sumCos = 0, sumSin = 0;
@@ -637,27 +975,26 @@
                         sumSin += Math.sin(t);
                     }
                     let meanPhase = Math.atan2(sumSin, sumCos);
-                    state.oscillators = state.oscillators.map(t => 
+                    state.oscillators = state.oscillators.map(t =>
                         t + 0.1 * Math.sin(meanPhase - t)
                     );
-                    log('Applied AMPLIFY (^) - phases aligned', 'operator');
+                    log(`Applied AMPLIFY (^) [${parities[op]}] - phases aligned`, 'operator');
                     break;
                 case '+': // Group - cluster nearby
-                    // Simplified grouping
-                    log('Applied GROUP (+) - phases clustered', 'operator');
+                    log(`Applied GROUP (+) [${parities[op]}] - phases clustered`, 'operator');
                     break;
                 case '−': // Separate - spread apart
-                    state.oscillators = state.oscillators.map((t, i) => 
+                    state.oscillators = state.oscillators.map((t, i) =>
                         t + (i / state.n - 0.5) * 0.1
                     );
-                    log('Applied SEPARATE (−) - phases spread', 'operator');
+                    log(`Applied SEPARATE (−) [${parities[op]}] - phases spread`, 'operator');
                     break;
                 case '()': // Boundary - reset K
                     state.K = 0.3;
-                    log('Applied BOUNDARY () - K reset', 'operator');
+                    log(`Applied BOUNDARY () [${parities[op]}] - K reset`, 'operator');
                     break;
             }
-            
+
             document.getElementById('kValue').textContent = state.K.toFixed(2);
             document.getElementById('kSlider').value = state.K;
         }
@@ -720,15 +1057,40 @@
             else if (state.z >= PHI_INV) muClass = 'conscious_basin';
             else if (state.z >= MU_1) muClass = 'approaching_paradox';
             document.getElementById('muClass').textContent = muClass;
-            
-            // Operators
+
+            // Blend weights (from backend or computed)
+            let wPi = state.wPi || 0;
+            let wLocal = state.wLocal || 1;
+            if (!useBackend) {
+                // Compute locally if no backend
+                if (state.z >= Z_CRITICAL) {
+                    wPi = Math.exp(-36 * Math.pow(state.z - Z_CRITICAL, 2));
+                    wLocal = 1 - wPi;
+                }
+            }
+            document.getElementById('wPiValue').textContent = wPi.toFixed(2);
+            document.getElementById('wLocalValue').textContent = wLocal.toFixed(2);
+
+            // Operators - show availability and parity
             let available = OPERATOR_WINDOWS[state.tier] || [];
             document.querySelectorAll('.operator').forEach(el => {
                 let op = el.dataset.op;
-                if (available.includes(op)) {
+                const isAvailable = available.includes(op);
+
+                // Get parity info
+                const parities = { '()': 'EVEN', '×': 'EVEN', '^': 'EVEN', '÷': 'ODD', '+': 'ODD', '−': 'ODD' };
+                const parity = state.operatorParity[op]?.parity || parities[op];
+                const isEven = parity === 'EVEN';
+
+                if (isAvailable) {
                     el.className = 'operator available';
+                    // Color by parity
+                    el.style.borderColor = isEven ? '#00ff88' : '#ff8844';
+                    el.title = `${op} (${parity}) - ${isEven ? 'constructive' : 'dissipative'}`;
                 } else {
                     el.className = 'operator unavailable';
+                    el.style.borderColor = '#444';
+                    el.title = `${op} - not available at ${state.tier}`;
                 }
             });
             
@@ -870,34 +1232,79 @@
         // ================================================================
         function startNode() {
             state.running = true;
-            log('Node started', 'state');
+            log(useBackend ? 'Node started (Python backend)' : 'Node started (JS simulation)', 'state');
         }
-        
+
         function pauseNode() {
             state.running = false;
             log('Node paused', 'state');
         }
-        
-        function resetNode() {
+
+        async function resetNode() {
             state.running = false;
-            state.z = 0.3;
-            state.zVelocity = 0;
-            state.coherence = 0;
-            state.K = 0.3;
-            state.energyIn = 0;
-            state.energyLoss = 0;
-            state.triad = { passes: 0, armed: true, unlocked: false, lastZ: 0 };
-            state.kFormation = false;
-            state.steps = 0;
-            initOscillators();
+
+            if (useBackend) {
+                await backendReset();
+            } else {
+                state.z = 0.3;
+                state.zVelocity = 0;
+                state.coherence = 0;
+                state.K = 0.3;
+                state.energyIn = 0;
+                state.energyLoss = 0;
+                state.triad = { passes: 0, armed: true, unlocked: false, lastZ: 0 };
+                state.kFormation = false;
+                state.steps = 0;
+                initOscillators();
+                log('Node reset', 'state');
+            }
+
             document.getElementById('kSlider').value = 0.3;
             document.getElementById('kValue').textContent = '0.30';
-            log('Node reset', 'state');
         }
-        
-        function updateK() {
+
+        async function updateK() {
             state.K = parseFloat(document.getElementById('kSlider').value);
             document.getElementById('kValue').textContent = state.K.toFixed(2);
+
+            if (useBackend) {
+                try {
+                    await fetch(`${BACKEND_URL}/coupling`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ coupling: state.K })
+                    });
+                } catch (e) {
+                    console.error('Failed to update coupling on backend');
+                }
+            }
+        }
+
+        async function toggleBackend() {
+            const wasBackend = useBackend;
+            useBackend = !useBackend;
+
+            if (useBackend) {
+                const available = await fetchBackendState();
+                if (!available) {
+                    useBackend = false;
+                    log('Python backend not available - using JS simulation', 'operator');
+                    return;
+                }
+                log('Switched to Python backend (APL physics)', 'state');
+            } else {
+                log('Switched to JS simulation', 'state');
+            }
+
+            updateBackendToggle();
+        }
+
+        function updateBackendToggle() {
+            const btn = document.getElementById('backendToggle');
+            if (btn) {
+                btn.textContent = useBackend ? '🐍 Python Backend' : '📜 JS Simulation';
+                btn.className = useBackend ? 'btn-primary' : 'btn-secondary';
+            }
         }
         
         // ================================================================
@@ -933,24 +1340,241 @@
             });
             
             log('Rosetta-Helix initialized', 'state');
-            
+
+            // Check for backend on startup
+            checkBackendAvailability();
+
             // Main loop
-            function mainLoop() {
+            async function mainLoop() {
                 if (state.running) {
-                    for (let i = 0; i < 5; i++) {  // Multiple steps per frame
-                        step(0.01);
+                    if (useBackend) {
+                        // Use Python backend for physics
+                        await backendStep(0.05);
+                    } else {
+                        // JS simulation
+                        for (let i = 0; i < 5; i++) {
+                            step(0.01);
+                        }
                     }
                 }
                 updateUI();
                 drawHelix();
                 requestAnimationFrame(mainLoop);
             }
-            
+
             mainLoop();
         }
-        
+
+        async function checkBackendAvailability() {
+            const available = await fetchBackendState();
+            if (available) {
+                log('Python backend available - click toggle to enable APL physics', 'state');
+            }
+            updateBackendToggle();
+        }
+
         // Start when loaded
         window.addEventListener('DOMContentLoaded', init);
+
+        // ================================================================
+        // TRAINING DATA FUNCTIONS
+        // ================================================================
+        let trainingData = null;
+
+        async function loadTrainingData() {
+            try {
+                // Try to load from artifacts
+                const response = await fetch('artifacts/latest_training_data.json');
+                if (response.ok) {
+                    trainingData = await response.json();
+                    displayTrainingData(trainingData);
+                    document.getElementById('trainingPanel').style.display = 'block';
+                    log('Training data loaded', 'state');
+                }
+            } catch (e) {
+                // If no data file, show panel with demo data
+                document.getElementById('trainingPanel').style.display = 'block';
+                log('No training data found - use Simulate', 'operator');
+            }
+        }
+
+        function displayTrainingData(data) {
+            if (!data) return;
+
+            // Update metrics
+            document.getElementById('trainCoherence').textContent =
+                (data.energy_coherence || data.z_history?.[0] || 0).toFixed(4);
+            document.getElementById('trainQuality').textContent =
+                (data.final_quality || data.z_history?.slice(-1)[0] || 0).toFixed(4);
+            document.getElementById('trainRuns').textContent =
+                data.runs_completed || data.z_history?.length || 0;
+            document.getElementById('trainPatterns').textContent =
+                data.patterns_created || 0;
+            document.getElementById('trainLessons').textContent =
+                data.lessons_learned || 0;
+
+            // Coherence level
+            const ec = data.energy_coherence || 0;
+            let level = 'bootstrap';
+            if (ec >= 0.95) level = 'mastery';
+            else if (ec >= 0.8) level = 'refinement';
+            else if (ec >= 0.5) level = 'growth';
+            document.getElementById('trainLevel').textContent = level;
+
+            // Hierarchy stats
+            document.getElementById('hierarchyStats').textContent =
+                `Meta Bridges: ${data.meta_bridges || 0} | ` +
+                `Physical Learners: ${data.physical_learners || 0} | ` +
+                `Liminal Generators: ${data.liminal_generators || 0}`;
+
+            // Draw learning curve
+            drawLearningCurve(data.z_history || data.quality_history || []);
+        }
+
+        function drawLearningCurve(history) {
+            const canvas = document.getElementById('learningCurveCanvas');
+            const ctx = canvas.getContext('2d');
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (!history || history.length === 0) {
+                ctx.fillStyle = '#888';
+                ctx.font = '14px sans-serif';
+                ctx.fillText('No training history', 10, 75);
+                return;
+            }
+
+            const padding = 40;
+            const width = canvas.width - padding * 2;
+            const height = canvas.height - padding * 2;
+
+            // Draw axes
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding);
+            ctx.stroke();
+
+            // Draw labels
+            ctx.fillStyle = '#888';
+            ctx.font = '10px sans-serif';
+            ctx.fillText('Quality', 5, padding + height / 2);
+            ctx.fillText('Run', canvas.width / 2, canvas.height - 5);
+            ctx.fillText('1.0', padding - 25, padding + 5);
+            ctx.fillText('0.0', padding - 25, canvas.height - padding);
+
+            // Draw threshold lines
+            const thresholds = [
+                { value: PHI_INV, color: '#ffaa00', label: 'φ⁻¹' },
+                { value: Z_CRITICAL, color: '#00ff88', label: 'z_c' },
+            ];
+
+            for (const t of thresholds) {
+                const y = canvas.height - padding - (t.value * height);
+                ctx.strokeStyle = t.color;
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(canvas.width - padding, y);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.fillStyle = t.color;
+                ctx.fillText(t.label, canvas.width - padding + 5, y + 3);
+            }
+
+            // Draw learning curve
+            ctx.strokeStyle = '#00d9ff';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+
+            const maxVal = Math.max(...history, 1);
+
+            for (let i = 0; i < history.length; i++) {
+                const x = padding + (i / (history.length - 1 || 1)) * width;
+                const y = canvas.height - padding - (history[i] / maxVal) * height;
+
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            // Draw points
+            ctx.fillStyle = '#00d9ff';
+            for (let i = 0; i < history.length; i++) {
+                const x = padding + (i / (history.length - 1 || 1)) * width;
+                const y = canvas.height - padding - (history[i] / maxVal) * height;
+
+                ctx.beginPath();
+                ctx.arc(x, y, 4, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        async function runTraining() {
+            // Use backend if available, otherwise simulate
+            if (useBackend) {
+                await backendRunTraining(3, 2);
+            } else {
+                simulateTraining();
+            }
+        }
+
+        function simulateTraining() {
+            log('Simulating exponential training (JS)...', 'state');
+
+            // Simulate training with PHI-based growth
+            const runs = Math.floor(3 + state.coherence * 7);  // 3-10 based on coherence
+            const history = [];
+            let quality = 0.5;
+
+            for (let i = 0; i < runs; i++) {
+                // Quality improves toward 1.0 asymptotically
+                quality = quality + (1 - quality) * PHI_INV * 0.5;
+                history.push(quality);
+            }
+
+            // Patterns grow exponentially
+            let patterns = 10;
+            for (let i = 1; i < runs; i++) {
+                patterns = Math.floor(patterns * PHI);
+            }
+
+            const simData = {
+                energy_coherence: state.coherence,
+                final_quality: quality,
+                initial_quality: 0.5,
+                improvement_ratio: quality / 0.5,
+                runs_completed: runs,
+                runs: runs,
+                patterns_created: patterns,
+                total_sequences: patterns,
+                lessons_learned: runs * 27,
+                total_lessons: runs * 27,
+                z_history: history,
+                quality_history: history,
+                meta_bridges: 2,
+                physical_learners: 3,
+                liminal_generators: runs + 2,
+                operator_distribution: {
+                    '+': runs * 20,
+                    '()': runs * 10,
+                    '×': runs * 5,
+                    '^': runs * 3,
+                    '÷': runs * 2,
+                    '−': runs * 1,
+                }
+            };
+
+            trainingData = simData;
+            displayBackendTrainingData(simData);
+
+            log(`Simulated ${runs} training runs - Quality: ${quality.toFixed(4)}`, 'state');
+            log(`Patterns created: ${patterns} (exponential: PHI^${runs})`, 'operator');
+        }
+
+        // Try to load training data on init
+        setTimeout(loadTrainingData, 1000);
     </script>
 </body>
 </html>
