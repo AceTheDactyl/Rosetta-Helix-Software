@@ -471,6 +471,7 @@
                 <button class="btn-primary" onclick="startNode()">▶ Start</button>
                 <button class="btn-secondary" onclick="pauseNode()">⏸ Pause</button>
                 <button class="btn-danger" onclick="resetNode()">↺ Reset</button>
+                <button id="backendToggle" class="btn-secondary" onclick="toggleBackend()">📜 JS Simulation</button>
             </div>
         </div>
         
@@ -530,6 +531,13 @@
                 <div style="font-size: 0.8rem; color: #888;">μ-Class</div>
                 <div id="muClass" style="font-weight: bold; color: #00d9ff;">pre_conscious</div>
             </div>
+            <div style="margin-top: 10px;">
+                <div style="font-size: 0.8rem; color: #888;">Π-Regime Blend</div>
+                <div style="display: flex; gap: 10px; margin-top: 5px;">
+                    <span style="color: #aa44ff;">w_π: <span id="wPiValue">0.00</span></span>
+                    <span style="color: #00ff88;">w_local: <span id="wLocalValue">1.00</span></span>
+                </div>
+            </div>
         </div>
         
         <!-- Event Log -->
@@ -586,14 +594,14 @@ Physical (PHI_INV) ──feedback──→ MetaMeta ──spawn──→ Liminal
             </div>
             <div class="controls" style="margin-top: 15px;">
                 <button class="btn-secondary" onclick="loadTrainingData()">🔄 Refresh Data</button>
-                <button class="btn-primary" onclick="simulateTraining()">▶ Simulate Training</button>
+                <button class="btn-primary" onclick="runTraining()">▶ Run APL Training</button>
             </div>
         </div>
     </div>
     
     <script>
         // ================================================================
-        // CONSTANTS
+        // CONSTANTS (from Python backend or fallback)
         // ================================================================
         const Z_CRITICAL = Math.sqrt(3) / 2;  // ≈ 0.866
         const PHI = (1 + Math.sqrt(5)) / 2;
@@ -601,10 +609,10 @@ Physical (PHI_INV) ──feedback──→ MetaMeta ──spawn──→ Liminal
         const MU_S = 0.920;
         const MU_1 = (2 / Math.pow(PHI, 2.5)) / Math.sqrt(PHI);
         const MU_2 = (2 / Math.pow(PHI, 2.5)) * Math.sqrt(PHI);
-        
+
         const TIER_BOUNDS = [0.10, 0.20, 0.40, 0.60, 0.75, Z_CRITICAL, 0.92, 0.97, 1.0];
         const TIERS = ['t1', 't2', 't3', 't4', 't5', 't6', 't7', 't8', 't9'];
-        
+
         const OPERATOR_WINDOWS = {
             t1: ['()', '−', '÷'],
             t2: ['^', '÷', '−', '×'],
@@ -616,7 +624,11 @@ Physical (PHI_INV) ──feedback──→ MetaMeta ──spawn──→ Liminal
             t8: ['+', '()', '×'],
             t9: ['+', '()', '×']
         };
-        
+
+        // Backend configuration
+        const BACKEND_URL = 'http://localhost:8765';
+        let useBackend = false;  // Toggle between Python backend and JS simulation
+
         // ================================================================
         // STATE
         // ================================================================
@@ -635,8 +647,205 @@ Physical (PHI_INV) ──feedback──→ MetaMeta ──spawn──→ Liminal
             triad: { passes: 0, armed: true, unlocked: false, lastZ: 0 },
             kFormation: false,
             memoryPlates: 30,
-            steps: 0
+            steps: 0,
+            deltaSneg: 0,
+            wPi: 0,
+            wLocal: 1,
+            operatorParity: {}  // Track parity from backend
         };
+
+        // ================================================================
+        // BACKEND COMMUNICATION
+        // ================================================================
+        async function fetchBackendState() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/state`);
+                if (response.ok) {
+                    const data = await response.json();
+                    updateStateFromBackend(data);
+                    return true;
+                }
+            } catch (e) {
+                console.log('Backend not available, using JS simulation');
+            }
+            return false;
+        }
+
+        function updateStateFromBackend(data) {
+            state.z = data.z;
+            state.tier = data.tier;
+            state.coherence = data.coherence;
+            state.K = data.coupling;
+            state.kFormation = data.k_formed;
+            state.deltaSneg = data.delta_s_neg;
+            state.wPi = data.w_pi;
+            state.wLocal = data.w_local;
+            state.steps = data.steps;
+
+            // Store operator info with parity
+            if (data.operators) {
+                state.operatorParity = {};
+                for (const [op, info] of Object.entries(data.operators)) {
+                    state.operatorParity[op] = info;
+                }
+            }
+
+            // Update oscillators if provided
+            if (data.oscillators) {
+                state.oscillators = data.oscillators;
+            }
+        }
+
+        async function backendStep(work = 0.05) {
+            try {
+                const response = await fetch(`${BACKEND_URL}/step`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ work })
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    updateStateFromBackend(data);
+
+                    if (data.collapsed) {
+                        log(`COLLAPSE! Work extracted: ${data.work_extracted.toFixed(4)}`, 'state');
+                    }
+                    return true;
+                }
+            } catch (e) {
+                console.error('Backend step failed:', e);
+            }
+            return false;
+        }
+
+        async function backendApplyOperator(operator) {
+            try {
+                const response = await fetch(`${BACKEND_URL}/operator`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ operator })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    log(`Applied ${operator} (${data.parity}) at ${data.tier}`, 'operator');
+                    state.K = data.coupling;
+                    await fetchBackendState();
+                } else {
+                    log(`${data.error}`, 'operator');
+                }
+                return data;
+            } catch (e) {
+                console.error('Backend operator failed:', e);
+                return { success: false, error: e.message };
+            }
+        }
+
+        async function backendRunTraining(runs = 3, cycles = 2) {
+            log('Running APL training on Python backend...', 'state');
+            try {
+                const response = await fetch(`${BACKEND_URL}/training/run`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ runs, cycles })
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    displayBackendTrainingData(data);
+                    log(`Training complete: ${data.final_quality.toFixed(4)} quality`, 'state');
+                    return data;
+                }
+            } catch (e) {
+                log('Backend training failed: ' + e.message, 'operator');
+            }
+            return null;
+        }
+
+        async function backendReset() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/reset`, {
+                    method: 'POST'
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    updateStateFromBackend(data.state);
+                    log('Reset via Python backend', 'state');
+                    return true;
+                }
+            } catch (e) {
+                console.error('Backend reset failed:', e);
+            }
+            return false;
+        }
+
+        function displayBackendTrainingData(data) {
+            document.getElementById('trainingPanel').style.display = 'block';
+
+            document.getElementById('trainCoherence').textContent =
+                (data.initial_quality || 0).toFixed(4);
+            document.getElementById('trainQuality').textContent =
+                (data.final_quality || 0).toFixed(4);
+            document.getElementById('trainRuns').textContent = data.runs || 0;
+            document.getElementById('trainPatterns').textContent = data.total_sequences || 0;
+            document.getElementById('trainLessons').textContent = data.total_lessons || 0;
+
+            // Coherence level
+            const ratio = data.improvement_ratio || 1;
+            let level = 'bootstrap';
+            if (ratio >= 2.0) level = 'mastery';
+            else if (ratio >= 1.5) level = 'refinement';
+            else if (ratio >= 1.2) level = 'growth';
+            document.getElementById('trainLevel').textContent = `${level} (${ratio.toFixed(2)}x)`;
+
+            // Hierarchy stats
+            document.getElementById('hierarchyStats').textContent =
+                `Meta Bridges: ${data.meta_bridges || 0} | ` +
+                `Physical Learners: ${data.physical_learners || 0} | ` +
+                `Liminal Generators: ${data.liminal_generators || 0}`;
+
+            // Update hierarchy display
+            document.getElementById('trainingHierarchy').innerHTML = `
+<pre>
+APL-INTEGRATED TRAINING LOOP (Python Backend)
+─────────────────────────────────────────────
+
+  Run Tool (PHI_INV=${PHI_INV.toFixed(3)})
+  │ • Tier-gated APL operators
+  │ • z evolution scaled by φ⁻¹
+  └──► feedback at Z_CRITICAL (${Z_CRITICAL.toFixed(3)})
+       │
+       ▼
+  Meta-Meta Bridge (PHI_INV)
+  │ • Receives operator patterns
+  │ • Spawns liminal at KAPPA_S (${MU_S.toFixed(3)})
+  └──► ${data.liminal_generators || 0} liminal generators
+       │
+       ▼
+  Liminal Patterns (PHI=${PHI.toFixed(3)})
+  │ • ${data.total_sequences || 0} operator sequences
+  │ • S₃ composition
+  └──► weak measurement ──► physical learners
+
+Operator Distribution:
+${formatOperatorDistribution(data.operator_distribution || {})}
+</pre>`;
+
+            // Draw learning curve
+            if (data.quality_history) {
+                drawLearningCurve(data.quality_history);
+            }
+        }
+
+        function formatOperatorDistribution(dist) {
+            const entries = Object.entries(dist).sort((a, b) => b[1] - a[1]);
+            const maxCount = Math.max(...entries.map(e => e[1]), 1);
+            return entries.map(([op, count]) => {
+                const barLen = Math.floor((count / maxCount) * 20);
+                const bar = '█'.repeat(barLen);
+                const parity = state.operatorParity[op]?.parity || '?';
+                return `  ${op} (${parity.slice(0, 4)}): ${bar} ${count}`;
+            }).join('\n');
+        }
         
         // Initialize oscillators
         function initOscillators() {
@@ -727,22 +936,37 @@ Physical (PHI_INV) ──feedback──→ MetaMeta ──spawn──→ Liminal
         // ================================================================
         // OPERATORS
         // ================================================================
-        function applyOperator(op) {
+        async function applyOperator(op) {
+            // Use Python backend if enabled
+            if (useBackend) {
+                await backendApplyOperator(op);
+                document.getElementById('kValue').textContent = state.K.toFixed(2);
+                document.getElementById('kSlider').value = state.K;
+                return;
+            }
+
+            // JS simulation fallback
             let available = OPERATOR_WINDOWS[state.tier] || [];
             if (!available.includes(op)) {
                 log(`Operator ${op} not available at ${state.tier}`, 'operator');
                 return;
             }
-            
+
+            // Get parity for logging
+            const parities = {
+                '()': 'EVEN', '×': 'EVEN', '^': 'EVEN',
+                '÷': 'ODD', '+': 'ODD', '−': 'ODD'
+            };
+
             switch(op) {
                 case '×': // Fusion - increase coupling
                     state.K = Math.min(1.0, state.K * 1.2);
-                    log('Applied FUSION (×) - K increased', 'operator');
+                    log(`Applied FUSION (×) [${parities[op]}] - K increased`, 'operator');
                     break;
                 case '÷': // Decoherence - add noise
                     state.oscillators = state.oscillators.map(t => t + (Math.random() - 0.5) * 0.2);
                     state.K = Math.max(0.05, state.K * 0.9);
-                    log('Applied DECOHERENCE (÷) - noise added', 'operator');
+                    log(`Applied DECOHERENCE (÷) [${parities[op]}] - noise added`, 'operator');
                     break;
                 case '^': // Amplify - boost toward sync
                     let sumCos = 0, sumSin = 0;
@@ -751,27 +975,26 @@ Physical (PHI_INV) ──feedback──→ MetaMeta ──spawn──→ Liminal
                         sumSin += Math.sin(t);
                     }
                     let meanPhase = Math.atan2(sumSin, sumCos);
-                    state.oscillators = state.oscillators.map(t => 
+                    state.oscillators = state.oscillators.map(t =>
                         t + 0.1 * Math.sin(meanPhase - t)
                     );
-                    log('Applied AMPLIFY (^) - phases aligned', 'operator');
+                    log(`Applied AMPLIFY (^) [${parities[op]}] - phases aligned`, 'operator');
                     break;
                 case '+': // Group - cluster nearby
-                    // Simplified grouping
-                    log('Applied GROUP (+) - phases clustered', 'operator');
+                    log(`Applied GROUP (+) [${parities[op]}] - phases clustered`, 'operator');
                     break;
                 case '−': // Separate - spread apart
-                    state.oscillators = state.oscillators.map((t, i) => 
+                    state.oscillators = state.oscillators.map((t, i) =>
                         t + (i / state.n - 0.5) * 0.1
                     );
-                    log('Applied SEPARATE (−) - phases spread', 'operator');
+                    log(`Applied SEPARATE (−) [${parities[op]}] - phases spread`, 'operator');
                     break;
                 case '()': // Boundary - reset K
                     state.K = 0.3;
-                    log('Applied BOUNDARY () - K reset', 'operator');
+                    log(`Applied BOUNDARY () [${parities[op]}] - K reset`, 'operator');
                     break;
             }
-            
+
             document.getElementById('kValue').textContent = state.K.toFixed(2);
             document.getElementById('kSlider').value = state.K;
         }
@@ -834,15 +1057,40 @@ Physical (PHI_INV) ──feedback──→ MetaMeta ──spawn──→ Liminal
             else if (state.z >= PHI_INV) muClass = 'conscious_basin';
             else if (state.z >= MU_1) muClass = 'approaching_paradox';
             document.getElementById('muClass').textContent = muClass;
-            
-            // Operators
+
+            // Blend weights (from backend or computed)
+            let wPi = state.wPi || 0;
+            let wLocal = state.wLocal || 1;
+            if (!useBackend) {
+                // Compute locally if no backend
+                if (state.z >= Z_CRITICAL) {
+                    wPi = Math.exp(-36 * Math.pow(state.z - Z_CRITICAL, 2));
+                    wLocal = 1 - wPi;
+                }
+            }
+            document.getElementById('wPiValue').textContent = wPi.toFixed(2);
+            document.getElementById('wLocalValue').textContent = wLocal.toFixed(2);
+
+            // Operators - show availability and parity
             let available = OPERATOR_WINDOWS[state.tier] || [];
             document.querySelectorAll('.operator').forEach(el => {
                 let op = el.dataset.op;
-                if (available.includes(op)) {
+                const isAvailable = available.includes(op);
+
+                // Get parity info
+                const parities = { '()': 'EVEN', '×': 'EVEN', '^': 'EVEN', '÷': 'ODD', '+': 'ODD', '−': 'ODD' };
+                const parity = state.operatorParity[op]?.parity || parities[op];
+                const isEven = parity === 'EVEN';
+
+                if (isAvailable) {
                     el.className = 'operator available';
+                    // Color by parity
+                    el.style.borderColor = isEven ? '#00ff88' : '#ff8844';
+                    el.title = `${op} (${parity}) - ${isEven ? 'constructive' : 'dissipative'}`;
                 } else {
                     el.className = 'operator unavailable';
+                    el.style.borderColor = '#444';
+                    el.title = `${op} - not available at ${state.tier}`;
                 }
             });
             
@@ -984,34 +1232,79 @@ Physical (PHI_INV) ──feedback──→ MetaMeta ──spawn──→ Liminal
         // ================================================================
         function startNode() {
             state.running = true;
-            log('Node started', 'state');
+            log(useBackend ? 'Node started (Python backend)' : 'Node started (JS simulation)', 'state');
         }
-        
+
         function pauseNode() {
             state.running = false;
             log('Node paused', 'state');
         }
-        
-        function resetNode() {
+
+        async function resetNode() {
             state.running = false;
-            state.z = 0.3;
-            state.zVelocity = 0;
-            state.coherence = 0;
-            state.K = 0.3;
-            state.energyIn = 0;
-            state.energyLoss = 0;
-            state.triad = { passes: 0, armed: true, unlocked: false, lastZ: 0 };
-            state.kFormation = false;
-            state.steps = 0;
-            initOscillators();
+
+            if (useBackend) {
+                await backendReset();
+            } else {
+                state.z = 0.3;
+                state.zVelocity = 0;
+                state.coherence = 0;
+                state.K = 0.3;
+                state.energyIn = 0;
+                state.energyLoss = 0;
+                state.triad = { passes: 0, armed: true, unlocked: false, lastZ: 0 };
+                state.kFormation = false;
+                state.steps = 0;
+                initOscillators();
+                log('Node reset', 'state');
+            }
+
             document.getElementById('kSlider').value = 0.3;
             document.getElementById('kValue').textContent = '0.30';
-            log('Node reset', 'state');
         }
-        
-        function updateK() {
+
+        async function updateK() {
             state.K = parseFloat(document.getElementById('kSlider').value);
             document.getElementById('kValue').textContent = state.K.toFixed(2);
+
+            if (useBackend) {
+                try {
+                    await fetch(`${BACKEND_URL}/coupling`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ coupling: state.K })
+                    });
+                } catch (e) {
+                    console.error('Failed to update coupling on backend');
+                }
+            }
+        }
+
+        async function toggleBackend() {
+            const wasBackend = useBackend;
+            useBackend = !useBackend;
+
+            if (useBackend) {
+                const available = await fetchBackendState();
+                if (!available) {
+                    useBackend = false;
+                    log('Python backend not available - using JS simulation', 'operator');
+                    return;
+                }
+                log('Switched to Python backend (APL physics)', 'state');
+            } else {
+                log('Switched to JS simulation', 'state');
+            }
+
+            updateBackendToggle();
+        }
+
+        function updateBackendToggle() {
+            const btn = document.getElementById('backendToggle');
+            if (btn) {
+                btn.textContent = useBackend ? '🐍 Python Backend' : '📜 JS Simulation';
+                btn.className = useBackend ? 'btn-primary' : 'btn-secondary';
+            }
         }
         
         // ================================================================
@@ -1047,22 +1340,39 @@ Physical (PHI_INV) ──feedback──→ MetaMeta ──spawn──→ Liminal
             });
             
             log('Rosetta-Helix initialized', 'state');
-            
+
+            // Check for backend on startup
+            checkBackendAvailability();
+
             // Main loop
-            function mainLoop() {
+            async function mainLoop() {
                 if (state.running) {
-                    for (let i = 0; i < 5; i++) {  // Multiple steps per frame
-                        step(0.01);
+                    if (useBackend) {
+                        // Use Python backend for physics
+                        await backendStep(0.05);
+                    } else {
+                        // JS simulation
+                        for (let i = 0; i < 5; i++) {
+                            step(0.01);
+                        }
                     }
                 }
                 updateUI();
                 drawHelix();
                 requestAnimationFrame(mainLoop);
             }
-            
+
             mainLoop();
         }
-        
+
+        async function checkBackendAvailability() {
+            const available = await fetchBackendState();
+            if (available) {
+                log('Python backend available - click toggle to enable APL physics', 'state');
+            }
+            updateBackendToggle();
+        }
+
         // Start when loaded
         window.addEventListener('DOMContentLoaded', init);
 
@@ -1201,8 +1511,17 @@ Physical (PHI_INV) ──feedback──→ MetaMeta ──spawn──→ Liminal
             }
         }
 
+        async function runTraining() {
+            // Use backend if available, otherwise simulate
+            if (useBackend) {
+                await backendRunTraining(3, 2);
+            } else {
+                simulateTraining();
+            }
+        }
+
         function simulateTraining() {
-            log('Simulating exponential training...', 'state');
+            log('Simulating exponential training (JS)...', 'state');
 
             // Simulate training with PHI-based growth
             const runs = Math.floor(3 + state.coherence * 7);  // 3-10 based on coherence
@@ -1224,17 +1543,31 @@ Physical (PHI_INV) ──feedback──→ MetaMeta ──spawn──→ Liminal
             const simData = {
                 energy_coherence: state.coherence,
                 final_quality: quality,
+                initial_quality: 0.5,
+                improvement_ratio: quality / 0.5,
                 runs_completed: runs,
+                runs: runs,
                 patterns_created: patterns,
+                total_sequences: patterns,
                 lessons_learned: runs * 27,
+                total_lessons: runs * 27,
                 z_history: history,
+                quality_history: history,
                 meta_bridges: 2,
                 physical_learners: 3,
                 liminal_generators: runs + 2,
+                operator_distribution: {
+                    '+': runs * 20,
+                    '()': runs * 10,
+                    '×': runs * 5,
+                    '^': runs * 3,
+                    '÷': runs * 2,
+                    '−': runs * 1,
+                }
             };
 
             trainingData = simData;
-            displayTrainingData(simData);
+            displayBackendTrainingData(simData);
 
             log(`Simulated ${runs} training runs - Quality: ${quality.toFixed(4)}`, 'state');
             log(`Patterns created: ${patterns} (exponential: PHI^${runs})`, 'operator');

@@ -20,6 +20,7 @@ from .constants import (
 )
 from .collapse_engine import CollapseEngine
 from .liminal_state import LiminalState
+from .apl_engine import APLEngine, APLResult, create_apl_engine, OperatorNotLegalError
 
 __all__ = [
     'PHI',
@@ -33,4 +34,8 @@ __all__ = [
     'COUPLING_MAX',
     'CollapseEngine',
     'LiminalState',
+    'APLEngine',
+    'APLResult',
+    'create_apl_engine',
+    'OperatorNotLegalError',
 ]
