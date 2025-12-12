@@ -206,16 +206,16 @@ class TestTimeHarmonics:
             assert CONST.get_time_harmonic(0.70) == 't5'
     
     def test_get_time_harmonic_t6_default(self):
-        """z ≈ 0.84 maps to t6 when gate at Z_CRITICAL (0.866) since 0.84 < 0.866."""
+        """z ≈ 0.84 maps to t5 when TRIAD not unlocked (gate at Z_CRITICAL)."""
         if hasattr(CONST, 'get_time_harmonic'):
             tier = CONST.get_time_harmonic(0.84, t6_gate=CONST.Z_CRITICAL)
-            assert tier == 't6'
-
+            assert tier == 't5'
+    
     def test_get_time_harmonic_t6_unlocked(self):
-        """z ≈ 0.84 maps to t7 when TRIAD unlocked (gate at 0.83) since 0.84 >= 0.83."""
+        """z ≈ 0.84 maps to t6 when TRIAD unlocked (gate at 0.83)."""
         if hasattr(CONST, 'get_time_harmonic'):
             tier = CONST.get_time_harmonic(0.84, t6_gate=CONST.TRIAD_T6)
-            assert tier == 't7'
+            assert tier == 't6'
     
     def test_get_time_harmonic_t9(self):
         """z ≈ 0.98 maps to t9."""
