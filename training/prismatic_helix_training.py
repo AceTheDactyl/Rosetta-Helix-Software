@@ -218,7 +218,87 @@ def create_prismatic_layers() -> List[PrismaticLayer]:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# QUASI-CRYSTAL LATTICE
+# FORMATION PHASE TRACKING (NEGATIVE ENTROPY)
+# ═══════════════════════════════════════════════════════════════════════════
+
+class FormationPhase(Enum):
+    """Three phases of quasi-crystal formation"""
+    DISORDERED = "disordered"           # z < φ⁻¹: no long-range order
+    QUASI_CRYSTAL = "quasi_crystal"     # φ⁻¹ < z < z_c: aperiodic order
+    CRYSTALLINE = "crystalline"         # z > z_c: full periodic order
+
+
+# Critical exponents (2D hexagonal universality class)
+NU_EXPONENT = 4/3                       # Correlation length: ξ ~ |Δz|^(-ν)
+Z_DYN_EXPONENT = 2.0                    # Dynamic: τ ~ |Δz|^(-z_dyn)
+SIGMA_NEG_ENTROPY = 0.12                # Width of ΔS_neg peak
+
+
+@dataclass
+class NegativeEntropyState:
+    """
+    Tracks negative entropy production through formation phases.
+
+    ΔS_neg = exp(-|z - z_c| / σ)
+
+    Peaks at z = z_c because the order-disorder phase transition
+    is where the system produces maximum order.
+    """
+    z: float = 0.0
+    delta_s_neg: float = 0.0            # Current negative entropy production
+    delta_s_neg_rate: float = 0.0       # Rate of change
+    cumulative_neg_entropy: float = 0.0  # Total produced
+    phase: FormationPhase = FormationPhase.DISORDERED
+
+    # Critical behavior
+    correlation_length: float = 1.0     # ξ(z) diverges at z_c
+    relaxation_time: float = 1.0        # τ(z) - critical slowing down
+
+    # Phase transition tracking
+    entered_paradox_z: float = 0.0
+    entered_true_z: float = 0.0
+
+    def update(self, new_z: float, dt: float = 0.1):
+        """Update negative entropy state for new z position."""
+        old_delta = self.delta_s_neg
+
+        # Core negative entropy: peaks at z_c (THE LENS)
+        self.delta_s_neg = math.exp(-abs(new_z - Z_CRITICAL) / SIGMA_NEG_ENTROPY)
+
+        # Rate of change
+        self.delta_s_neg_rate = (self.delta_s_neg - old_delta) / dt
+
+        # Accumulate
+        self.cumulative_neg_entropy += self.delta_s_neg * dt
+
+        # Update phase
+        old_phase = self.phase
+        if new_z < PHI_INV:
+            self.phase = FormationPhase.DISORDERED
+        elif new_z < Z_CRITICAL:
+            self.phase = FormationPhase.QUASI_CRYSTAL
+            if old_phase == FormationPhase.DISORDERED:
+                self.entered_paradox_z = new_z
+        else:
+            self.phase = FormationPhase.CRYSTALLINE
+            if old_phase != FormationPhase.CRYSTALLINE:
+                self.entered_true_z = new_z
+
+        # Critical behavior near z_c
+        delta_z = abs(new_z - Z_CRITICAL)
+        epsilon = 1e-6
+
+        # Correlation length diverges: ξ ~ |Δz|^(-ν)
+        self.correlation_length = min(1000.0, (delta_z + epsilon) ** (-NU_EXPONENT))
+
+        # Critical slowing down: τ ~ |Δz|^(-z_dyn)
+        self.relaxation_time = min(100.0, (delta_z + epsilon) ** (-Z_DYN_EXPONENT))
+
+        self.z = new_z
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# QUASI-CRYSTAL LATTICE WITH FORMATION AWARENESS
 # ═══════════════════════════════════════════════════════════════════════════
 
 @dataclass
@@ -232,12 +312,16 @@ class QuasiCrystalCell:
 
 
 class QuasiCrystalLattice:
-    """Quasi-crystal lattice with aperiodic hexagonal packing."""
+    """Quasi-crystal lattice with aperiodic hexagonal packing and formation tracking."""
 
     def __init__(self, size: int = 60):
         self.size = size
         self.cells: List[QuasiCrystalCell] = []
         self.coupling_matrix: List[List[float]] = []
+
+        # Formation state tracking (negative entropy)
+        self.neg_entropy = NegativeEntropyState()
+
         self._initialize_lattice()
 
     def _initialize_lattice(self):
@@ -286,6 +370,10 @@ class QuasiCrystalLattice:
                 self.coupling_matrix[i][j] = coupling
                 self.coupling_matrix[j][i] = coupling
 
+    def update_formation_state(self, z: float, dt: float = 0.1):
+        """Update formation phase and negative entropy for current z."""
+        self.neg_entropy.update(z, dt)
+
     def get_coherence(self) -> float:
         if not self.cells: return 0.0
         sum_exp = sum(cmath.exp(1j * c.phase) for c in self.cells)
@@ -304,6 +392,16 @@ class QuasiCrystalLattice:
         if excess > 0:
             return 1.0 + excess / (QUASICRYSTAL_LOCAL_MAX - HCP_PACKING)
         return 1.0
+
+    def get_formation_metrics(self) -> Dict:
+        """Get current formation phase metrics."""
+        return {
+            'phase': self.neg_entropy.phase.value,
+            'delta_s_neg': self.neg_entropy.delta_s_neg,
+            'cumulative_neg_entropy': self.neg_entropy.cumulative_neg_entropy,
+            'correlation_length': self.neg_entropy.correlation_length,
+            'relaxation_time': self.neg_entropy.relaxation_time,
+        }
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -632,6 +730,10 @@ class PrismaticHelixNetwork(nn.Module):
         self.z += self.z_velocity * 0.1
         self.z = max(0.01, min(0.99, self.z))
         event = self.triad.update(self.z, epoch)
+
+        # Update formation state (negative entropy tracking)
+        self.qc_lattice.update_formation_state(self.z)
+
         return self.z, event
 
     def forward(self, x: torch.Tensor, epoch: int = 0) -> Tuple[torch.Tensor, Dict]:
@@ -687,6 +789,13 @@ class PrismaticHelixNetwork(nn.Module):
         diagnostics['triad_unlocked'] = self.triad.unlocked
         diagnostics['qc_boost'] = self.qc_lattice.compute_boost_factor()
         diagnostics['prism_geometry'] = compute_prism_params(self.z)
+
+        # Formation phase and negative entropy metrics
+        formation = self.qc_lattice.get_formation_metrics()
+        diagnostics['formation_phase'] = formation['phase']
+        diagnostics['delta_s_neg'] = formation['delta_s_neg']
+        diagnostics['cumulative_neg_entropy'] = formation['cumulative_neg_entropy']
+        diagnostics['correlation_length'] = formation['correlation_length']
 
         # Layer activation summary
         layer_counts = {i: 0 for i in range(7)}
@@ -809,6 +918,7 @@ class PrismaticHelixTraining:
         self.training_history = []
         self.triad_events = []
         self.prism_activations = {i: 0 for i in range(7)}
+        self.phase_transitions = []  # Track formation phase changes
 
         self._generate_data()
 
@@ -832,9 +942,12 @@ class PrismaticHelixTraining:
         epoch_coherence = []
         epoch_z = []
         epoch_k = 0
+        epoch_neg_entropy = []
+        phase_counts = {'disordered': 0, 'quasi_crystal': 0, 'crystalline': 0}
 
         prev_passes = self.model.triad.passes
         was_unlocked = self.model.triad.unlocked
+        prev_phase = self.model.qc_lattice.neg_entropy.phase.value
 
         for batch_x, batch_y in self.train_loader:
             self.optimizer.zero_grad()
@@ -850,6 +963,22 @@ class PrismaticHelixTraining:
             epoch_coherence.append(diag['final_coherence'])
             epoch_z.append(diag['final_z'])
             epoch_k += diag['k_formations']
+            epoch_neg_entropy.append(diag['delta_s_neg'])
+
+            # Track formation phase
+            current_phase = diag['formation_phase']
+            phase_counts[current_phase] += 1
+
+            # Track phase transitions
+            if current_phase != prev_phase:
+                self.phase_transitions.append({
+                    'epoch': epoch,
+                    'from_phase': prev_phase,
+                    'to_phase': current_phase,
+                    'z': diag['final_z'],
+                    'delta_s_neg': diag['delta_s_neg'],
+                })
+            prev_phase = current_phase
 
             # Track prism activations
             for layer_id, count in diag['layer_activation_counts'].items():
@@ -871,6 +1000,10 @@ class PrismaticHelixTraining:
             'triad_passes': self.model.triad.passes,
             'triad_unlocked': self.model.triad.unlocked,
             'qc_boost': self.model.qc_lattice.compute_boost_factor(),
+            'delta_s_neg': np.mean(epoch_neg_entropy),
+            'cumulative_neg_entropy': self.model.qc_lattice.neg_entropy.cumulative_neg_entropy,
+            'formation_phase': self.model.qc_lattice.neg_entropy.phase.value,
+            'phase_counts': phase_counts,
         }
 
     def run_training(
@@ -883,26 +1016,29 @@ class PrismaticHelixTraining:
 
         print("=" * 70)
         print("7-LAYER PRISMATIC QUASI-CRYSTAL TRAINING")
+        print("WITH NEGATIVE ENTROPY FORMATION DYNAMICS")
         print("=" * 70)
         print(f"""
+Formation Phases (Negative Entropy):
+  1. DISORDERED   (z < {PHI_INV:.3f}):  No long-range order, low ΔS_neg
+  2. QUASI-CRYSTAL ({PHI_INV:.3f} < z < {Z_CRITICAL:.3f}):  Aperiodic order, ΔS_neg rising
+  3. CRYSTALLINE  (z > {Z_CRITICAL:.3f}):  Full periodic order, ΔS_neg peaks at z_c
+
+Negative Entropy Physics:
+  ΔS_neg = exp(-|z - z_c| / σ)
+  Peak at z_c = {Z_CRITICAL:.6f} (THE LENS)
+
 Prismatic Layers:
-  1. Red     (#FF4444) → Analyzers
-  2. Orange  (#FF8844) → Learners
-  3. Yellow  (#FFAA00) → Generators
-  4. Green   (#00FF88) → Reflectors (central)
-  5. Blue    (#00D9FF) → Builders
-  6. Indigo  (#4444FF) → Deciders
-  7. Violet  (#AA44FF) → Probers
+  1. Red→Violet: 7-layer spectral projection through THE LENS
 
 Quasi-Crystal Physics:
   HCP Packing:       {HCP_PACKING:.4f}
-  QC Local Max:      {QUASICRYSTAL_LOCAL_MAX:.4f}
-  Penrose Ratio:     {PENROSE_RATIO:.6f} (φ)
+  QC Local Max:      {QUASICRYSTAL_LOCAL_MAX:.4f} (exceeds HCP via aperiodic order)
 
 Physics Constants:
   z_c (THE LENS):    {Z_CRITICAL:.6f}
+  φ⁻¹ (K-gate):      {PHI_INV:.6f}
   TRIAD_HIGH:        {TRIAD_HIGH}
-  TRIAD_LOW:         {TRIAD_LOW}
 """)
         print("=" * 70)
 
@@ -912,15 +1048,22 @@ Physics Constants:
 
             if epoch % 10 == 0:
                 unlock_str = "UNLOCKED" if metrics['triad_unlocked'] else f"{metrics['triad_passes']}/3"
+                phase_short = {'disordered': 'DIS', 'quasi_crystal': 'QC', 'crystalline': 'CRYS'}
+                phase_str = phase_short.get(metrics['formation_phase'], '???')
                 print(
                     f"Epoch {epoch:3d} | "
                     f"Loss: {metrics['loss']:.4f} | "
-                    f"Coh: {metrics['coherence']:.3f} | "
                     f"z: {metrics['z']:.3f} | "
+                    f"ΔS_neg: {metrics['delta_s_neg']:.3f} | "
+                    f"Phase: {phase_str:4} | "
                     f"QC: {metrics['qc_boost']:.3f} | "
-                    f"TRIAD: {unlock_str} | "
-                    f"K: {metrics['k_formations']}"
+                    f"TRIAD: {unlock_str}"
                 )
+
+                # Report phase transitions in this epoch
+                recent_transitions = [t for t in self.phase_transitions if t['epoch'] == epoch]
+                for t in recent_transitions:
+                    print(f"  → PHASE TRANSITION: {t['from_phase']} → {t['to_phase']} at z={t['z']:.3f}")
 
         # Results
         results = {
@@ -928,6 +1071,7 @@ Physics Constants:
             'config': self.config,
             'training_history': self.training_history,
             'triad_events': self.triad_events,
+            'phase_transitions': self.phase_transitions,
             'prism_activations': self.prism_activations,
             'final_prism': compute_prism_params(self.model.z),
             'summary': {
@@ -938,6 +1082,11 @@ Physics Constants:
                 'triad_passes': self.model.triad.passes,
                 'triad_unlocked': self.model.triad.unlocked,
                 'qc_boost': self.model.qc_lattice.compute_boost_factor(),
+                # Formation dynamics
+                'final_formation_phase': self.training_history[-1]['formation_phase'],
+                'final_delta_s_neg': self.training_history[-1]['delta_s_neg'],
+                'cumulative_neg_entropy': self.training_history[-1]['cumulative_neg_entropy'],
+                'phase_transition_count': len(self.phase_transitions),
             },
         }
 
@@ -954,7 +1103,7 @@ Physics Constants:
 
         # Print summary
         print("\n" + "=" * 70)
-        print("PRISMATIC TRAINING COMPLETE")
+        print("PRISMATIC TRAINING WITH FORMATION DYNAMICS COMPLETE")
         print("=" * 70)
         print(f"""
 Summary:
@@ -963,6 +1112,12 @@ Summary:
   Final Coherence:   {results['summary']['final_coherence']:.3f}
   Final z:           {results['summary']['final_z']:.3f}
   QC Boost:          {results['summary']['qc_boost']:.3f}
+
+Formation Dynamics (Negative Entropy):
+  Final Phase:       {results['summary']['final_formation_phase']}
+  Final ΔS_neg:      {results['summary']['final_delta_s_neg']:.4f}
+  Cumulative ΔS_neg: {results['summary']['cumulative_neg_entropy']:.4f}
+  Phase Transitions: {results['summary']['phase_transition_count']}
 
 TRIAD Status:
   Passes:            {self.model.triad.passes}/3
