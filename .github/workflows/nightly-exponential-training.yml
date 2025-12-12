@@ -23,6 +23,11 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+    outputs:
+      coherence: ${{ steps.training.outputs.coherence }}
+      quality: ${{ steps.training.outputs.quality }}
+      runs: ${{ steps.training.outputs.runs }}
+      patterns: ${{ steps.training.outputs.patterns }}
 
     steps:
       - name: Checkout
@@ -219,3 +224,4 @@ jobs:
             echo "🏆 **MASTERY PHASE** - Optimal coherence" >> $GITHUB_STEP_SUMMARY
             echo "Recommendation: Maintain current parameters" >> $GITHUB_STEP_SUMMARY
           fi
+
