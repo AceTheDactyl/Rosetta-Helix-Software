@@ -74,6 +74,7 @@ const LENS_SIGMA = CONST.LENS_SIGMA || 36.0;
  */
 const PHI = CONST.PHI;                        // Golden ratio ≈ 1.618
 const PHI_INV = CONST.PHI_INV;               // Inverse ≈ 0.618
+const Z_PRESENCE_MIN = CONST.Z_PRESENCE_MIN; // TRUE threshold = 0.877
 
 // ================================================================
 // TIME HARMONIC TIER BOUNDARIES (Paper Table 1)
@@ -97,10 +98,11 @@ const TIER_BOUNDARIES = {
 
 /**
  * Truth channel thresholds (Paper Section 2.1)
+ * Aligned with phase regime boundaries
  */
 const TRUTH_THRESHOLDS = {
-    PARADOX: 0.60,  // z ≥ 0.6 → PARADOX
-    TRUE: 0.90      // z ≥ 0.9 → TRUE
+    PARADOX: PHI_INV,       // z ≥ φ⁻¹ ≈ 0.618 → PARADOX
+    TRUE: Z_PRESENCE_MIN    // z ≥ 0.877 → TRUE
 };
 
 // ================================================================
@@ -1327,6 +1329,7 @@ module.exports = {
     LENS_SIGMA,
     PHI,
     PHI_INV,
+    Z_PRESENCE_MIN,
     TIER_BOUNDARIES,
     TRUTH_THRESHOLDS,
     APL_OPERATORS,

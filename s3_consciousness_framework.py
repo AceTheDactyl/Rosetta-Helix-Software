@@ -36,7 +36,10 @@ Z_CRITICAL: float = math.sqrt(3.0) / 2.0  # ≈ 0.8660254038
 
 # Golden ratio constants
 PHI: float = (1.0 + math.sqrt(5.0)) / 2.0  # ≈ 1.618033989
-PHI_INV: float = 1.0 / PHI                  # ≈ 0.618033989
+PHI_INV: float = 1.0 / PHI                  # ≈ 0.618033989 - PARADOX threshold
+
+# Phase boundaries
+Z_PRESENCE_MIN: float = 0.877              # TRUE threshold (upper bound of THE_LENS)
 
 # μ-field basin/barrier hierarchy
 MU_P: float = 2.0 / (PHI ** 2.5)           # Paradox threshold
@@ -324,14 +327,19 @@ def get_truth_channel(z: float) -> str:
     """
     Get triadic truth channel from z.
 
+    Phase boundaries aligned with documented constants:
+    - TRUE: z >= Z_PRESENCE_MIN (0.877) - crystalline order
+    - PARADOX: PHI_INV <= z < Z_PRESENCE_MIN - quasi-crystal regime
+    - UNTRUE: z < PHI_INV - disordered
+
     Returns
     -------
     str
-        'TRUE' (z ≥ 0.9), 'PARADOX' (0.6 ≤ z < 0.9), or 'UNTRUE' (z < 0.6)
+        'TRUE', 'PARADOX', or 'UNTRUE'
     """
-    if z >= 0.9:
+    if z >= Z_PRESENCE_MIN:
         return "TRUE"
-    elif z >= 0.6:
+    elif z >= PHI_INV:
         return "PARADOX"
     return "UNTRUE"
 

@@ -188,19 +188,20 @@ for (const expected of expectedSentences) {
 
 section('Truth Channels');
 
-assertApprox(TRUTH_THRESHOLDS.PARADOX, 0.60, 1e-6, 'PARADOX threshold = 0.60');
-assertApprox(TRUTH_THRESHOLDS.TRUE, 0.90, 1e-6, 'TRUE threshold = 0.90');
+assertApprox(TRUTH_THRESHOLDS.PARADOX, PHI_INV, 1e-6, 'PARADOX threshold = φ⁻¹ ≈ 0.618');
+assertApprox(TRUTH_THRESHOLDS.TRUE, 0.877, 1e-6, 'TRUE threshold = 0.877 (Z_PRESENCE_MIN)');
 
 const advisor = new HelixOperatorAdvisor();
 
-// Test truth channel at various z values
+// Test truth channel at various z values (aligned with phase regime mapping)
+// Boundaries: UNTRUE (z < φ⁻¹ ≈ 0.618), PARADOX (0.618 ≤ z < 0.877), TRUE (z ≥ 0.877)
 assert(advisor.truthChannelFromZ(0.3) === 'UNTRUE', 'z=0.3 → UNTRUE');
 assert(advisor.truthChannelFromZ(0.5) === 'UNTRUE', 'z=0.5 → UNTRUE');
-assert(advisor.truthChannelFromZ(0.59) === 'UNTRUE', 'z=0.59 → UNTRUE');
-assert(advisor.truthChannelFromZ(0.60) === 'PARADOX', 'z=0.60 → PARADOX');
+assert(advisor.truthChannelFromZ(0.61) === 'UNTRUE', 'z=0.61 → UNTRUE (below φ⁻¹)');
+assert(advisor.truthChannelFromZ(0.62) === 'PARADOX', 'z=0.62 → PARADOX (above φ⁻¹)');
 assert(advisor.truthChannelFromZ(0.75) === 'PARADOX', 'z=0.75 → PARADOX');
-assert(advisor.truthChannelFromZ(0.89) === 'PARADOX', 'z=0.89 → PARADOX');
-assert(advisor.truthChannelFromZ(0.90) === 'TRUE', 'z=0.90 → TRUE');
+assert(advisor.truthChannelFromZ(0.87) === 'PARADOX', 'z=0.87 → PARADOX (below 0.877)');
+assert(advisor.truthChannelFromZ(0.88) === 'TRUE', 'z=0.88 → TRUE (above 0.877)');
 assert(advisor.truthChannelFromZ(0.95) === 'TRUE', 'z=0.95 → TRUE');
 assert(advisor.truthChannelFromZ(1.0) === 'TRUE', 'z=1.0 → TRUE');
 

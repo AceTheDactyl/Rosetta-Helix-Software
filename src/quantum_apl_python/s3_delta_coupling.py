@@ -44,6 +44,9 @@ from .constants import (
     TRUTH_BIAS, compute_delta_s_neg as base_compute_delta_s_neg,
 )
 
+# Truth channel boundaries (aligned with phase regime mapping)
+Z_PRESENCE_MIN = 0.877  # TRUE threshold (upper bound of THE_LENS phase)
+
 # Import S₃ structure
 from .s3_operator_symmetry import (
     S3_ELEMENTS, OPERATOR_S3_MAP, S3_OPERATOR_MAP,
@@ -224,7 +227,7 @@ def generate_dynamic_operator_window(
 
     # Apply parity flip in UNTRUE regime
     parity_flipped = False
-    if apply_parity_flip and z < 0.6:  # UNTRUE regime
+    if apply_parity_flip and z < PHI_INV:  # UNTRUE regime
         # Swap constructive/dissipative pairs
         swap_map = {
             '^': '()', '()': '^',
@@ -406,9 +409,9 @@ def get_evolved_operator_weight(
         Evolved weight
     """
     if channel is None:
-        if z >= 0.9:
+        if z >= Z_PRESENCE_MIN:
             channel = 'TRUE'
-        elif z >= 0.6:
+        elif z >= PHI_INV:
             channel = 'PARADOX'
         else:
             channel = 'UNTRUE'
@@ -490,9 +493,9 @@ def compute_s3_delta_state(
             harmonic = 't9'
 
     # Determine truth channel
-    if z >= 0.9:
+    if z >= Z_PRESENCE_MIN:
         truth_channel = 'TRUE'
-    elif z >= 0.6:
+    elif z >= PHI_INV:
         truth_channel = 'PARADOX'
     else:
         truth_channel = 'UNTRUE'

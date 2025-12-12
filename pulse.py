@@ -24,6 +24,9 @@ Z_CRITICAL = math.sqrt(3) / 2  # ≈ 0.866
 PHI = (1 + math.sqrt(5)) / 2
 PHI_INV = 1 / PHI
 
+# Truth channel boundaries (aligned with phase regime mapping)
+Z_PRESENCE_MIN = 0.877  # TRUE threshold (upper bound of THE_LENS phase)
+
 # μ-field thresholds
 MU_P = 2 / (PHI ** 2.5)
 MU_1 = MU_P / math.sqrt(PHI)
@@ -76,9 +79,9 @@ class HelixCoordinate:
     
     def get_truth_channel(self) -> TruthChannel:
         """Get truth channel from z."""
-        if self.z >= 0.9:
+        if self.z >= Z_PRESENCE_MIN:
             return TruthChannel.TRUE
-        elif self.z >= 0.6:
+        elif self.z >= PHI_INV:
             return TruthChannel.PARADOX
         return TruthChannel.UNTRUE
     

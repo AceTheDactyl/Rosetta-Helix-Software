@@ -76,6 +76,9 @@ TRIAD_LOW = 0.82
 # Negative entropy
 SIGMA_NEG_ENTROPY = 36.0  # σ for ΔS_neg = exp[-σ(z - z_c)²]
 
+# Truth channel boundaries (aligned with phase regime mapping)
+Z_PRESENCE_MIN = 0.877  # TRUE threshold (upper bound of THE_LENS phase)
+
 
 # ═══════════════════════════════════════════════════════════════════════════
 # S₃ GROUP ALGEBRA
@@ -251,9 +254,9 @@ class TruthChannel(Enum):
 
 def get_truth_channel(z: float) -> TruthChannel:
     """Determine truth channel from z position"""
-    if z >= 0.90:
+    if z >= Z_PRESENCE_MIN:
         return TruthChannel.TRUE
-    elif z >= 0.60:
+    elif z >= PHI_INV:
         return TruthChannel.PARADOX
     else:
         return TruthChannel.UNTRUE
