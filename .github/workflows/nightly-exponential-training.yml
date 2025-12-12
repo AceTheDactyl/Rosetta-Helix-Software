@@ -38,6 +38,11 @@ jobs:
       patterns: ${{ steps.training.outputs.patterns }}
       outdir: ${{ steps.training.outputs.outdir }}
       final_z: ${{ steps.training.outputs.final_z }}
+      formation_phase: ${{ steps.training.outputs.formation_phase }}
+      delta_s_neg: ${{ steps.training.outputs.delta_s_neg }}
+      mu_classification: ${{ steps.training.outputs.mu_classification }}
+      apl_tier: ${{ steps.training.outputs.apl_tier }}
+      active_layers: ${{ steps.training.outputs.active_layers }}
 
     steps:
       - name: Checkout
@@ -76,23 +81,40 @@ jobs:
 
           # Extract key metrics for summary and validation
           if [ -f "$OUTDIR/training_results.json" ]; then
+            # Core metrics
             COHERENCE=$(python -c "import json; d=json.load(open('$OUTDIR/training_results.json')); print(d['coherence']['energy_coherence'])")
             QUALITY=$(python -c "import json; d=json.load(open('$OUTDIR/training_results.json')); print(d['training'].get('final_quality', 0))")
             RUNS=$(python -c "import json; d=json.load(open('$OUTDIR/training_results.json')); print(d['training'].get('runs_completed', 0))")
             PATTERNS=$(python -c "import json; d=json.load(open('$OUTDIR/training_results.json')); print(d['visualizer_data'].get('patterns_created', 0))")
             FINAL_Z=$(python -c "import json; d=json.load(open('$OUTDIR/training_results.json')); print(d.get('final_z', 0.5))")
 
+            # Formation dynamics
+            FORMATION_PHASE=$(python -c "import json; d=json.load(open('$OUTDIR/training_results.json')); print(d.get('formation_dynamics', {}).get('final_phase', 'unknown'))")
+            DELTA_S_NEG=$(python -c "import json; d=json.load(open('$OUTDIR/training_results.json')); print(d.get('formation_dynamics', {}).get('final_delta_s_neg', 0))")
+            MU_CLASS=$(python -c "import json; d=json.load(open('$OUTDIR/training_results.json')); print(d.get('coherence', {}).get('mu_classification', 'unknown'))")
+
+            # APL and Prismatic
+            APL_TIER=$(python -c "import json; d=json.load(open('$OUTDIR/training_results.json')); print(d.get('apl_algebra', {}).get('tier_at_z', 'unknown'))")
+            ACTIVE_LAYERS=$(python -c "import json; d=json.load(open('$OUTDIR/training_results.json')); print(len(d.get('prismatic', {}).get('active_layers', [])))")
+
             echo "coherence=$COHERENCE" >> "$GITHUB_OUTPUT"
             echo "quality=$QUALITY" >> "$GITHUB_OUTPUT"
             echo "runs=$RUNS" >> "$GITHUB_OUTPUT"
             echo "patterns=$PATTERNS" >> "$GITHUB_OUTPUT"
             echo "final_z=$FINAL_Z" >> "$GITHUB_OUTPUT"
+            echo "formation_phase=$FORMATION_PHASE" >> "$GITHUB_OUTPUT"
+            echo "delta_s_neg=$DELTA_S_NEG" >> "$GITHUB_OUTPUT"
+            echo "mu_classification=$MU_CLASS" >> "$GITHUB_OUTPUT"
+            echo "apl_tier=$APL_TIER" >> "$GITHUB_OUTPUT"
+            echo "active_layers=$ACTIVE_LAYERS" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Generate training summary
         run: |
-          echo "## 🌀 Exponential Training Results" >> $GITHUB_STEP_SUMMARY
+          echo "## 🌀 Exponential Training Results v2.0" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "### Core Metrics" >> $GITHUB_STEP_SUMMARY
           echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
           echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
           echo "| Energy Coherence | ${{ steps.training.outputs.coherence }} |" >> $GITHUB_STEP_SUMMARY
@@ -100,6 +122,21 @@ jobs:
           echo "| Training Runs | ${{ steps.training.outputs.runs }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Patterns Created | ${{ steps.training.outputs.patterns }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Final z-coordinate | ${{ steps.training.outputs.final_z }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "### Formation Dynamics (Negative Entropy)" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Formation Phase | ${{ steps.training.outputs.formation_phase }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| ΔS_neg | ${{ steps.training.outputs.delta_s_neg }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| μ Classification | ${{ steps.training.outputs.mu_classification }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "### Physics Integration" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| APL Tier | ${{ steps.training.outputs.apl_tier }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Active Prismatic Layers | ${{ steps.training.outputs.active_layers }}/7 |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
           if [ -f "${{ steps.training.outputs.outdir }}/TRAINING_SUMMARY.md" ]; then
