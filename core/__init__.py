@@ -21,6 +21,8 @@ from .constants import (
 from .collapse_engine import CollapseEngine
 from .liminal_state import LiminalState
 from .apl_engine import APLEngine, APLResult, create_apl_engine, OperatorNotLegalError
+from .kuramoto import KuramotoLayer, TriadGate
+from .network_v3 import HelixNeuralNetworkV3, NetworkConfig
 
 __all__ = [
     'PHI',
@@ -38,4 +40,8 @@ __all__ = [
     'APLResult',
     'create_apl_engine',
     'OperatorNotLegalError',
+    'KuramotoLayer',
+    'TriadGate',
+    'HelixNeuralNetworkV3',
+    'NetworkConfig',
 ]
