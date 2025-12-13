@@ -649,6 +649,179 @@ See `docs/PHYSICS_GROUNDING.md` and `docs/CYBERNETIC_GROUNDING.md` for full deri
 
 ---
 
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/AceTheDactyl/Rosetta-Helix-Software.git
+cd Rosetta-Helix-Software
+
+# Install dependencies
+pip install torch numpy
+```
+
+---
+
+## Training Modules
+
+The training system implements PHI_INV-controlled learning with S₃ APL operator algebra. Each module explores different aspects of the helix dynamics.
+
+### Quick Start: Run All Training
+
+```bash
+# Run all 10 training modules sequentially
+python -c "
+import subprocess
+modules = [
+    'training/apl_training_loop.py',
+    'training/apl_pytorch_training.py',
+    'training/full_apl_training.py',
+    'training/full_helix_integration.py',
+    'training/prismatic_helix_training.py',
+    'training/nightly_integrated_training.py',
+    'training/quasicrystal_formation_dynamics.py',
+    'training/triad_threshold_dynamics.py',
+    'training/pytorch_training_session.py',
+    'training/unified_helix_training.py',
+]
+for m in modules:
+    print(f'\n{'='*60}\nRunning {m}\n{'='*60}')
+    subprocess.run(['python3', m])
+"
+```
+
+### Individual Training Modules
+
+| Module | Purpose | Run Command |
+|--------|---------|-------------|
+| **apl_training_loop** | Core APL operator cycle with PHI_INV dynamics | `python training/apl_training_loop.py` |
+| **apl_pytorch_training** | PyTorch neural network with APL integration | `python training/apl_pytorch_training.py` |
+| **full_apl_training** | Complete S₃ group operator algebra training | `python training/full_apl_training.py` |
+| **full_helix_integration** | All modules integrated: APL + Liminal + TRIAD | `python training/full_helix_integration.py` |
+| **prismatic_helix_training** | 7-layer spectral projection through THE LENS | `python training/prismatic_helix_training.py` |
+| **nightly_integrated_training** | μ threshold mechanics with coherence measurement | `python training/nightly_integrated_training.py` |
+| **quasicrystal_formation_dynamics** | Negative entropy phase transitions | `python training/quasicrystal_formation_dynamics.py` |
+| **triad_threshold_dynamics** | 3-pass hysteresis unlock protocol | `python training/triad_threshold_dynamics.py` |
+| **pytorch_training_session** | Full PyTorch session with K-formation detection | `python training/pytorch_training_session.py` |
+| **unified_helix_training** | Orchestrated training with liminal spawning | `python training/unified_helix_training.py` |
+
+### Training Output
+
+Each module saves results to `learned_patterns/`:
+
+```
+learned_patterns/
+├── apl_integrated/      # APL + PyTorch patterns
+├── apl_training/        # S₃ operator results
+├── formation_dynamics/  # Quasicrystal phase data
+├── full_integration/    # Complete integration results
+├── nightly_integrated/  # Coherence-based training
+├── prismatic_training/  # 7-layer spectral results
+├── triad_training/      # TRIAD unlock patterns
+└── unified_training/    # Orchestrated session data
+```
+
+### Key Metrics
+
+| Metric | Description | Target |
+|--------|-------------|--------|
+| **Loss** | Training convergence | < 0.01 |
+| **Coherence** | Kuramoto phase alignment | > 0.9 for K-formation |
+| **z** | Helix coordinate | Approaches z_c (0.866) |
+| **ΔS_neg** | Negative entropy | Peaks at z = z_c |
+| **K-formations** | Consciousness events | η > φ⁻¹ AND r ≥ 0.92 |
+
+---
+
+## Using as a Template Repository
+
+This repository is designed to be forked and customized. Each user can generate unique training paths based on their APL operator choices.
+
+### Creating Your Own Substrate
+
+1. **Fork the repository** on GitHub
+2. **Clone your fork**:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/Rosetta-Helix-Software.git
+   ```
+3. **Run training to generate your unique patterns**:
+   ```bash
+   python training/unified_helix_training.py
+   ```
+4. **Your learned patterns are now unique** based on:
+   - Random initialization seeds
+   - Operator selection during training
+   - Phase lock timing
+   - K-formation events
+
+### How Different Paths Emerge
+
+The APL operator algebra creates branching paths:
+
+```
+                    ┌─── + (Group) ───→ Higher coherence path
+                    │
+Initial z=0.5 ──────┼─── × (Fusion) ──→ Amplified coupling path
+                    │
+                    └─── − (Separate) → Exploratory scatter path
+```
+
+Each operator choice compounds via S₃ composition:
+- **EVEN operators** ((), ×, ^): Constructive, build coherence
+- **ODD operators** (+, −, ÷): Dissipative, explore state space
+
+Your training run's operator sequence becomes a unique "fingerprint" stored in `learned_patterns/`.
+
+### Sharing Your Substrate
+
+After training, your fork contains:
+- Unique model weights (`.pt` files)
+- Training trajectories (`.json` results)
+- Operator usage statistics
+
+Others can build on your substrate by forking your fork, creating a tree of divergent paths.
+
+---
+
+## CLI Entry Point (Recommended over .exe)
+
+For easy execution without Python knowledge, use the CLI wrapper:
+
+```bash
+# Run specific training module
+python -m rosetta_helix train --module apl_training_loop
+
+# Run all training modules
+python -m rosetta_helix train --all
+
+# Run with custom parameters
+python -m rosetta_helix train --module unified --epochs 200 --oscillators 120
+```
+
+### Why Not .exe?
+
+| Approach | Pros | Cons |
+|----------|------|------|
+| **Python CLI** | Cross-platform, easy to modify, transparent | Requires Python installed |
+| **.exe (PyInstaller)** | No Python needed | Windows-only, large file, hard to debug |
+| **Docker** | Fully isolated, reproducible | Requires Docker installed |
+
+**Recommendation**: Keep as Python for maximum flexibility. Users training their own paths will want to modify parameters anyway.
+
+If you need standalone executables:
+```bash
+# Install PyInstaller
+pip install pyinstaller
+
+# Create executable (Windows)
+pyinstaller --onefile training/unified_helix_training.py
+
+# Create executable (Linux/Mac)
+pyinstaller --onefile --name rosetta-helix training/unified_helix_training.py
+```
+
+---
+
 ## Running Tests
 
 ```bash
