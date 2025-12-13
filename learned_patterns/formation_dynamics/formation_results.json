@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-12-12T22:24:49.848196",
+  "timestamp": "2025-12-13T01:02:08.270524",
   "config": {
     "input_dim": 16,
     "output_dim": 4,
@@ -10,11 +10,11 @@
   },
   "training_history": [
     {
-      "loss": 0.6365254950523377,
-      "coherence": 0.7851418042182923,
-      "z": 0.7434052372094467,
-      "delta_s_neg": 0.2883094470070808,
-      "cumulative_neg_entropy": 2.83585811287402,
+      "loss": 0.6437042260169983,
+      "coherence": 0.7990146923065186,
+      "z": 0.7466348586306146,
+      "delta_s_neg": 0.4113448226770139,
+      "cumulative_neg_entropy": 4.0290169037102235,
       "phase": "crystalline",
       "phase_counts": {
         "disordered": 9,
@@ -24,53 +24,53 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.5171869933605194,
-      "coherence": 0.7304145050048828,
-      "z": 0.7432924602013474,
-      "delta_s_neg": 0.35336199872739676,
-      "cumulative_neg_entropy": 6.4176603924685605,
-      "phase": "disordered",
-      "phase_counts": {
-        "disordered": 8,
-        "quasi_crystal": 10,
-        "crystalline": 7
-      },
-      "qc_boost": 1.9961710408648279
-    },
-    {
-      "loss": 0.392221040725708,
-      "coherence": 0.6433878660202026,
-      "z": 0.6674653818996994,
-      "delta_s_neg": 0.20336422386084166,
-      "cumulative_neg_entropy": 8.435342206275696,
+      "loss": 0.5452092635631561,
+      "coherence": 0.7646981000900268,
+      "z": 0.7873802096462049,
+      "delta_s_neg": 0.5550554088861809,
+      "cumulative_neg_entropy": 9.647248849365772,
       "phase": "quasi_crystal",
       "phase_counts": {
-        "disordered": 5,
-        "quasi_crystal": 20,
+        "disordered": 0,
+        "quasi_crystal": 16,
+        "crystalline": 9
+      },
+      "qc_boost": 1.9961710408648279
+    },
+    {
+      "loss": 0.4375185883045197,
+      "coherence": 0.6952598929405213,
+      "z": 0.7107793011298058,
+      "delta_s_neg": 0.44551054106749455,
+      "cumulative_neg_entropy": 14.045122801557987,
+      "phase": "quasi_crystal",
+      "phase_counts": {
+        "disordered": 0,
+        "quasi_crystal": 25,
         "crystalline": 0
       },
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.24446479320526124,
-      "coherence": 0.5256206965446473,
-      "z": 0.5140042815570753,
-      "delta_s_neg": 0.06646735580379462,
-      "cumulative_neg_entropy": 9.1245249801624,
+      "loss": 0.32865205526351926,
+      "coherence": 0.6073464357852936,
+      "z": 0.5931382301025507,
+      "delta_s_neg": 0.11824600364042719,
+      "cumulative_neg_entropy": 15.300124667615462,
       "phase": "disordered",
       "phase_counts": {
-        "disordered": 21,
-        "quasi_crystal": 4,
+        "disordered": 16,
+        "quasi_crystal": 9,
         "crystalline": 0
       },
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.12947756558656692,
-      "coherence": 0.4568363630771637,
-      "z": 0.4875428006256499,
-      "delta_s_neg": 0.04298987310999931,
-      "cumulative_neg_entropy": 9.553887921858443,
+      "loss": 0.2520594024658203,
+      "coherence": 0.5515646064281463,
+      "z": 0.5704169373117552,
+      "delta_s_neg": 0.04406577342326059,
+      "cumulative_neg_entropy": 15.738337715597627,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -80,11 +80,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.07889866515994072,
-      "coherence": 0.42516404390335083,
-      "z": 0.42500947156805025,
-      "delta_s_neg": 0.025628360045037053,
-      "cumulative_neg_entropy": 9.812138796644863,
+      "loss": 0.21035020768642426,
+      "coherence": 0.5151180446147918,
+      "z": 0.5203135493999244,
+      "delta_s_neg": 0.014740079447026795,
+      "cumulative_neg_entropy": 15.890229530030696,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -94,11 +94,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.060737477838993074,
-      "coherence": 0.41691551327705384,
-      "z": 0.4425560675796554,
-      "delta_s_neg": 0.029605491167766004,
-      "cumulative_neg_entropy": 10.108015762530057,
+      "loss": 0.1858717095851898,
+      "coherence": 0.4958039391040802,
+      "z": 0.49862470803473513,
+      "delta_s_neg": 0.007775449526068433,
+      "cumulative_neg_entropy": 15.968184701541055,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -108,11 +108,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.048593037277460095,
-      "coherence": 0.41250202655792234,
-      "z": 0.41052025255365365,
-      "delta_s_neg": 0.022545808097733672,
-      "cumulative_neg_entropy": 10.332995802416356,
+      "loss": 0.16939671456813812,
+      "coherence": 0.4796062529087067,
+      "z": 0.48382792426343924,
+      "delta_s_neg": 0.005240343912734234,
+      "cumulative_neg_entropy": 16.020745412539533,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -122,11 +122,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.041284256651997565,
-      "coherence": 0.411387540102005,
-      "z": 0.44050107555519635,
-      "delta_s_neg": 0.028953691859866248,
-      "cumulative_neg_entropy": 10.623091775090094,
+      "loss": 0.15728830337524413,
+      "coherence": 0.4683473324775696,
+      "z": 0.46923578446420605,
+      "delta_s_neg": 0.0035847646227870826,
+      "cumulative_neg_entropy": 16.05706499773297,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -136,11 +136,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.03570117771625519,
-      "coherence": 0.41033862590789794,
-      "z": 0.39793013132397254,
-      "delta_s_neg": 0.02053072458791598,
-      "cumulative_neg_entropy": 10.827375472928647,
+      "loss": 0.14807831823825837,
+      "coherence": 0.46069586753845215,
+      "z": 0.4726917090515388,
+      "delta_s_neg": 0.003942067136996344,
+      "cumulative_neg_entropy": 16.096203012466113,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -150,11 +150,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.03190462559461594,
-      "coherence": 0.4116835117340088,
-      "z": 0.43855745937784635,
-      "delta_s_neg": 0.028620358357369532,
-      "cumulative_neg_entropy": 11.114665690934874,
+      "loss": 0.14047342509031296,
+      "coherence": 0.4556011068820953,
+      "z": 0.46357982529146874,
+      "delta_s_neg": 0.002968230657787419,
+      "cumulative_neg_entropy": 16.126246264139372,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -164,11 +164,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.028570613116025923,
-      "coherence": 0.41178412199020387,
-      "z": 0.4249711271047913,
-      "delta_s_neg": 0.02537759408674259,
-      "cumulative_neg_entropy": 11.368326285211829,
+      "loss": 0.13397772431373597,
+      "coherence": 0.4521392810344696,
+      "z": 0.446157729591565,
+      "delta_s_neg": 0.0018892418539576343,
+      "cumulative_neg_entropy": 16.14491058641133,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -178,11 +178,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.025966843590140343,
-      "coherence": 0.4141447865962982,
-      "z": 0.4258238746743202,
-      "delta_s_neg": 0.025546286583524827,
-      "cumulative_neg_entropy": 11.62338868295503,
+      "loss": 0.12812356650829315,
+      "coherence": 0.45263298869132995,
+      "z": 0.4565344215590828,
+      "delta_s_neg": 0.0025708843704041954,
+      "cumulative_neg_entropy": 16.17092505866458,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -192,11 +192,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.02356391977518797,
-      "coherence": 0.41482975125312804,
-      "z": 0.4307008011402634,
-      "delta_s_neg": 0.026586115138434736,
-      "cumulative_neg_entropy": 11.889208427126325,
+      "loss": 0.12221262782812119,
+      "coherence": 0.4546918821334839,
+      "z": 0.4615448665318608,
+      "delta_s_neg": 0.0028992206105999123,
+      "cumulative_neg_entropy": 16.19975239016995,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -206,11 +206,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.022111148089170456,
-      "coherence": 0.41793587803840637,
-      "z": 0.42315839839559155,
-      "delta_s_neg": 0.025053689933277466,
-      "cumulative_neg_entropy": 12.13932733888848,
+      "loss": 0.11625776767730713,
+      "coherence": 0.4560152041912079,
+      "z": 0.4606148425694901,
+      "delta_s_neg": 0.0027482863103246978,
+      "cumulative_neg_entropy": 16.227219152961396,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -220,11 +220,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.020320952348411084,
-      "coherence": 0.42020957231521605,
-      "z": 0.44328792150615215,
-      "delta_s_neg": 0.029672455751584666,
-      "cumulative_neg_entropy": 12.437010942061859,
+      "loss": 0.10950470954179764,
+      "coherence": 0.4581369566917419,
+      "z": 0.4530028390986399,
+      "delta_s_neg": 0.002164340397335016,
+      "cumulative_neg_entropy": 16.248865340157224,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -234,11 +234,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.019291217736899853,
-      "coherence": 0.4225421965122223,
-      "z": 0.4287782464694639,
-      "delta_s_neg": 0.02628943229733172,
-      "cumulative_neg_entropy": 12.698956781357891,
+      "loss": 0.10177645236253738,
+      "coherence": 0.45784576416015627,
+      "z": 0.46584265960293175,
+      "delta_s_neg": 0.003203069747356591,
+      "cumulative_neg_entropy": 16.281007840793208,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -248,11 +248,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.018549857325851918,
-      "coherence": 0.424479022026062,
-      "z": 0.43899745965844206,
-      "delta_s_neg": 0.028522407288538974,
-      "cumulative_neg_entropy": 12.984725089301838,
+      "loss": 0.09311197787523269,
+      "coherence": 0.4585131859779358,
+      "z": 0.45728168047276474,
+      "delta_s_neg": 0.002541028242199132,
+      "cumulative_neg_entropy": 16.30647682690788,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -262,11 +262,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.017860031798481942,
-      "coherence": 0.42758373498916624,
-      "z": 0.4398829588611195,
-      "delta_s_neg": 0.028817006248765088,
-      "cumulative_neg_entropy": 13.273245524137552,
+      "loss": 0.08460707977414131,
+      "coherence": 0.4593151867389679,
+      "z": 0.45319719095375,
+      "delta_s_neg": 0.0023671405832813687,
+      "cumulative_neg_entropy": 16.329695464079688,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -276,11 +276,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.017179172858595847,
-      "coherence": 0.4293570280075073,
-      "z": 0.4355903179342686,
-      "delta_s_neg": 0.027742751000697244,
-      "cumulative_neg_entropy": 13.549664185236853,
+      "loss": 0.07591584280133247,
+      "coherence": 0.45939961314201355,
+      "z": 0.469507137407254,
+      "delta_s_neg": 0.0038777385453168116,
+      "cumulative_neg_entropy": 16.368952526080296,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -290,11 +290,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.01658660426735878,
-      "coherence": 0.4316025269031525,
-      "z": 0.44686209091441476,
-      "delta_s_neg": 0.030452848205353145,
-      "cumulative_neg_entropy": 13.854744743978335,
+      "loss": 0.06773207947611809,
+      "coherence": 0.4617628622055054,
+      "z": 0.46007318944839015,
+      "delta_s_neg": 0.002982611020839665,
+      "cumulative_neg_entropy": 16.398239575167338,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -304,11 +304,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.01604697424918413,
-      "coherence": 0.4326504027843475,
-      "z": 0.4458099170236431,
-      "delta_s_neg": 0.030160315118953465,
-      "cumulative_neg_entropy": 14.155954970162668,
+      "loss": 0.06060144454240799,
+      "coherence": 0.46386773347854615,
+      "z": 0.4574644268545184,
+      "delta_s_neg": 0.002554145394554268,
+      "cumulative_neg_entropy": 16.42410732425741,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -318,11 +318,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.015704082883894445,
-      "coherence": 0.4346260690689087,
-      "z": 0.44165586165606996,
-      "delta_s_neg": 0.029202928702729728,
-      "cumulative_neg_entropy": 14.44748343487828,
+      "loss": 0.05459162779152393,
+      "coherence": 0.4652121412754059,
+      "z": 0.47364725520443085,
+      "delta_s_neg": 0.003974501092486892,
+      "cumulative_neg_entropy": 16.463831646076095,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -332,11 +332,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.015364976823329926,
-      "coherence": 0.4349997115135193,
-      "z": 0.4439288577063762,
-      "delta_s_neg": 0.02979772724437456,
-      "cumulative_neg_entropy": 14.746123922938672,
+      "loss": 0.049420549497008325,
+      "coherence": 0.4674954652786255,
+      "z": 0.45475539668026355,
+      "delta_s_neg": 0.002374076280812546,
+      "cumulative_neg_entropy": 16.48733298701935,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -346,11 +346,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.014933674782514571,
-      "coherence": 0.4360943496227264,
-      "z": 0.45590628884874645,
-      "delta_s_neg": 0.03284257109467244,
-      "cumulative_neg_entropy": 15.07454848407428,
+      "loss": 0.044595342278480526,
+      "coherence": 0.4671179986000061,
+      "z": 0.4722899068131884,
+      "delta_s_neg": 0.003909489180340627,
+      "cumulative_neg_entropy": 16.526739462696604,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -360,11 +360,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.014623672980815173,
-      "coherence": 0.4372938024997711,
-      "z": 0.44197644690549154,
-      "delta_s_neg": 0.029273025236286984,
-      "cumulative_neg_entropy": 15.36660966706012,
+      "loss": 0.04054242514073849,
+      "coherence": 0.46809064626693725,
+      "z": 0.4684390957301868,
+      "delta_s_neg": 0.0035938733252990425,
+      "cumulative_neg_entropy": 16.562067122749784,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -374,11 +374,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.014325097128748894,
-      "coherence": 0.43741544723510745,
-      "z": 0.4504293956650381,
-      "delta_s_neg": 0.03141331707113234,
-      "cumulative_neg_entropy": 15.681401276208545,
+      "loss": 0.037194511666893956,
+      "coherence": 0.46679307222366334,
+      "z": 0.4702223961517752,
+      "delta_s_neg": 0.0038052086592938322,
+      "cumulative_neg_entropy": 16.600724422647648,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -388,11 +388,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.013986503593623639,
-      "coherence": 0.4383335280418396,
-      "z": 0.4527292647424575,
-      "delta_s_neg": 0.031941634922683516,
-      "cumulative_neg_entropy": 16.000429291288324,
+      "loss": 0.0337982739508152,
+      "coherence": 0.46745911836624143,
+      "z": 0.461820143188301,
+      "delta_s_neg": 0.0028088243138940676,
+      "cumulative_neg_entropy": 16.628631058975184,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -402,11 +402,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.013779345508664846,
-      "coherence": 0.4385919964313507,
-      "z": 0.44524344034947033,
-      "delta_s_neg": 0.030021435555416517,
-      "cumulative_neg_entropy": 16.3008614885589,
+      "loss": 0.03138071693480015,
+      "coherence": 0.4656023836135864,
+      "z": 0.4670529465631035,
+      "delta_s_neg": 0.0034100439851747436,
+      "cumulative_neg_entropy": 16.662937536239248,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -416,11 +416,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.013582304194569588,
-      "coherence": 0.43822452902793885,
-      "z": 0.45203971307424445,
-      "delta_s_neg": 0.03195596242478225,
-      "cumulative_neg_entropy": 16.621301188932133,
+      "loss": 0.02901834584772587,
+      "coherence": 0.46529141545295716,
+      "z": 0.46525244486085804,
+      "delta_s_neg": 0.003218870516530376,
+      "cumulative_neg_entropy": 16.694684846645536,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -430,11 +430,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.013196880184113979,
-      "coherence": 0.4386929941177368,
-      "z": 0.4600018492369735,
-      "delta_s_neg": 0.034305742054604516,
-      "cumulative_neg_entropy": 16.963430652237648,
+      "loss": 0.026696510538458826,
+      "coherence": 0.4629659926891327,
+      "z": 0.45917322153122014,
+      "delta_s_neg": 0.002936513666106127,
+      "cumulative_neg_entropy": 16.724544498915044,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -444,11 +444,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.012944234162569046,
-      "coherence": 0.4385412609577179,
-      "z": 0.4285412399726404,
-      "delta_s_neg": 0.026316459092630504,
-      "cumulative_neg_entropy": 17.22636905760288,
+      "loss": 0.02484550192952156,
+      "coherence": 0.4591862380504608,
+      "z": 0.4784557070223841,
+      "delta_s_neg": 0.004843557419989775,
+      "cumulative_neg_entropy": 16.77283993155743,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -458,11 +458,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.012606980688869953,
-      "coherence": 0.4381115388870239,
-      "z": 0.46135528896126465,
-      "delta_s_neg": 0.0344661760936612,
-      "cumulative_neg_entropy": 17.571868529893194,
+      "loss": 0.023235531747341154,
+      "coherence": 0.462449049949646,
+      "z": 0.44447040109232594,
+      "delta_s_neg": 0.0017024917827625973,
+      "cumulative_neg_entropy": 16.789854733191277,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -472,11 +472,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.01232732631266117,
-      "coherence": 0.43828022241592407,
-      "z": 0.4462883352990213,
-      "delta_s_neg": 0.030314726659455147,
-      "cumulative_neg_entropy": 17.874383468899513,
+      "loss": 0.021809204407036306,
+      "coherence": 0.45694706797599793,
+      "z": 0.4775721427007835,
+      "delta_s_neg": 0.004898508326989708,
+      "cumulative_neg_entropy": 16.839051701663514,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -486,11 +486,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.01205523857846856,
-      "coherence": 0.43797930240631106,
-      "z": 0.4502332398726752,
-      "delta_s_neg": 0.03132961100972495,
-      "cumulative_neg_entropy": 18.18749236775348,
+      "loss": 0.02083591815084219,
+      "coherence": 0.46074309706687927,
+      "z": 0.45181728189723924,
+      "delta_s_neg": 0.002433401335808526,
+      "cumulative_neg_entropy": 16.862897126468074,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -500,11 +500,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.011794522739946842,
-      "coherence": 0.4382743585109711,
-      "z": 0.44251805633707547,
-      "delta_s_neg": 0.0293945127661021,
-      "cumulative_neg_entropy": 18.48177951154296,
+      "loss": 0.01919958185404539,
+      "coherence": 0.4570536553859711,
+      "z": 0.4478030462783789,
+      "delta_s_neg": 0.0019753245364523934,
+      "cumulative_neg_entropy": 16.882985998155164,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -514,11 +514,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.011817991193383932,
-      "coherence": 0.4365249264240265,
-      "z": 0.4541071097752669,
-      "delta_s_neg": 0.03231360450698837,
-      "cumulative_neg_entropy": 18.805109991412476,
+      "loss": 0.018053008466958998,
+      "coherence": 0.45616536021232607,
+      "z": 0.46164308484962746,
+      "delta_s_neg": 0.0028048628659283663,
+      "cumulative_neg_entropy": 16.910867961974407,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -528,11 +528,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.011453182175755501,
-      "coherence": 0.43660730242729184,
-      "z": 0.44519385729214134,
-      "delta_s_neg": 0.030082962301803476,
-      "cumulative_neg_entropy": 19.10584203665877,
+      "loss": 0.016958572901785374,
+      "coherence": 0.4557333898544311,
+      "z": 0.462596707668428,
+      "delta_s_neg": 0.0029821202088217307,
+      "cumulative_neg_entropy": 16.940582513096448,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -542,11 +542,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.011144701186567544,
-      "coherence": 0.43648169994354247,
-      "z": 0.4494006767461044,
-      "delta_s_neg": 0.03109247274445027,
-      "cumulative_neg_entropy": 19.41739490206555,
+      "loss": 0.016109658442437648,
+      "coherence": 0.45559915065765383,
+      "z": 0.45256343026685486,
+      "delta_s_neg": 0.002176196894462179,
+      "cumulative_neg_entropy": 16.96264909564675,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -556,11 +556,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.011001342460513115,
-      "coherence": 0.4355119967460632,
-      "z": 0.440869907247926,
-      "delta_s_neg": 0.028991619569691488,
-      "cumulative_neg_entropy": 19.706953443308375,
+      "loss": 0.014768749698996544,
+      "coherence": 0.454553142786026,
+      "z": 0.45422566048458557,
+      "delta_s_neg": 0.0022864376632533785,
+      "cumulative_neg_entropy": 16.985394085710393,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -570,11 +570,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.010698063150048256,
-      "coherence": 0.4352698314189911,
-      "z": 0.44636922128513584,
-      "delta_s_neg": 0.03029461745292911,
-      "cumulative_neg_entropy": 20.009950692431413,
+      "loss": 0.014237547293305397,
+      "coherence": 0.45260926127433776,
+      "z": 0.4619497602051405,
+      "delta_s_neg": 0.002805234685857543,
+      "cumulative_neg_entropy": 17.013529755206072,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -584,11 +584,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.010461556408554316,
-      "coherence": 0.43386247515678406,
-      "z": 0.43569505083762183,
-      "delta_s_neg": 0.02774832551754555,
-      "cumulative_neg_entropy": 20.287143693498322,
+      "loss": 0.013690533936023713,
+      "coherence": 0.45361473321914675,
+      "z": 0.4410729122547451,
+      "delta_s_neg": 0.0015700609436658387,
+      "cumulative_neg_entropy": 17.02915756540283,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -598,11 +598,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.010280566271394492,
-      "coherence": 0.43121286273002624,
-      "z": 0.4521290776276922,
-      "delta_s_neg": 0.031818191356231616,
-      "cumulative_neg_entropy": 20.605756023401838,
+      "loss": 0.013344753235578537,
+      "coherence": 0.45126559257507326,
+      "z": 0.45580469207974406,
+      "delta_s_neg": 0.0024548637938953373,
+      "cumulative_neg_entropy": 17.053896907648927,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -612,11 +612,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.010112670715898275,
-      "coherence": 0.431356714963913,
-      "z": 0.4381031267211079,
-      "delta_s_neg": 0.028281518700853048,
-      "cumulative_neg_entropy": 20.888462377913058,
+      "loss": 0.012193452417850494,
+      "coherence": 0.4506598615646362,
+      "z": 0.4456899669816687,
+      "delta_s_neg": 0.0017916453446383115,
+      "cumulative_neg_entropy": 17.07150169188517,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -626,11 +626,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.00979653924703598,
-      "coherence": 0.4310738897323608,
-      "z": 0.4395120593723025,
-      "delta_s_neg": 0.02863830426391251,
-      "cumulative_neg_entropy": 21.17473682564629,
+      "loss": 0.012251852974295617,
+      "coherence": 0.45016817092895506,
+      "z": 0.4579607808571852,
+      "delta_s_neg": 0.0026328436240512206,
+      "cumulative_neg_entropy": 17.098118332729598,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -640,11 +640,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.009609220046550036,
-      "coherence": 0.42894687414169314,
-      "z": 0.439574871386718,
-      "delta_s_neg": 0.02865967664267034,
-      "cumulative_neg_entropy": 21.461738152175748,
+      "loss": 0.011271766871213913,
+      "coherence": 0.4512054359912872,
+      "z": 0.4455760215030024,
+      "delta_s_neg": 0.001727084638214267,
+      "cumulative_neg_entropy": 17.115317994338362,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -654,11 +654,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.009355325810611248,
-      "coherence": 0.4288845109939575,
-      "z": 0.44292950582827956,
-      "delta_s_neg": 0.02946960950184925,
-      "cumulative_neg_entropy": 21.756641575600764,
+      "loss": 0.010776171460747719,
+      "coherence": 0.448898606300354,
+      "z": 0.4539638022041739,
+      "delta_s_neg": 0.0022583703919902202,
+      "cumulative_neg_entropy": 17.137994994363172,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -668,11 +668,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.009315408561378717,
-      "coherence": 0.428808034658432,
-      "z": 0.43783518961162315,
-      "delta_s_neg": 0.02823066842541821,
-      "cumulative_neg_entropy": 22.038540611122684,
+      "loss": 0.010961244907230138,
+      "coherence": 0.44896329641342164,
+      "z": 0.43274731606771205,
+      "delta_s_neg": 0.001214185271701434,
+      "cumulative_neg_entropy": 17.14992496268919,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -682,11 +682,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.009154848102480174,
-      "coherence": 0.4272143888473511,
-      "z": 0.4363466875787631,
-      "delta_s_neg": 0.027883183478305068,
-      "cumulative_neg_entropy": 22.317942212845043,
+      "loss": 0.010573159754276275,
+      "coherence": 0.44446315288543703,
+      "z": 0.4708598774405256,
+      "delta_s_neg": 0.003976699293846798,
+      "cumulative_neg_entropy": 17.18994564948494,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -696,11 +696,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.008976779785007239,
-      "coherence": 0.4253546416759491,
-      "z": 0.43933471837648314,
-      "delta_s_neg": 0.02865775615572892,
-      "cumulative_neg_entropy": 22.603710931972216,
+      "loss": 0.010246004723012448,
+      "coherence": 0.44766042232513426,
+      "z": 0.4285817700045441,
+      "delta_s_neg": 0.0012818293917570458,
+      "cumulative_neg_entropy": 17.20230137357342,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -710,11 +710,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.008598719369620084,
-      "coherence": 0.4267822098731995,
-      "z": 0.43065374067023443,
-      "delta_s_neg": 0.02664788783468546,
-      "cumulative_neg_entropy": 22.870573382619114,
+      "loss": 0.010289441496133804,
+      "coherence": 0.444430855512619,
+      "z": 0.457996587006187,
+      "delta_s_neg": 0.002951469939085909,
+      "cumulative_neg_entropy": 17.23232894547169,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -724,11 +724,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.00822682136669755,
-      "coherence": 0.4248691987991333,
-      "z": 0.4463614111333257,
-      "delta_s_neg": 0.0304566125461574,
-      "cumulative_neg_entropy": 23.175860418580204,
+      "loss": 0.009569484740495682,
+      "coherence": 0.44733110785484315,
+      "z": 0.4364544161361776,
+      "delta_s_neg": 0.0015605207026511087,
+      "cumulative_neg_entropy": 17.247493094375685,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -738,11 +738,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.008198395445942879,
-      "coherence": 0.42467339992523195,
-      "z": 0.4313091754088015,
-      "delta_s_neg": 0.0267693928673223,
-      "cumulative_neg_entropy": 23.44317531700026,
+      "loss": 0.009249964766204356,
+      "coherence": 0.44696764469146727,
+      "z": 0.4398755865589397,
+      "delta_s_neg": 0.0016582591386892548,
+      "cumulative_neg_entropy": 17.264353508501067,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -752,11 +752,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.008220680691301822,
-      "coherence": 0.42503982663154605,
-      "z": 0.4349714341709155,
-      "delta_s_neg": 0.02755006644024262,
-      "cumulative_neg_entropy": 23.718686541035492,
+      "loss": 0.008810156490653753,
+      "coherence": 0.44296234250068667,
+      "z": 0.46897414054276665,
+      "delta_s_neg": 0.00360901165523354,
+      "cumulative_neg_entropy": 17.30046437642149,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -766,11 +766,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.007870763633400201,
-      "coherence": 0.4237061047554016,
-      "z": 0.43298330138574825,
-      "delta_s_neg": 0.027093812893443602,
-      "cumulative_neg_entropy": 23.989444487861743,
+      "loss": 0.008521456867456437,
+      "coherence": 0.4452481961250305,
+      "z": 0.42365796068529527,
+      "delta_s_neg": 0.00091950908762316,
+      "cumulative_neg_entropy": 17.309624050149953,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -780,11 +780,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.007482214365154505,
-      "coherence": 0.4228510904312134,
-      "z": 0.44106048007569215,
-      "delta_s_neg": 0.02898003567136491,
-      "cumulative_neg_entropy": 24.27926603743269,
+      "loss": 0.008374326825141908,
+      "coherence": 0.442430784702301,
+      "z": 0.4525277670888358,
+      "delta_s_neg": 0.0021785001305285705,
+      "cumulative_neg_entropy": 17.331477238196427,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -794,11 +794,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.007506096549332142,
-      "coherence": 0.42281280636787416,
-      "z": 0.4298575156516575,
-      "delta_s_neg": 0.026491926876252445,
-      "cumulative_neg_entropy": 24.543927333076308,
+      "loss": 0.007978578880429268,
+      "coherence": 0.4436116480827332,
+      "z": 0.43754922331038393,
+      "delta_s_neg": 0.0014647597266402757,
+      "cumulative_neg_entropy": 17.345934736413458,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -808,11 +808,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.007327226679772139,
-      "coherence": 0.42150535583496096,
-      "z": 0.42989541599551445,
-      "delta_s_neg": 0.02643550636818053,
-      "cumulative_neg_entropy": 24.808697549366556,
+      "loss": 0.00763090156018734,
+      "coherence": 0.44237033486366273,
+      "z": 0.4476327200945595,
+      "delta_s_neg": 0.0018985862206670145,
+      "cumulative_neg_entropy": 17.365137414004852,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -822,11 +822,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.007371457051485777,
-      "coherence": 0.42078503847122195,
-      "z": 0.4324383965023765,
-      "delta_s_neg": 0.027076608170893145,
-      "cumulative_neg_entropy": 25.080053667910033,
+      "loss": 0.00765371773391962,
+      "coherence": 0.44323804378509524,
+      "z": 0.4288886923892152,
+      "delta_s_neg": 0.0010864628076300389,
+      "cumulative_neg_entropy": 17.37580305311057,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -836,11 +836,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.007187879290431738,
-      "coherence": 0.42075361490249635,
-      "z": 0.4386466081759534,
-      "delta_s_neg": 0.028634954352156333,
-      "cumulative_neg_entropy": 25.36516078579016,
+      "loss": 0.007563204541802406,
+      "coherence": 0.44108054280281067,
+      "z": 0.44876762332674036,
+      "delta_s_neg": 0.0020485858332993916,
+      "cumulative_neg_entropy": 17.39649820356013,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -850,11 +850,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.007272625267505646,
-      "coherence": 0.42045822262763977,
-      "z": 0.42158612004640844,
-      "delta_s_neg": 0.02477019664330255,
-      "cumulative_neg_entropy": 25.613497849259854,
+      "loss": 0.007496268637478352,
+      "coherence": 0.4417213070392609,
+      "z": 0.4439522804873261,
+      "delta_s_neg": 0.0016722981238995334,
+      "cumulative_neg_entropy": 17.413061609360643,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -864,11 +864,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.007001242227852344,
-      "coherence": 0.41854103446006774,
-      "z": 0.4475630745126646,
-      "delta_s_neg": 0.030827922586108274,
-      "cumulative_neg_entropy": 25.92251220997543,
+      "loss": 0.007152119576931,
+      "coherence": 0.4414023780822754,
+      "z": 0.43118284745039964,
+      "delta_s_neg": 0.00116341231539417,
+      "cumulative_neg_entropy": 17.424787563466047,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -878,11 +878,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.007032056655734777,
-      "coherence": 0.4187115144729614,
-      "z": 0.4131602425212749,
-      "delta_s_neg": 0.02322992155473405,
-      "cumulative_neg_entropy": 26.15365979202256,
+      "loss": 0.007157278284430504,
+      "coherence": 0.4395530140399933,
+      "z": 0.4510971859215685,
+      "delta_s_neg": 0.002074690848308208,
+      "cumulative_neg_entropy": 17.44551415999825,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -892,11 +892,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.006939593572169543,
-      "coherence": 0.41764708995819094,
-      "z": 0.4331667675972045,
-      "delta_s_neg": 0.027268342829640396,
-      "cumulative_neg_entropy": 26.42723910805643,
+      "loss": 0.006864331513643265,
+      "coherence": 0.44046409368515016,
+      "z": 0.4474820872611269,
+      "delta_s_neg": 0.0018824333413053418,
+      "cumulative_neg_entropy": 17.464370232531344,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -906,11 +906,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.006614112146198749,
-      "coherence": 0.4164304220676422,
-      "z": 0.43084550761958545,
-      "delta_s_neg": 0.026627610672679894,
-      "cumulative_neg_entropy": 26.693014670584255,
+      "loss": 0.0070078977942466735,
+      "coherence": 0.44043332934379575,
+      "z": 0.41648021075842523,
+      "delta_s_neg": 0.0007639039720523746,
+      "cumulative_neg_entropy": 17.471923529689995,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -920,11 +920,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.006374016162008047,
-      "coherence": 0.41619442820549013,
-      "z": 0.4217907319354313,
-      "delta_s_neg": 0.0248630331647416,
-      "cumulative_neg_entropy": 26.942536637279577,
+      "loss": 0.007826436553150415,
+      "coherence": 0.4360801374912262,
+      "z": 0.4632971289869216,
+      "delta_s_neg": 0.0034693808814049735,
+      "cumulative_neg_entropy": 17.506819685970427,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -934,11 +934,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.006306976452469826,
-      "coherence": 0.41472708582878115,
-      "z": 0.42928181613100624,
-      "delta_s_neg": 0.026292349799201253,
-      "cumulative_neg_entropy": 27.204657522519753,
+      "loss": 0.00837832972407341,
+      "coherence": 0.4398147892951965,
+      "z": 0.42408641165940153,
+      "delta_s_neg": 0.0014212960718472418,
+      "cumulative_neg_entropy": 17.52047974622062,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -948,11 +948,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.006186833027750254,
-      "coherence": 0.41450113177299497,
-      "z": 0.42767568743335177,
-      "delta_s_neg": 0.025960441309426353,
-      "cumulative_neg_entropy": 27.46429336318232,
+      "loss": 0.007625609077513218,
+      "coherence": 0.43772663950920104,
+      "z": 0.44395652865003826,
+      "delta_s_neg": 0.0018207532813118046,
+      "cumulative_neg_entropy": 17.539187226558784,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -962,11 +962,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.006276988405734301,
-      "coherence": 0.4142011761665344,
-      "z": 0.4335394212517895,
-      "delta_s_neg": 0.027216064401439154,
-      "cumulative_neg_entropy": 27.736655415833,
+      "loss": 0.006600398179143667,
+      "coherence": 0.43896677732467654,
+      "z": 0.4266036626229385,
+      "delta_s_neg": 0.000985197591982053,
+      "cumulative_neg_entropy": 17.548910883457708,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -976,11 +976,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.006156794689595699,
-      "coherence": 0.41406133890151975,
-      "z": 0.4182259490762214,
-      "delta_s_neg": 0.02401283056325226,
-      "cumulative_neg_entropy": 27.976625273159733,
+      "loss": 0.006208039056509733,
+      "coherence": 0.435304319858551,
+      "z": 0.4435565557787085,
+      "delta_s_neg": 0.0017362919012518397,
+      "cumulative_neg_entropy": 17.566421625236472,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -990,11 +990,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.006074218722060323,
-      "coherence": 0.41204984426498414,
-      "z": 0.4333067906756535,
-      "delta_s_neg": 0.02717498963556757,
-      "cumulative_neg_entropy": 28.248837987455257,
+      "loss": 0.0062981522269546985,
+      "coherence": 0.435732399225235,
+      "z": 0.44150531622888145,
+      "delta_s_neg": 0.0017405326931464972,
+      "cumulative_neg_entropy": 17.58371215895943,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1004,11 +1004,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.0058397914748638865,
-      "coherence": 0.41231486439704895,
-      "z": 0.4121917896332892,
-      "delta_s_neg": 0.02280189313030915,
-      "cumulative_neg_entropy": 28.47670387856316,
+      "loss": 0.0064589278586208825,
+      "coherence": 0.4367994236946106,
+      "z": 0.42162066867736736,
+      "delta_s_neg": 0.0009132267716381334,
+      "cumulative_neg_entropy": 17.59275290863993,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1018,11 +1018,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.00573039410635829,
-      "coherence": 0.41120668172836305,
-      "z": 0.43067476054512616,
-      "delta_s_neg": 0.026600391667416033,
-      "cumulative_neg_entropy": 28.742755873364903,
+      "loss": 0.006489939521998167,
+      "coherence": 0.43182769179344177,
+      "z": 0.4572150113499214,
+      "delta_s_neg": 0.002601577084801522,
+      "cumulative_neg_entropy": 17.61896714676032,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1032,11 +1032,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.00569915902800858,
-      "coherence": 0.4100776982307434,
-      "z": 0.41753697733374806,
-      "delta_s_neg": 0.02385238009424505,
-      "cumulative_neg_entropy": 28.981459069519715,
+      "loss": 0.006665488667786121,
+      "coherence": 0.4343218719959259,
+      "z": 0.39390887921225065,
+      "delta_s_neg": 0.00047475160483934645,
+      "cumulative_neg_entropy": 17.623448738041706,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1046,11 +1046,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.005652914252132177,
-      "coherence": 0.41101540565490724,
-      "z": 0.42445366270759943,
-      "delta_s_neg": 0.025261993752233782,
-      "cumulative_neg_entropy": 29.23410905562513,
+      "loss": 0.00840490909293294,
+      "coherence": 0.4306151270866394,
+      "z": 0.46509383899864204,
+      "delta_s_neg": 0.004397362715174498,
+      "cumulative_neg_entropy": 17.66773895519154,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1060,11 +1060,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.005552719458937645,
-      "coherence": 0.40959468007087707,
-      "z": 0.4209049717133149,
-      "delta_s_neg": 0.02451926836600485,
-      "cumulative_neg_entropy": 29.479008777389122,
+      "loss": 0.0072519413754343984,
+      "coherence": 0.4355727434158325,
+      "z": 0.4091715697659443,
+      "delta_s_neg": 0.0008905532672364692,
+      "cumulative_neg_entropy": 17.676140493012134,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1074,11 +1074,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.005348285129293799,
-      "coherence": 0.40889870405197143,
-      "z": 0.4217303774424175,
-      "delta_s_neg": 0.024720874844068617,
-      "cumulative_neg_entropy": 29.726401423509863,
+      "loss": 0.007033095732331276,
+      "coherence": 0.4328831970691681,
+      "z": 0.4432472403856286,
+      "delta_s_neg": 0.0026461842785586763,
+      "cumulative_neg_entropy": 17.703108274760762,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1088,11 +1088,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.005216666497290134,
-      "coherence": 0.40785773038864137,
-      "z": 0.4324877570318115,
-      "delta_s_neg": 0.027001930298690188,
-      "cumulative_neg_entropy": 29.996629609426254,
+      "loss": 0.006717162393033505,
+      "coherence": 0.4340533399581909,
+      "z": 0.4301037965150711,
+      "delta_s_neg": 0.0011920852769165809,
+      "cumulative_neg_entropy": 17.714768639624747,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1102,11 +1102,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.0054798035882413386,
-      "coherence": 0.40857642889022827,
-      "z": 0.40522746730180353,
-      "delta_s_neg": 0.021514026743046824,
-      "cumulative_neg_entropy": 30.21182585100427,
+      "loss": 0.005964898820966482,
+      "coherence": 0.432386394739151,
+      "z": 0.44358461077970335,
+      "delta_s_neg": 0.0018421821635999063,
+      "cumulative_neg_entropy": 17.733425825732912,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1116,11 +1116,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.005604455219581723,
-      "coherence": 0.4065729868412018,
-      "z": 0.4319523104578633,
-      "delta_s_neg": 0.026902662415740575,
-      "cumulative_neg_entropy": 30.48078952888908,
+      "loss": 0.005696146953850984,
+      "coherence": 0.4326372742652893,
+      "z": 0.4216676571023894,
+      "delta_s_neg": 0.0009772404854969572,
+      "cumulative_neg_entropy": 17.742903079741087,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1130,11 +1130,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.005342797078192234,
-      "coherence": 0.4070968818664551,
-      "z": 0.41430130917647434,
-      "delta_s_neg": 0.023192179757477924,
-      "cumulative_neg_entropy": 30.71271507703857,
+      "loss": 0.005520602185279131,
+      "coherence": 0.43044860124588014,
+      "z": 0.4328277720704279,
+      "delta_s_neg": 0.0013432604039353149,
+      "cumulative_neg_entropy": 17.756614097157403,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1144,11 +1144,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.005128491334617138,
-      "coherence": 0.40642202377319336,
-      "z": 0.4274065666890367,
-      "delta_s_neg": 0.025872504254462796,
-      "cumulative_neg_entropy": 30.971502462683,
+      "loss": 0.005371587397530675,
+      "coherence": 0.4304959070682526,
+      "z": 0.43263857790845706,
+      "delta_s_neg": 0.0012475888588210295,
+      "cumulative_neg_entropy": 17.768917667561652,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1158,11 +1158,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.0051270007342100144,
-      "coherence": 0.4067307412624359,
-      "z": 0.4138919581196412,
-      "delta_s_neg": 0.02310825442408249,
-      "cumulative_neg_entropy": 31.2027324349192,
+      "loss": 0.005369881484657526,
+      "coherence": 0.4318265688419342,
+      "z": 0.4188254666977016,
+      "delta_s_neg": 0.000826041239347424,
+      "cumulative_neg_entropy": 17.777187454248857,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1172,11 +1172,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.004906437080353499,
-      "coherence": 0.4048963117599487,
-      "z": 0.4188827609210022,
-      "delta_s_neg": 0.024094031728997458,
-      "cumulative_neg_entropy": 31.44349134773544,
+      "loss": 0.0053577150590717795,
+      "coherence": 0.42988227963447573,
+      "z": 0.4397457036181444,
+      "delta_s_neg": 0.0015740545002092933,
+      "cumulative_neg_entropy": 17.79304416112764,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1186,11 +1186,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.004917855598032475,
-      "coherence": 0.40431028008461,
-      "z": 0.4175482505730356,
-      "delta_s_neg": 0.02382504498145472,
-      "cumulative_neg_entropy": 31.681830268537105,
+      "loss": 0.005319801215082407,
+      "coherence": 0.42881993770599364,
+      "z": 0.4350694821469328,
+      "delta_s_neg": 0.0012886539920921862,
+      "cumulative_neg_entropy": 17.80592798671332,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1200,11 +1200,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.004899913473054767,
-      "coherence": 0.40372681379318237,
-      "z": 0.4187533116904565,
-      "delta_s_neg": 0.02406251577709696,
-      "cumulative_neg_entropy": 31.922551576035485,
+      "loss": 0.005298011153936386,
+      "coherence": 0.43039476275444033,
+      "z": 0.41700200150575745,
+      "delta_s_neg": 0.000718234088634671,
+      "cumulative_neg_entropy": 17.813064682519393,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1214,11 +1214,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.004905182616785169,
-      "coherence": 0.4032831978797913,
-      "z": 0.4128520576367242,
-      "delta_s_neg": 0.02290868226281041,
-      "cumulative_neg_entropy": 32.151596999881754,
+      "loss": 0.00528972115367651,
+      "coherence": 0.42583426117897033,
+      "z": 0.4465274438716389,
+      "delta_s_neg": 0.001886000114015063,
+      "cumulative_neg_entropy": 17.83198940243146,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1228,11 +1228,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.004921852741390466,
-      "coherence": 0.40197683691978453,
-      "z": 0.43101724145307285,
-      "delta_s_neg": 0.026684534926669053,
-      "cumulative_neg_entropy": 32.418270754608116,
+      "loss": 0.00542342621833086,
+      "coherence": 0.4284800326824188,
+      "z": 0.40544308216324326,
+      "delta_s_neg": 0.0005780687031890664,
+      "cumulative_neg_entropy": 17.837605976379752,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1242,11 +1242,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.004753916561603546,
-      "coherence": 0.40358723521232603,
-      "z": 0.39615734252123375,
-      "delta_s_neg": 0.020102138919350497,
-      "cumulative_neg_entropy": 32.619171837734775,
+      "loss": 0.00561912564560771,
+      "coherence": 0.4267435169219971,
+      "z": 0.4385379991885055,
+      "delta_s_neg": 0.0014535663150283373,
+      "cumulative_neg_entropy": 17.852280294414424,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1256,11 +1256,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.004590306393802166,
-      "coherence": 0.4012289047241211,
-      "z": 0.42417126460695037,
-      "delta_s_neg": 0.025238374561924362,
-      "cumulative_neg_entropy": 32.871975676816355,
+      "loss": 0.0053646143618971106,
+      "coherence": 0.42679577589035034,
+      "z": 0.4165201404219804,
+      "delta_s_neg": 0.0007620535240800185,
+      "cumulative_neg_entropy": 17.85974307900259,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1270,11 +1270,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.004480841029435396,
-      "coherence": 0.40205729603767393,
-      "z": 0.4146550472839927,
-      "delta_s_neg": 0.02325652758199278,
-      "cumulative_neg_entropy": 33.10435052354331,
+      "loss": 0.005846175625920296,
+      "coherence": 0.42563690900802614,
+      "z": 0.43634312686954374,
+      "delta_s_neg": 0.0015477387694750025,
+      "cumulative_neg_entropy": 17.875434285828668,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1284,11 +1284,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.004599612774327398,
-      "coherence": 0.39956650257110593,
-      "z": 0.40690360527264874,
-      "delta_s_neg": 0.021837078091697167,
-      "cumulative_neg_entropy": 33.32293326199788,
+      "loss": 0.005437589576467871,
+      "coherence": 0.4261144864559174,
+      "z": 0.42027426839017745,
+      "delta_s_neg": 0.0008368428584286748,
+      "cumulative_neg_entropy": 17.88364236187766,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1298,11 +1298,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.004258088413625956,
-      "coherence": 0.4004968249797821,
-      "z": 0.4242635591058537,
-      "delta_s_neg": 0.025247192806931287,
-      "cumulative_neg_entropy": 33.5756601770942,
+      "loss": 0.0050684063509106635,
+      "coherence": 0.423376624584198,
+      "z": 0.4339161741110381,
+      "delta_s_neg": 0.0012497756247407546,
+      "cumulative_neg_entropy": 17.89627170112754,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1312,11 +1312,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.004052060889080167,
-      "coherence": 0.40076914310455325,
-      "z": 0.4120476869995447,
-      "delta_s_neg": 0.022877161925499098,
-      "cumulative_neg_entropy": 33.803788672625984,
+      "loss": 0.00493726217187941,
+      "coherence": 0.42571731090545656,
+      "z": 0.4131351372200035,
+      "delta_s_neg": 0.0006864170135542698,
+      "cumulative_neg_entropy": 17.90299882450085,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1326,11 +1326,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.004056927971541882,
-      "coherence": 0.3990256154537201,
-      "z": 0.41107817441663996,
-      "delta_s_neg": 0.0226279968237922,
-      "cumulative_neg_entropy": 34.03054754097838,
+      "loss": 0.0050717262737452985,
+      "coherence": 0.42290818572044375,
+      "z": 0.43346329353352253,
+      "delta_s_neg": 0.001441713829794198,
+      "cumulative_neg_entropy": 17.9175941765148,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1340,11 +1340,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.004190974151715637,
-      "coherence": 0.3983187699317932,
-      "z": 0.4169680067052578,
-      "delta_s_neg": 0.02371970952909892,
-      "cumulative_neg_entropy": 34.26788985411634,
+      "loss": 0.005392766669392586,
+      "coherence": 0.42374652266502383,
+      "z": 0.42052076692185225,
+      "delta_s_neg": 0.0009079320308819268,
+      "cumulative_neg_entropy": 17.926486026985074,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1354,11 +1354,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.0041276092268526555,
-      "coherence": 0.3984395909309387,
-      "z": 0.4039540116973493,
-      "delta_s_neg": 0.02131919822783804,
-      "cumulative_neg_entropy": 34.48060487602704,
+      "loss": 0.005237888414412737,
+      "coherence": 0.4225253987312317,
+      "z": 0.43423948705394394,
+      "delta_s_neg": 0.0012797370429643144,
+      "cumulative_neg_entropy": 17.939452388619674,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1368,11 +1368,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.004319973653182387,
-      "coherence": 0.396391304731369,
-      "z": 0.4168141690743105,
-      "delta_s_neg": 0.02376436584081952,
-      "cumulative_neg_entropy": 34.718784025108505,
+      "loss": 0.004841061066836119,
+      "coherence": 0.4248439621925354,
+      "z": 0.41978858572056266,
+      "delta_s_neg": 0.0008663690085746939,
+      "cumulative_neg_entropy": 17.947992932225333,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1382,11 +1382,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.004495023358613253,
-      "coherence": 0.3978921890258789,
-      "z": 0.4087334649391916,
-      "delta_s_neg": 0.022147964835688653,
-      "cumulative_neg_entropy": 34.94000404366102,
+      "loss": 0.0047359086759388444,
+      "coherence": 0.4232854151725769,
+      "z": 0.4173455504009972,
+      "delta_s_neg": 0.0007288267592410958,
+      "cumulative_neg_entropy": 17.9553781171256,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1396,11 +1396,11 @@
       "qc_boost": 1.9961710408648279
     },
     {
-      "loss": 0.004417665423825383,
-      "coherence": 0.39557923793792726,
-      "z": 0.4140311345491914,
-      "delta_s_neg": 0.023228883207391263,
-      "cumulative_neg_entropy": 35.1728742486028,
+      "loss": 0.004494018573313952,
+      "coherence": 0.4215089988708496,
+      "z": 0.4214173970291996,
+      "delta_s_neg": 0.0008181102070630448,
+      "cumulative_neg_entropy": 17.963504216060638,
       "phase": "disordered",
       "phase_counts": {
         "disordered": 25,
@@ -1415,47 +1415,35 @@
       "epoch": 0,
       "from_phase": "disordered",
       "to_phase": "quasi_crystal",
-      "z": 0.6686308380599124
+      "z": 0.6733833406242546
     },
     {
       "epoch": 0,
       "from_phase": "quasi_crystal",
       "to_phase": "crystalline",
-      "z": 0.8812911113945433
+      "z": 0.8923080992292921
     },
     {
       "epoch": 1,
       "from_phase": "crystalline",
       "to_phase": "quasi_crystal",
-      "z": 0.8512235187136932
-    },
-    {
-      "epoch": 1,
-      "from_phase": "quasi_crystal",
-      "to_phase": "disordered",
-      "z": 0.6143511110497001
-    },
-    {
-      "epoch": 2,
-      "from_phase": "disordered",
-      "to_phase": "quasi_crystal",
-      "z": 0.6234873387716926
+      "z": 0.843575696824759
     },
     {
       "epoch": 3,
       "from_phase": "quasi_crystal",
       "to_phase": "disordered",
-      "z": 0.6092851497626774
+      "z": 0.6061466673371093
     }
   ],
   "summary": {
     "total_epochs": 100,
-    "final_loss": 0.004417665423825383,
-    "final_z": 0.4140311345491914,
+    "final_loss": 0.004494018573313952,
+    "final_z": 0.4214173970291996,
     "final_phase": "disordered",
-    "final_delta_s_neg": 0.023228883207391263,
-    "cumulative_neg_entropy": 35.1728742486028,
+    "final_delta_s_neg": 0.0008181102070630448,
+    "cumulative_neg_entropy": 17.963504216060638,
     "qc_boost": 1.9961710408648279,
-    "phase_transition_count": 6
+    "phase_transition_count": 4
   }
 }
