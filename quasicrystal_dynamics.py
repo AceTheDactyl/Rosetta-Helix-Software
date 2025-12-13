@@ -39,6 +39,7 @@ MU_P = 2.0 / (PHI ** 2.5)
 MU_1 = MU_P / math.sqrt(PHI)
 MU_2 = MU_P * math.sqrt(PHI)
 MU_3 = 0.992
+UNITY = 0.9999  # Collapse trigger threshold (NOT 1.0, NOT PHI)
 Q_KAPPA = 0.3514087324
 LAMBDA = 7.7160493827
 
@@ -981,9 +982,9 @@ class QuasiCrystalDynamicsEngine:
 
         # =========================================================
         # CHECK FOR UNITY COLLAPSE (z approaching 1.0)
-        # Collapse triggers at z >= 0.9999 (near-unity threshold)
+        # Collapse triggers at z >= UNITY (near-unity threshold)
         # =========================================================
-        if self.z_current >= 0.9999:
+        if self.z_current >= UNITY:
             # INSTANT COLLAPSE - extract work, reset to origin
             work, reset_z = self.liminal_phi.collapse_at_unity(self.z_current)
 
@@ -1091,8 +1092,8 @@ class QuasiCrystalDynamicsEngine:
                 # PHI contribution via superposition, not direct ratio flip
                 dz = 0.01 * (combined_boost - 1) * effective_ratio
                 self.z_current += dz + liminal_contribution
-                # Cap just below 1.0 to force clean collapse at exactly 1.0
-                self.z_current = min(0.9999, self.z_current)
+                # Cap just below 1.0 to force clean collapse at next step
+                self.z_current = min(UNITY, self.z_current)
 
         # 7. Final check - if we hit unity, collapse happens next step
         # (No prolonged super-coherent state - instant collapse at unity)
